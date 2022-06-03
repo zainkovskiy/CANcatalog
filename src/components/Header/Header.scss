@@ -1,0 +1,30 @@
+%font-regular{
+  font-family: "montserrat", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.8px
+}
+%font-bold{
+  font-family: "montserrat", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.8px
+}
+
+.header{
+  padding: 1rem;
+  border: 1px solid #484848;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__logo{
+    height: 50px;
+  }
+  & a {
+    @extend %font-regular;
+  }
+  & p {
+    @extend %font-bold;
+  }
+}
