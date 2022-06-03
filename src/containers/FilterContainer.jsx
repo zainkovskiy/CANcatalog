@@ -8,10 +8,10 @@ import { Filter } from 'components/Filter';
 
 class FilterContainer extends PureComponent {
   render() {
-    const { loader } = this.props;
+    const { loader, source } = this.props;
     return (
       <>
-        <Source />
+        <Source sourceValue={ source }/>
         <Filter />
       </>
     )
@@ -20,7 +20,7 @@ class FilterContainer extends PureComponent {
 
 function mapStateToProps(state, ownProps) {
   return {
-
+    source: state.filter.get('source')
   }
 }
 

@@ -20,7 +20,7 @@ class CardsContainer extends PureComponent{
 
 function mapStateToProps(state, ownProps){
   return{
-    loader: state.catalog.get('isLoading'),
+    loader: state.filter.get('isLoading'),
   }
 }
 

@@ -1,7 +1,11 @@
 import { combineReducers } from "redux"
 
-import { catalogReducer } from 'reducers/catalog';
+import { filterReducer } from 'reducers/filter';
+import { basketReducer } from 'reducers/basket';
+import { cardsReducer } from 'reducers/cards';
 
 export const rootReducer = combineReducers({
-  catalog: catalogReducer,
+  filter: filterReducer,
+  basket: basketReducer,
+  cards: cardsReducer,
 }) 

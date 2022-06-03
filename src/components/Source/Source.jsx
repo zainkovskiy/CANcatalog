@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { source } from 'actions/filter';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-export function Source() {
-  const [alignment, setAlignment] = useState('web');
+const logoStyle = {
+  display: 'block',
+  width: 24.5,
+  height: 24.5,
+  margin: '0 0 0 0.5rem',
+  backgroundSize: 'contain',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat'
+}
+
+export function Source({ sourceValue }) {
+  const dispatch = useDispatch();
+  const [alignment, setAlignment] = useState(sourceValue);
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
+
+  useEffect(() => {
+    dispatch(source(alignment))
+  }, [alignment])
+  
   return (
     <>
       <ToggleButtonGroup
@@ -16,11 +35,31 @@ export function Source() {
         value={alignment}
         exclusive
         onChange={handleChange}
+        sx={{justifyContent: 'center'}}
       >
-        <ToggleButton value="web">Web <span style={{display: 'block', width: 40, height: 40, 
-        backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/centr-small.png)', backgroundSize: 'contain'}}></span></ToggleButton>
-        <ToggleButton value="android">Android</ToggleButton>
-        <ToggleButton value="ios">iOS</ToggleButton>
+        <ToggleButton value="1c">1c
+          <span
+            style={{
+              backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/centr-small.png)', ...logoStyle,
+            }}>
+          </span>
+        </ToggleButton>
+        <ToggleButton value="pars">
+          pars
+          <span
+            style={{
+              backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/all.png)', ...logoStyle, backgroundSize: '200%',
+            }}>
+          </span>
+        </ToggleButton>
+        <ToggleButton value="mls">
+          mls
+          <span
+            style={{
+              backgroundImage: 'url(https://crm.centralnoe.ru/dealincom/assets/building.png)', ...logoStyle,
+            }}>
+          </span>
+        </ToggleButton>
       </ToggleButtonGroup>
     </>
   )
