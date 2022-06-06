@@ -1,0 +1,20 @@
+.search__item{
+  user-select: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-family: "Montserrat";
+  color: #737373;
+  &:hover{
+    background: #ebf0f5;
+  }
+}
+.search__text{
+  font-size: 9px;
+  font-weight: 700;
+}
