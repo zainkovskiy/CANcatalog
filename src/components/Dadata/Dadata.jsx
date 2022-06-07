@@ -18,7 +18,8 @@ export function Dadata(props) {
   return (
       <AddressSuggestions
         token="408e6651c0b9bfc8e2f487383d45353973f3285c"
-        filterFromBound={'region'}
+        type='metro'
+        // filterFromBound={'region'}
         filterToBound={'house'}
         {...inputProps}
         inputRef={ref}
@@ -26,6 +27,7 @@ export function Dadata(props) {
           {
             placeholder: 'Введите адрес',
             className: 'dadata__input',
+            onChange: e => console.log(e)
           }
         }
       />

@@ -6,7 +6,7 @@ import { loader, source } from 'actions/filter';
 const initialState = new Map({
   isLoading: false,
   source: '1c',
-  args: new Map(),
+  metro: new Map(),
   extra: new Map(),
   filter: new Map(),
 })

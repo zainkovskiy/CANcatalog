@@ -5,7 +5,12 @@ import axios from 'axios';
 import { loader } from 'actions/filter';
 
 import { Source } from 'components/Source';
+import { BasketBasket } from 'components/BasketBasket';
+import { ButtonExtra } from 'components/ButtonExtra';
+import { ButtonMetro } from 'components/ButtonMetro';
 import { Filter } from 'components/Filter';
+
+import './FilterContainer.scss';
 
 class FilterContainer extends PureComponent {
   state = {
@@ -38,10 +43,20 @@ class FilterContainer extends PureComponent {
   }
 
   render() {
-    const { loader, source } = this.props;
+    const { loader, source, basket } = this.props;
     return (
       <>
-        <Source sourceValue={source} />
+        <div className='setting'>
+          <Source sourceValue={source} />
+          <div className='setting-right'>
+            <ButtonMetro />
+            <ButtonExtra />
+            <BasketBasket
+              showBasket={this.showBasket}
+              basket={basket}
+            />
+          </div>
+        </div>
         <Filter
           sourceValue={source}
           builderList={this.state.builderList}
@@ -55,7 +70,8 @@ class FilterContainer extends PureComponent {
 
 function mapStateToProps(state, ownProps) {
   return {
-    source: state.filter.get('source')
+    source: state.filter.get('source'),
+    basket: state.basket.get('basket').toJS()
   }
 }
 

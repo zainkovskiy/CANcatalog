@@ -1,0 +1,13 @@
+.basket{
+  position: relative;
+  &__items{
+    position: absolute;
+    z-index: 99;
+    background-color: #fff;
+    padding: 0.5rem;
+    border: 1px solid #484848;
+    border-radius: 5px;
+    width: 200px;
+    right: 0;
+  }
+}

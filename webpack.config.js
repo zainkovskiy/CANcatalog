@@ -16,6 +16,7 @@ module.exports = {
       containers: path.resolve(__dirname, 'src', 'containers'),
       actions: path.resolve(__dirname, 'src', 'actions'),
       reducers: path.resolve(__dirname, 'src', 'reducers'),
+      images: path.resolve(__dirname, 'src', 'images'),
     }
   },
   devtool: 'eval-cheap-source-map',
@@ -37,7 +38,22 @@ module.exports = {
             loader: 'sass-loader'
           }
         ]
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack']
       }
+      // {
+      //   test: /\.(svg|jpe?g|png)$/,
+      //   use:[
+      //     {
+      //       loader: 'file-loader',
+      //       options: {
+      //         name: '[path][name].[ext]',
+      //       }
+      //     }
+      //   ]
+      // }
     ],
   },
   plugins: [

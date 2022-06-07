@@ -1,0 +1,10 @@
+.setting{
+  display: flex;
+  justify-content: space-between;
+  &-right{
+    display: flex;
+    align-items: center;
+    background-color: #d5ffe170;
+    border-radius: 5px;
+  }
+}

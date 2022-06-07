@@ -15,23 +15,24 @@ export function Filter(props) {
   const { getBuilderVariants, sourceValue, builderList, clearBuilderList } = props;
   const [openBuild, setOpenBuild] = useState(false);
   const [openPrice, setOpenPrice] = useState(false);
-  const [priceFrom, setPriceFrom] = useState('');
-  const [priceTo, setPriceTo] = useState('');
-  const [price, setPrice] = useState('');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [price, setPrice] = useState(['','']);
   const priceRef = useRef(null);
   const {
     handleSubmit,
     control,
     register,
     setValue,
-    getValues,
   } = useForm({
     defaultValues: {
       builder: '',
     },
     mode: 'onSubmit'
   })
-
+  const fromPrice = register('priceFrom');
+  const toPrice = register('priceTo');
+  
   useEffect(() => {
     document.addEventListener('click', checkSelectList);
     return () => {
@@ -70,16 +71,21 @@ export function Filter(props) {
     }
   }
 
-  const setPriceValue = (event) => {
+  const setPriceValue = (index, event) => {
     const name = event.target.name;
     const value = event.target.value;
-    if(name === 'priceFrom') {
-      setPriceFrom(value)
-    } else if (name === 'setPriceTo') {
-      setPriceTo(value)
+    if (name === 'priceFrom') {
+      setFrom(value);
+    } else if (name === 'priceTo') {
+      setTo(value);
     }
-    console.log(value);
+    setPrice(prevPrice => {
+      const currentPrice = prevPrice;
+      currentPrice.splice(index, 1, value)
+      return currentPrice
+    })
   }
+
   
   return (
     <form
@@ -142,15 +148,15 @@ export function Filter(props) {
           ariant="outlined"
           size='small'
           name='price'
-          value={price}
+          value={` ${price[0] ? `от ${price[0]}` : ''} ${price[1] ? `до ${price[1]}` : ''} `}
           inputProps={
             {
               readOnly: true,
               'data-search': 'yes',
+              style: {cursor: 'pointer'}
             }
           }
           onClick={() => { setOpenPrice(!openPrice) }}
-          // onFocus={() => { priceRef.current.focus() }}  
           fullWidth
         />
         <AnimatePresence>
@@ -177,11 +183,10 @@ export function Filter(props) {
                     'data-search': 'yes'
                   }
                 }
-                {
-                  ...register('priceFrom', {
-                    onChange: (event) => { setValue('priceFrom', event.target.value.replace(/[^\d]/g, '')), setPriceValue(event) },
-                  })
-                }
+                {...fromPrice}
+                onChange={(event) => { setValue('priceFrom', event.target.value.replace(/[^\d]/g, '')),
+                  setPriceValue(0, event);
+                }}
               />
               <TextField
                 autoComplete='off'
@@ -196,11 +201,10 @@ export function Filter(props) {
                     'data-search': 'yes',
                   }
                 }
-                {
-                  ...register('priceTo', {
-                    onChange: (event) => { setValue('priceTo', event.target.value.replace(/[^\d]/g, '')), setPriceValue(event) },
-                  })
-                }
+                {...toPrice}
+                onChange={(event) => { setValue('priceTo', event.target.value.replace(/[^\d]/g, '')),
+                  setPriceValue(1, event);
+                }}
               />
             </motion.div>
           }

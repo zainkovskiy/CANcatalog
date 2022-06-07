@@ -21,13 +21,16 @@ export function Source({ sourceValue }) {
   const [alignment, setAlignment] = useState(sourceValue);
 
   const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    if (newAlignment) {
+      setAlignment(newAlignment);
+    }
   };
 
   useEffect(() => {
     dispatch(source(alignment))
   }, [alignment])
-  
+
+
   return (
     <>
       <ToggleButtonGroup
@@ -35,7 +38,7 @@ export function Source({ sourceValue }) {
         value={alignment}
         exclusive
         onChange={handleChange}
-        sx={{justifyContent: 'center'}}
+        sx={{ justifyContent: 'center' }}
       >
         <ToggleButton value="1c">1c
           <span
