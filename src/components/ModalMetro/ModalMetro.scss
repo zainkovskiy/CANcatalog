@@ -1,0 +1,12 @@
+.metro{
+  display: flex;
+  justify-content: space-between;
+  &__column{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  &__text{
+    font-weight: 700;
+  }
+}

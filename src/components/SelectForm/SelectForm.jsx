@@ -9,12 +9,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 export function SelectForm(props) {
-  const { control, name, label, multiple } = props;
+  const { control, name, label, multiple, disabled, error, rules } = props;
   const {
     field: { ref, ...inputProps },
   } = useController({
     name,
     control,
+    rules: rules,
     defaultValue: multiple ? [] : "",
   });
   return (
@@ -30,6 +31,8 @@ export function SelectForm(props) {
         {...inputProps}
         inputRef={ref}
         multiple={multiple}
+        disabled={disabled}
+        error={error}
       >
         {
           selectList[name].map((item, idx) => <MenuItem key={idx} value={item}>{item}</MenuItem>)
