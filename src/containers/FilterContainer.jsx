@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { loader } from 'actions/filter';
+import { loader, metro, extra } from 'actions/filter';
 
 import { Source } from 'components/Source';
 import { BasketBasket } from 'components/BasketBasket';
@@ -43,14 +43,21 @@ class FilterContainer extends PureComponent {
   }
 
   render() {
-    const { loader, source, basket } = this.props;
+    const { loader, source, basket, setMetro, setExtra, metro, extra } = this.props;
     return (
       <>
         <div className='setting'>
           <Source sourceValue={source} />
           <div className='setting-right'>
-            <ButtonMetro />
-            <ButtonExtra />
+            <ButtonMetro
+              metro={metro}
+              setMetro={setMetro}
+            />
+            <ButtonExtra
+              extra={extra}
+              setExtra={setExtra}
+              sourceValue={source}
+            />
             <BasketBasket
               showBasket={this.showBasket}
               basket={basket}
@@ -71,13 +78,17 @@ class FilterContainer extends PureComponent {
 function mapStateToProps(state, ownProps) {
   return {
     source: state.filter.get('source'),
-    basket: state.basket.get('basket').toJS()
+    basket: state.basket.get('basket').toJS(),
+    metro: state.filter.get('metro'),
+    extra: state.filter.get('extra')
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loader: () => dispatch(loader()),
+    setMetro: (filter) => dispatch(metro(filter)),
+    setExtra: (filter) => dispatch(extra(filter)),
   }
 }
 

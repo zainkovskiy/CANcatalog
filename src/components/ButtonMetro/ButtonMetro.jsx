@@ -7,7 +7,7 @@ import { ModalMetro } from 'components/ModalMetro';
 
 import MetroSvg from 'images/Metro.svg';
 
-export function ButtonMetro() {
+export function ButtonMetro({ setMetro, metro }) {
   const [open, setOpen] = useState(false)
 
   const onClose = () => {
@@ -20,7 +20,7 @@ export function ButtonMetro() {
         aria-label="setting"
         onClick={onClose}
       >
-        <Badge badgeContent={0} color="primary">
+        <Badge badgeContent={metro?.metro?.length} color="primary">
           <MetroSvg
             style={{ width: 20, height: 20 }}
           />
@@ -31,7 +31,12 @@ export function ButtonMetro() {
         <ModalWindow
           open={open}
           onClose={onClose}
-          children={<ModalMetro/>}
+          children={
+            <ModalMetro
+              onClose={onClose}
+              metro={metro}
+              setMetro={setMetro}
+            />}
         />
       }
     </>

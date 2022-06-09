@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -15,8 +15,12 @@ import { SelectForm } from 'components/SelectForm';
 
 import './ModalMetro.scss';
 
-export function ModalMetro() {
-  const [metroAll, setMetroAll] = useState(false);
+export function ModalMetro({ onClose, metro, setMetro }) {
+  const [metroAll, setMetroAll] = useState(false,);
+
+  useEffect(()=>{
+    metro?.isMetroAll && setMetroAll(metro.isMetroAll)
+  }, [])
 
   const {
     handleSubmit,
@@ -27,11 +31,15 @@ export function ModalMetro() {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      metro: ['Площадь Маркса', 'Студенческая']
+      metro: metro?.metro ? metro.metro : [],
+      metroDistance: metro?.metroDistance || '',
+      isMetroAll: metro?.isMetroAll || false,
     }
   })
 
   const onSubmit = (data) => {
+    setMetro(data)
+    onClose()
     console.log(data);
   }
 
@@ -47,7 +55,9 @@ export function ModalMetro() {
         sx={{ fontFamily: 'Montserrat', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
         Поиск по станции метро
-        <IconButton>
+        <IconButton 
+        onClick={onClose}
+        >
           <CloseIcon/>
         </IconButton>
       </DialogTitle>
@@ -112,6 +122,7 @@ export function ModalMetro() {
                     control={
                       <Checkbox
                         {...field}
+                        checked={field.value}
                         onChange={(event) => { handleAll(event), field.onChange(event) }}
                       />
                     } />
@@ -125,8 +136,10 @@ export function ModalMetro() {
             >{errors?.metro && 'Выберете станцию метро'}</span>
           </div>
           <DialogActions >
-            <Button type='submit'>Save(console)</Button>
-            <Button type='reset'>Clear(no working)</Button>
+            <Button type='submit'>Сохранить</Button>
+            <Button 
+              onClick={() => {setMetro({}), onClose()} }
+            >Очистить</Button>
           </DialogActions>
         </form>
       </DialogContent>

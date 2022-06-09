@@ -7,7 +7,7 @@ import Setting from 'images/setting.svg';
 import { ModalWindow } from 'components/ModalWindow';
 import { ModalExtraFilter } from 'components/ModalExtraFilter';
 
-export function ButtonExtra() {
+export function ButtonExtra({ sourceValue, extra, setExtra }) {
   const [open, setOpen] = useState(false)
 
   const onClose = () => {
@@ -32,7 +32,13 @@ export function ButtonExtra() {
         <ModalWindow
           open={open}
           onClose={onClose}
-          children={<ModalExtraFilter />}
+          children={
+            <ModalExtraFilter
+              extra={extra}
+              setExtra={setExtra}
+              sourceValue={sourceValue}
+              onClose={onClose}
+            />}
         />
       }
     </>

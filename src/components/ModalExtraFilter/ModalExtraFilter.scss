@@ -1,0 +1,45 @@
+.extra {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-gap: 1rem;
+  }
+
+  &__title {
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  &__description {
+    display: block;
+    margin: 0 0 0.5rem 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: grey;
+    text-align: center;
+  }
+
+  &__value {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__inputs {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__checkbox-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    color: grey;
+    cursor: pointer;
+  }
+}
