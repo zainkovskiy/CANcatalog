@@ -136,10 +136,10 @@ export function ModalMetro({ onClose, metro, setMetro }) {
             >{errors?.metro && 'Выберете станцию метро'}</span>
           </div>
           <DialogActions >
-            <Button type='submit'>Сохранить</Button>
             <Button 
               onClick={() => {setMetro({}), onClose()} }
             >Очистить</Button>
+            <Button type='submit'>Сохранить</Button>
           </DialogActions>
         </form>
       </DialogContent>

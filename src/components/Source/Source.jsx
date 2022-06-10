@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { source } from 'actions/filter';
+import { source, metro, extra } from 'actions/filter';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -28,6 +28,8 @@ export function Source({ sourceValue }) {
 
   useEffect(() => {
     dispatch(source(alignment))
+    dispatch(metro({}))
+    dispatch(extra({}))
   }, [alignment])
 
 

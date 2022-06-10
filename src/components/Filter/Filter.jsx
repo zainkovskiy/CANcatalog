@@ -12,7 +12,7 @@ import { Dadata } from 'components/Dadata';
 import './Filter.scss';
 
 export function Filter(props) {
-  const { getBuilderVariants, sourceValue, builderList, clearBuilderList } = props;
+  const { getBuilderVariants, sourceValue, builderList, clearBuilderList, hadlerSearch } = props;
   const [openBuild, setOpenBuild] = useState(false);
   const [openPrice, setOpenPrice] = useState(false);
   const [from, setFrom] = useState('');
@@ -48,6 +48,7 @@ export function Filter(props) {
 
   const onSubmit = (data) => {
     console.log(data);
+    hadlerSearch(data)
   }
 
   const handlerInput = (event) => {

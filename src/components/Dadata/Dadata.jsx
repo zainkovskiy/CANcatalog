@@ -27,7 +27,6 @@ export function Dadata(props) {
           {
             placeholder: 'Введите адрес',
             className: 'dadata__input',
-            onChange: e => console.log(e)
           }
         }
       />

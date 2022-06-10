@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { loader, metro, extra } from 'actions/filter';
+import { getCards } from 'actions/cards';
+
+import Button from '@mui/material/Button';
 
 import { Source } from 'components/Source';
 import { BasketBasket } from 'components/BasketBasket';
@@ -42,34 +45,49 @@ class FilterContainer extends PureComponent {
     this.setState({ builderList: [] })
   }
 
+  hadlerSearch = (filter) => {
+    const { getCards, metro, extra } = this.props;
+    getCards({
+      filter: filter,
+      metro: metro,
+      extra, extra
+    });
+  }
   render() {
     const { loader, source, basket, setMetro, setExtra, metro, extra } = this.props;
     return (
       <>
-        <div className='setting'>
+        <div className='source-basket'>
           <Source sourceValue={source} />
-          <div className='setting-right'>
-            <ButtonMetro
-              metro={metro}
-              setMetro={setMetro}
-            />
-            <ButtonExtra
-              extra={extra}
-              setExtra={setExtra}
-              sourceValue={source}
-            />
-            <BasketBasket
-              showBasket={this.showBasket}
-              basket={basket}
-            />
-          </div>
+          <BasketBasket
+            showBasket={this.showBasket}
+            basket={basket}
+          />
         </div>
         <Filter
           sourceValue={source}
           builderList={this.state.builderList}
           getBuilderVariants={this.getBuilderVariants}
           clearBuilderList={this.clearBuilderList}
+          hadlerSearch={this.hadlerSearch}
         />
+        <div className='setting'>
+          <ButtonMetro
+            metro={metro}
+            setMetro={setMetro}
+          />
+          <ButtonExtra
+            extra={extra}
+            setExtra={setExtra}
+            sourceValue={source}
+          />
+          <Button
+            onClick={() => console.log('button')}
+            variant="outlined"
+          >
+            на карте
+          </Button>
+        </div>
       </>
     )
   }
@@ -89,6 +107,7 @@ function mapDispatchToProps(dispatch) {
     loader: () => dispatch(loader()),
     setMetro: (filter) => dispatch(metro(filter)),
     setExtra: (filter) => dispatch(extra(filter)),
+    getCards: (filter) => dispatch(getCards(filter)),
   }
 }
 

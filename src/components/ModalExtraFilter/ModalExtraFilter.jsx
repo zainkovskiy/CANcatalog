@@ -15,6 +15,9 @@ import Checkbox from '@mui/material/Checkbox';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { FormCheckbox } from 'components/FormCheckbox';
+
 import './ModalExtraFilter.scss';
 
 const defaultPropsField = {
@@ -28,7 +31,6 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
   const {
     handleSubmit,
     register,
-    getValues,
     control,
     formState: { errors },
     watch,
@@ -45,20 +47,26 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
       reqFloor: extra?.reqFloor || '',
       reqFloorCount: extra?.reqFloorCount || '',
       notFloorFirst: extra?.notFloorFirst || false,
-      deadline: moment()
+      notFloorLast: extra?.notFloorLast || false,
+      isShowAgent: extra?.isShowAgent || false,
+      isReserve: extra?.isReserve || false,
+      onlyCancel: extra?.onlyCancel || false,
+      buildingMortgage: extra?.buildingMortgage || false,
+      buildingVoenMortgage: extra?.buildingVoenMortgage || false,
+      buildingInstallment: extra?.buildingInstallment || false,
+      quarter: extra?.quarter || moment().quarter().toString(),
+      deadline: moment(),
+      ready: extra?.ready || false,
     }
   });
 
   const onSubmit = (data) => {
     console.log(data);
-    setExtra(data)
+    setExtra(data);
+    onClose();
   }
 
   const isReady = watch('ready');
-
-  useEffect(() => {
-    console.log(extra);
-  }, [])
 
   return (
     <>
@@ -258,21 +266,16 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
                   {...register('reqFloor[1]')}
                 />
               </div>
-              <label className='extra__checkbox-label'>
-                <Checkbox
-
-                //этот чекбокс вроде готов
-                  checked={getValues().notFloorFirst}
-                  {...register('notFloorFirst')}
-                />
-                Не первый
-              </label>
-              <label className='extra__checkbox-label'>
-                <Checkbox
-                  {...register('notFloorLast')}
-                />
-                Не последний
-              </label>
+              <FormCheckbox
+                control={control}
+                name='notFloorFirst'
+                label='Не первый'
+              />
+              <FormCheckbox
+                control={control}
+                name='notFloorLast'
+                label='Не последний'
+              />
             </div>
           </div>
           {
@@ -311,10 +314,10 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
                       size='small'
                       disabled={isReady}
                     >
-                      <ToggleButton value="I">I</ToggleButton>
-                      <ToggleButton value="II">II</ToggleButton>
-                      <ToggleButton value="III">III</ToggleButton>
-                      <ToggleButton value="IV">IV</ToggleButton>
+                      <ToggleButton value="1">I</ToggleButton>
+                      <ToggleButton value="2">II</ToggleButton>
+                      <ToggleButton value="3">III</ToggleButton>
+                      <ToggleButton value="4">IV</ToggleButton>
                     </ToggleButtonGroup>
                   }
                 />
@@ -342,12 +345,11 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
                     </LocalizationProvider>
                   )}
                 />
-                <label className='extra__checkbox-label'>
-                  <Checkbox
-                    {...register('ready')}
-                  />
-                  Дом сдан
-                </label>
+                <FormCheckbox
+                  control={control}
+                  name='ready'
+                  label='Дом сдан'
+                />
               </div>
             </div>
           }
@@ -356,58 +358,54 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
             <div>
               {
                 sourceValue === 'pars' &&
-                <label className='extra__checkbox-label'>
-                  <Checkbox
-                    {...register('isShowAgent')}
-                  />
-                  Не выводить агентства
-                </label>
+                <FormCheckbox
+                  control={control}
+                  name='isShowAgent'
+                  label='Не выводить агентства'
+                />
               }
               {
                 sourceValue === '1c' &&
                 <div className='extra__value'>
-                  <label className='extra__checkbox-label'>
-                    <Checkbox
-                      {...register('isReserve')}
-                    />
-                    Не выводить зарезервированные
-                  </label>
-                  <label className='extra__checkbox-label'>
-                    <Checkbox
-                      {...register('onlyCancel')}
-                    />
-                    Выводить только отмененные
-                  </label>
+                  <FormCheckbox
+                    control={control}
+                    name='isReserve'
+                    label='Не выводить зарезервированные'
+                  />
+                  <FormCheckbox
+                    control={control}
+                    name='onlyCancel'
+                    label='Выводить только отмененные'
+                  />
                 </div>
               }
               {
                 sourceValue === 'mls' &&
                 <>
-                  <label className='extra__checkbox-label'>
-                    <Checkbox
-                      {...register('buildingMortgage')}
-                    />
-                    Ипотека
-                  </label>
-                  <label className='extra__checkbox-label'>
-                    <Checkbox
-                      {...register('buildingVoenMortgage')}
-                    />
-                    Военная ипотека
-                  </label>
-                  <label className='extra__checkbox-label'>
-                    <Checkbox
-                      {...register('buildingInstallment')}
-                    />
-                    Рассрочка
-                  </label>
+                  <FormCheckbox
+                    control={control}
+                    name='buildingMortgage'
+                    label='Ипотека'
+                  />
+                  <FormCheckbox
+                    control={control}
+                    name='buildingVoenMortgage'
+                    label='Военная ипотека'
+                  />
+                  <FormCheckbox
+                    control={control}
+                    name='buildingInstallment'
+                    label='Рассрочка'
+                  />
                 </>
               }
             </div>
           </div>
           <DialogActions >
-            <Button type='submit'>Save(console)</Button>
-            <Button type='reset'>Clear(no working)</Button>
+            <Button
+              onClick={() => { setExtra({}), onClose() }}
+            >Очистить</Button>
+            <Button type='submit'>Сохранить</Button>
           </DialogActions>
         </form>
       </DialogContent>
