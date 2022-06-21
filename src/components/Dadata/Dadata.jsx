@@ -1,5 +1,6 @@
 import React from "react";
 import { useController } from "react-hook-form";
+import { useSelector } from 'react-redux';
 
 import { AddressSuggestions } from 'react-dadata';
 import 'react-dadata/dist/react-dadata.css';
@@ -8,6 +9,7 @@ import './Dadata.scss';
 
 export function Dadata(props) {
   const { control, name } = props;
+  const isMap = useSelector((state) => state.filter.get('isMap'));
   const {
     field: { ref, ...inputProps },
   } = useController({
@@ -27,6 +29,7 @@ export function Dadata(props) {
           {
             placeholder: 'Введите адрес',
             className: 'dadata__input',
+            disabled: isMap
           }
         }
       />

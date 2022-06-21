@@ -10,7 +10,7 @@ export function Cards({ cards, pagination }) {
         cards.length > 0 &&
         <>
           <div>
-            сортировка, пагинация
+            сортировка
           </div>
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
             {
@@ -22,7 +22,18 @@ export function Cards({ cards, pagination }) {
                 />)
             }
           </div>
-          <Pagination count={10} variant="outlined" color="primary" />
+          {
+            cards.length > 30 &&
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Pagination
+                onChange={(event) => { console.log(event) }}
+                count={10}
+                variant="outlined"
+                color="primary"
+                defaultPage={1}
+              />
+            </div>
+          }
         </>
       }
     </>

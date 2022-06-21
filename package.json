@@ -28,6 +28,7 @@
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.3",
     "react-redux": "^8.0.2",
+    "react-yandex-maps": "^4.6.0",
     "redux": "^4.2.0",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",

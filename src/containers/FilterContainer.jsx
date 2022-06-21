@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { loader, metro, extra } from 'actions/filter';
+import { loader, metro, extra, setIsMap } from 'actions/filter';
 import { getCards } from 'actions/cards';
 
 import Button from '@mui/material/Button';
@@ -54,7 +54,7 @@ class FilterContainer extends PureComponent {
     });
   }
   render() {
-    const { loader, source, basket, setMetro, setExtra, metro, extra } = this.props;
+    const { loader, source, basket, setMetro, setExtra, metro, extra, setIsMap } = this.props;
     return (
       <>
         <div className='source-basket'>
@@ -82,8 +82,8 @@ class FilterContainer extends PureComponent {
             sourceValue={source}
           />
           <Button
-            onClick={() => console.log('button')}
             variant="outlined"
+            onClick={() => { setIsMap() }}
           >
             на карте
           </Button>
@@ -98,7 +98,8 @@ function mapStateToProps(state, ownProps) {
     source: state.filter.get('source'),
     basket: state.basket.get('basket').toJS(),
     metro: state.filter.get('metro'),
-    extra: state.filter.get('extra')
+    extra: state.filter.get('extra'),
+    cards: state.cards.get('cards').toJS().length
   }
 }
 
@@ -108,6 +109,7 @@ function mapDispatchToProps(dispatch) {
     setMetro: (filter) => dispatch(metro(filter)),
     setExtra: (filter) => dispatch(extra(filter)),
     getCards: (filter) => dispatch(getCards(filter)),
+    setIsMap: () => dispatch(setIsMap()),
   }
 }
 

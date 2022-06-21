@@ -3,13 +3,14 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border-bottom: 1px solid rgb(34 60 80 / 20%);
+  border-top: 1px solid rgb(224 227 230 / 60%);
 
-  &:last-child {
-    border-bottom: none;
+  &:first-child {
+    border-top: 1px solid transparent
   }
 
   &:hover {
+    border-top: 1px solid transparent;
     -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
