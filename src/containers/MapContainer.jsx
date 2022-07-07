@@ -2,13 +2,15 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { MapField } from 'components/MapField';
+import { map } from 'actions/filter';
 
 class MapContainer extends PureComponent {
   render() {
-    const { cards } = this.props;
+    const { cards, setSearchMap } = this.props;
     return (
       <MapField
         cards={cards}
+        setSearchMap={setSearchMap}
       />
     )
   }
@@ -22,7 +24,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    setSearchMap: (cords) => dispatch(map(cords)),
   }
 }
 

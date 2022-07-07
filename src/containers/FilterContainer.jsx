@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { loader, metro, extra, setIsMap } from 'actions/filter';
+import { loader, loaderMap, metro, extra, setIsMap } from 'actions/filter';
 import { getCards } from 'actions/cards';
 
 import Button from '@mui/material/Button';
@@ -12,6 +12,7 @@ import { BasketBasket } from 'components/BasketBasket';
 import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
 import { Filter } from 'components/Filter';
+import { BackdropComponent } from 'components/BackdropComponent';
 
 import './FilterContainer.scss';
 
@@ -46,15 +47,17 @@ class FilterContainer extends PureComponent {
   }
 
   hadlerSearch = (filter) => {
-    const { getCards, metro, extra } = this.props;
+    const { getCards, metro, extra, map, loader, isMap, loaderMap } = this.props;
+    isMap ? loaderMap() : loader();
     getCards({
       filter: filter,
       metro: metro,
-      extra, extra
-    });
+      extra, extra,
+      map: map
+    }, isMap);
   }
   render() {
-    const { loader, source, basket, setMetro, setExtra, metro, extra, setIsMap } = this.props;
+    const { source, basket, setMetro, setExtra, metro, extra, setIsMap } = this.props;
     return (
       <>
         <div className='source-basket'>
@@ -88,6 +91,7 @@ class FilterContainer extends PureComponent {
             на карте
           </Button>
         </div>
+        <BackdropComponent/>
       </>
     )
   }
@@ -99,16 +103,19 @@ function mapStateToProps(state, ownProps) {
     basket: state.basket.get('basket').toJS(),
     metro: state.filter.get('metro'),
     extra: state.filter.get('extra'),
-    cards: state.cards.get('cards').toJS().length
+    map: state.filter.get('map'),
+    isMap: state.filter.get('isMap'),
+    cards: state.cards.get('cards').toJS().length,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     loader: () => dispatch(loader()),
+    loaderMap: () => dispatch(loaderMap()),
     setMetro: (filter) => dispatch(metro(filter)),
     setExtra: (filter) => dispatch(extra(filter)),
-    getCards: (filter) => dispatch(getCards(filter)),
+    getCards: (filter, isMap) => dispatch(getCards(filter, isMap)),
     setIsMap: () => dispatch(setIsMap()),
   }
 }

@@ -16,7 +16,7 @@ export function Cards({ cards, pagination }) {
             {
               cards.map((card, idx) =>
                 <Card
-                  key={card.reqNumber}
+                  key={card.reqNumber ? card.reqNumber : idx}
                   card={card}
                   idx={idx}
                 />)
