@@ -14,7 +14,7 @@ export function Card({ card, idx }) {
     visible: {
       opacity: 1,
       transition: {
-        delay: idx * 0.2,
+        delay: idx * 0.1,
       }
     }, 
     hidden: {

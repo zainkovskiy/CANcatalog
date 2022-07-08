@@ -15,6 +15,7 @@ export function Cards({ cards, pagination }) {
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
             {
               cards.map((card, idx) =>
+                idx < 30 &&
                 <Card
                   key={card.reqNumber ? card.reqNumber : idx}
                   card={card}

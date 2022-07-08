@@ -57,7 +57,7 @@ class FilterContainer extends PureComponent {
     }, isMap);
   }
   render() {
-    const { source, basket, setMetro, setExtra, metro, extra, setIsMap } = this.props;
+    const { source, basket, setMetro, setExtra, metro, extra, setIsMap, isMap } = this.props;
     return (
       <>
         <div className='source-basket'>
@@ -88,10 +88,10 @@ class FilterContainer extends PureComponent {
             variant="outlined"
             onClick={() => { setIsMap() }}
           >
-            на карте
+            {isMap ? 'списком' : 'на карте'}
           </Button>
         </div>
-        <BackdropComponent/>
+        <BackdropComponent />
       </>
     )
   }

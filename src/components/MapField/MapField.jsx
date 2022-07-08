@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
-import { isPointInPolygon } from 'geolib';
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
@@ -77,22 +76,6 @@ export function MapField(props) {
                   />
                 )
               }
-              {/* {
-                cards.map((mark, idx) =>
-                  isShowPolygon && geoObjectState.length > 0 ?
-                    (isPointInPolygon([mark.lat, mark.lng], geoObjectState[0])) &&
-                    <Placemark
-                      key={mark.reqNumber ? mark.reqNumber : idx}
-                      geometry={[mark.lat, mark.lng]}
-                      options={{ iconColor: `#0c54a0` }}
-                    /> :
-                    <Placemark
-                      key={mark.reqNumber ? mark.reqNumber : idx}
-                      geometry={[mark.lat, mark.lng]}
-                      options={{ iconColor: `#0c54a0` }}
-                    />
-                )
-              } */}
             </Clusterer>
           }
           {

@@ -42,14 +42,14 @@ export function Source({ sourceValue }) {
         onChange={handleChange}
         sx={{ justifyContent: 'center' }}
       >
-        <ToggleButton value="1c">1c
+        <ToggleButton value="1c" sx={{padding: '0.4rem'}}>1c
           <span
             style={{
               backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/centr-small.png)', ...logoStyle,
             }}>
           </span>
         </ToggleButton>
-        <ToggleButton value="pars">
+        <ToggleButton value="pars" sx={{padding: '0.4rem'}}>
           pars
           <span
             style={{
@@ -57,7 +57,7 @@ export function Source({ sourceValue }) {
             }}>
           </span>
         </ToggleButton>
-        <ToggleButton value="mls">
+        <ToggleButton value="mls" sx={{padding: '0.4rem'}}>
           mls
           <span
             style={{
