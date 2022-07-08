@@ -47,7 +47,6 @@ export function Filter(props) {
   }, [openPrice])
 
   const onSubmit = (data) => {
-    console.log(data);
     hadlerSearch(data)
   }
 

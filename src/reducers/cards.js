@@ -10,7 +10,6 @@ const initialState = new Map({
 
 export const cardsReducer = handleActions({
   [setCards]: (state, action) => {
-    console.log(action);
     return state.set('cards', fromJS(action.payload))
   }
 }, initialState)

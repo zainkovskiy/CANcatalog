@@ -7,7 +7,6 @@ import { Cards } from 'components/Cards';
 class CardsContainer extends PureComponent {
   render() {
     const { loader, cards } = this.props;
-    console.log(cards);
     return (
       <>
         {

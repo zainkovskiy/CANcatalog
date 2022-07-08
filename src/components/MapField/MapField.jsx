@@ -1,35 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { YMaps, Map, Placemark, Circle, Clusterer } from "react-yandex-maps";
+import React, { useState, useEffect, useMemo } from 'react';
+import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
+import { isPointInPolygon } from 'geolib';
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
 
 import Location from 'images/location-pin.svg'
 
 export function MapField(props) {
   const { cards, setSearchMap } = props;
-  const [refCircle, setRefCircle] = useState(null);
+  const [refGeoObject, setRefGeoObject] = useState(null);
   const [isShowCircle, setIsShowCircle] = useState(false)
-  const [circleState, setCircleState] = useState([])
+  const [isShowPolygon, setIsShowPolygon] = useState(false)
+  const [geoObjectState, setGeoObjectState] = useState(null)
 
   useEffect(() => {
-    refCircle && isDraw(refCircle)
+    refGeoObject && isDraw(refGeoObject)
     return () => {
-      setCircleState([])
+      setGeoObjectState(null)
     }
-  }, [refCircle])
+  }, [refGeoObject])
 
   useEffect(() => {
-    setSearchMap(circleState);
-  }, [circleState])
+    setSearchMap(geoObjectState);
+  }, [geoObjectState])
 
   const isDraw = (ref) => {
     ref.editor.startDrawing();
+
+    ref.editor.events.add("statechange", event => {
+      isShowCircle && setCircleCords();
+      isShowPolygon && setPolygonState();
+    });
   };
 
-  const setCircleCords = (event) => {
-    setCircleState([event.get('target').geometry.getCoordinates(), event.get('target').geometry.getRadius()])
+  const setPolygonState = () => {
+    setGeoObjectState({
+      source: 'polygon',
+      geometry: refGeoObject.geometry.getCoordinates()
+    });
+  }
+
+  const setCircleCords = () => {
+    setGeoObjectState({
+      source: 'circle',
+      geometry: [refGeoObject.geometry.getCoordinates(), refGeoObject.geometry.getRadius()]
+    });
   }
 
   return (
@@ -51,7 +69,7 @@ export function MapField(props) {
               preset: 'islands#invertedVioletClusterIcons',
             }}>
               {
-                cards.map((mark, idx) => 
+                cards.map((mark, idx) =>
                   <Placemark
                     key={mark.reqNumber ? mark.reqNumber : idx}
                     geometry={[mark.lat, mark.lng]}
@@ -59,43 +77,95 @@ export function MapField(props) {
                   />
                 )
               }
+              {/* {
+                cards.map((mark, idx) =>
+                  isShowPolygon && geoObjectState.length > 0 ?
+                    (isPointInPolygon([mark.lat, mark.lng], geoObjectState[0])) &&
+                    <Placemark
+                      key={mark.reqNumber ? mark.reqNumber : idx}
+                      geometry={[mark.lat, mark.lng]}
+                      options={{ iconColor: `#0c54a0` }}
+                    /> :
+                    <Placemark
+                      key={mark.reqNumber ? mark.reqNumber : idx}
+                      geometry={[mark.lat, mark.lng]}
+                      options={{ iconColor: `#0c54a0` }}
+                    />
+                )
+              } */}
             </Clusterer>
           }
           {
             isShowCircle &&
             <Circle
-              instanceRef={(ref) => setRefCircle(ref)}
-              geometry={circleState}
-              /** истина где то рядом, true is somewhere there */
-              onClick={(event) => { refCircle.editor.stopEditing(), setCircleCords(event) }}
+              instanceRef={(ref) => setRefGeoObject(ref)}
+              geometry={geoObjectState?.geometry || []}
+              onClick={(event) => { refGeoObject.editor.stopEditing() }}
               options={{
                 editorDrawingCursor: "crosshair",
               }}
             />
           }
+          {
+            isShowPolygon &&
+            <Polygon
+              instanceRef={(ref) => setRefGeoObject(ref)}
+              geometry={geoObjectState?.geometry || []}
+              options={{
+                editorMaxPoints: 5,
+              }}
+            />
+          }
         </Map>
       </YMaps>
-      <Tooltip
-        title={isShowCircle ? 'Очистить область' : 'Указать на карте'}
-      >
-        <Fab
-          aria-label="add"
-          size='small'
-          sx={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            zIndex: 0
-          }}
-          onClick={() => { setIsShowCircle(!isShowCircle) }}
+      {
+        !isShowPolygon &&
+        <Tooltip
+          title={isShowCircle ? 'Очистить область' : 'Указать на карте (круг)'}
         >
-          {
-            isShowCircle ?
-              <CancelOutlinedIcon /> :
-              <Location height={20} />
-          }
-        </Fab>
-      </Tooltip>
+          <Fab
+            aria-label="add"
+            size='small'
+            sx={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              zIndex: 0
+            }}
+            onClick={() => { setIsShowCircle(!isShowCircle) }}
+          >
+            {
+              isShowCircle ?
+                <CancelOutlinedIcon /> :
+                <Location height={20} />
+            }
+          </Fab>
+        </Tooltip>
+      }
+      {
+        !isShowCircle &&
+        <Tooltip
+          title={isShowPolygon ? 'Очистить область' : 'Указать на карте (полигон)'}
+        >
+          <Fab
+            aria-label="add"
+            size='small'
+            sx={{
+              position: 'absolute',
+              top: 60,
+              right: 10,
+              zIndex: 0
+            }}
+            onClick={() => setIsShowPolygon(!isShowPolygon)}
+          >
+            {
+              isShowPolygon ?
+                <CancelOutlinedIcon /> :
+                <PolylineOutlinedIcon height={20} />
+            }
+          </Fab>
+        </Tooltip>
+      }
     </div>
   )
 }
