@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
 
 import Fab from '@mui/material/Fab';
@@ -14,6 +14,9 @@ export function MapField(props) {
   const [isShowCircle, setIsShowCircle] = useState(false)
   const [isShowPolygon, setIsShowPolygon] = useState(false)
   const [geoObjectState, setGeoObjectState] = useState(null)
+  // const [loadingObjectManager, setLoadingObjectManager] = useState(null)
+
+  const mapRef = useRef(null);
 
   useEffect(() => {
     refGeoObject && isDraw(refGeoObject)
@@ -49,18 +52,41 @@ export function MapField(props) {
     });
   }
 
+  const init = (ymaps) => {
+    // const loadingObjectManager = new ymaps.LoadingObjectManager('https://hs-01.centralnoe.ru/Project-Selket-Main/bBox.php?bbox=%b', {
+    //   // Включаем кластеризацию.
+    //   clusterize: true,
+    //   // Опции кластеров задаются с префиксом cluster.
+    //   clusterHasBalloon: false,
+    //   // Опции объектов задаются с префиксом geoObject.
+    //   geoObjectOpenBalloonOnClick: false,
+    //   // paddingTemplate: 'pussy'
+    // })
+    // mapRef.current.geoObjects.add(loadingObjectManager);
+  }
   return (
     <div style={{ position: 'relative' }}>
       <YMaps
         query={{
           apikey: '9b339b12-4d97-4522-b2e5-da5a5da1c7f6',
+          load: 'package.full'
         }}
       >
         <Map
           width='100%'
           height={500}
           defaultState={{ center: [55.030204, 82.920430], zoom: 11 }}
-          modules={["geoObject.addon.editor"]}
+          // modules={["geoObject.addon.editor", 'LoadingObjectManager']}
+          onLoad={ymaps => {
+            ymaps.ready(() => {
+              init(ymaps)
+            });
+          }}
+          instanceRef={yaMap => {
+            if (yaMap) {
+              mapRef.current = yaMap;
+            }
+          }}
         >
           {
             cards.length > 0 &&
