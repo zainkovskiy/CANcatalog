@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
 
 import Fab from '@mui/material/Fab';
@@ -14,10 +15,30 @@ export function MapField(props) {
   const [isShowCircle, setIsShowCircle] = useState(false)
   const [isShowPolygon, setIsShowPolygon] = useState(false)
   const [geoObjectState, setGeoObjectState] = useState(null)
-  // const [loadingObjectManager, setLoadingObjectManager] = useState(null)
+
+  const source = useSelector((state) => state.filter.get('source'));
+  const mapDisabledAPI = useSelector((state) => state.cards.get('mapDisabledAPI'));
 
   const mapRef = useRef(null);
+  const ymapRef = useRef(null);
+  const objectManagerRef = useRef(null);
 
+  //смотрит на source и менят ключ в API карты 
+  useEffect(() => {
+    if (objectManagerRef.current && !mapDisabledAPI) {
+      mapRef.current.geoObjects.remove(objectManagerRef.current)
+      init()
+    }
+  }, [source])
+
+  //при отправке запроса на сервер через фильтр блокирует API yandex
+  useEffect(() => {
+    if (objectManagerRef.current && mapDisabledAPI) {
+      mapRef.current.geoObjects.remove(objectManagerRef.current)
+    }
+  }, [mapDisabledAPI])
+
+  //запускает рисование геоОбектов
   useEffect(() => {
     refGeoObject && isDraw(refGeoObject)
     return () => {
@@ -25,6 +46,7 @@ export function MapField(props) {
     }
   }, [refGeoObject])
 
+  //Устанавливвает диапазон координат при их наличии
   useEffect(() => {
     setSearchMap(geoObjectState);
   }, [geoObjectState])
@@ -52,18 +74,29 @@ export function MapField(props) {
     });
   }
 
-  const init = (ymaps) => {
-    // const loadingObjectManager = new ymaps.LoadingObjectManager('https://hs-01.centralnoe.ru/Project-Selket-Main/bBox.php?bbox=%b', {
-    //   // Включаем кластеризацию.
-    //   clusterize: true,
-    //   // Опции кластеров задаются с префиксом cluster.
-    //   clusterHasBalloon: false,
-    //   // Опции объектов задаются с префиксом geoObject.
-    //   geoObjectOpenBalloonOnClick: false,
-    //   // paddingTemplate: 'pussy'
-    // })
-    // mapRef.current.geoObjects.add(loadingObjectManager);
+  const init = () => {
+    const loadingObjectManager = new ymapRef.current.LoadingObjectManager('https://hs-01.centralnoe.ru/Project-Selket-Main/bBox.php?bbox=%b', {
+      // Включаем кластеризацию.
+      clusterize: true,
+      // Опции кластеров задаются с префиксом cluster.
+      clusterHasBalloon: false,
+      // Опции объектов задаются с префиксом geoObject.
+      geoObjectOpenBalloonOnClick: false,
+      paddingTemplate: source === '1c' ? 'onec' : source
+    })
+    objectManagerRef.current = loadingObjectManager;
+    // function onObjectClick(e) {
+    //   const cords = ['55.0086, 82.9369']
+    //   const objectId = e.get('objectId');
+    //   const object = loadingObjectManager.objects.getById(objectId);
+    //   if (cords === object.geometry.coordinates) {
+    //     e.get('target').options.set('preset', 'islands#redIcon')
+    //   }
+    // }
+    // loadingObjectManager.objects.events.add(['add'], onObjectClick);
+    mapRef.current.geoObjects.add(objectManagerRef.current);
   }
+
   return (
     <div style={{ position: 'relative' }}>
       <YMaps
@@ -78,9 +111,12 @@ export function MapField(props) {
           defaultState={{ center: [55.030204, 82.920430], zoom: 11 }}
           // modules={["geoObject.addon.editor", 'LoadingObjectManager']}
           onLoad={ymaps => {
-            ymaps.ready(() => {
-              init(ymaps)
-            });
+            if (!mapDisabledAPI) {
+              ymaps.ready(() => {
+                ymapRef.current = ymaps;
+                init()
+              });
+            }
           }}
           instanceRef={yaMap => {
             if (yaMap) {
@@ -95,6 +131,7 @@ export function MapField(props) {
             }}>
               {
                 cards.map((mark, idx) =>
+                  idx < 100 &&
                   <Placemark
                     key={mark.reqNumber ? mark.reqNumber : idx}
                     geometry={[mark.lat, mark.lng]}

@@ -9,14 +9,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
 export function SelectForm(props) {
-  const { control, name, label, multiple, disabled, error, rules } = props;
+  const { control, name, label, multiple, disabled, error, rules, defaultValues } = props;
   const {
     field: { ref, ...inputProps },
   } = useController({
     name,
     control,
     rules: rules,
-    defaultValue: multiple ? [] : "",
+    defaultValue: defaultValues,
   });
   return (
     <FormControl

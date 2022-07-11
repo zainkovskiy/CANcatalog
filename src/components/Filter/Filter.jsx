@@ -128,6 +128,7 @@ export function Filter(props) {
             name='reqTypeofRealty'
             label='Тип недвижимости'
             multiple={false}
+            defaultValues='Квартиры'
           />
       }
       <Dadata
@@ -139,6 +140,7 @@ export function Filter(props) {
         name='reqRoomCount'
         label='Комнаты'
         multiple={true}
+        defaultValues={[]}
       />
       <div style={{ position: 'relative' }}>
         <TextField
