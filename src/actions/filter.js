@@ -7,4 +7,5 @@ export const metro = createAction('[Filter] metro');
 export const extra = createAction('[Filter] extra');
 export const map = createAction('[Filter] map');
 export const setIsMap = createAction('[Filter] setIsMap');
+export const filter = createAction('[Filter] filter');
 

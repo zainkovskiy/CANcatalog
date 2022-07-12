@@ -1,38 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useForm, Controller } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { filter } from 'actions/filter';
 
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
 
-import { SelectForm } from 'components/SelectForm';
-import { SearchField } from 'components/SearchField';
+import { SelectSimple } from 'components/SelectSimple';
+import { ButtonSearch } from 'components/ButtonSearch';
 import { Dadata } from 'components/Dadata';
 
 import './Filter.scss';
 
 export function Filter(props) {
-  const { getBuilderVariants, sourceValue, builderList, clearBuilderList, hadlerSearch } = props;
+  const { getBuilderVariants, sourceValue, builderList, clearBuilderList } = props;
+  const filterState = useSelector((state) => state.filter.get('filter'));
+  const dispatch = useDispatch();
+
   const [openBuild, setOpenBuild] = useState(false);
   const [openPrice, setOpenPrice] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [price, setPrice] = useState(['','']);
+  const [price, setPrice] = useState(['', '']);
   const priceRef = useRef(null);
-  const {
-    handleSubmit,
-    control,
-    register,
-    setValue,
-  } = useForm({
-    defaultValues: {
-      builder: '',
-    },
-    mode: 'onSubmit'
-  })
-  const fromPrice = register('priceFrom');
-  const toPrice = register('priceTo');
-  
+  const firstUpdate = useRef(true);
+
+  //вешает обработчик событий на открытые листы
   useEffect(() => {
     document.addEventListener('click', checkSelectList);
     return () => {
@@ -40,35 +35,36 @@ export function Filter(props) {
     }
   }, [])
 
+  //ставит фокус на инупт прайс от
   useEffect(() => {
     if (openPrice) {
       priceRef.current.focus()
     }
   }, [openPrice])
 
-  const onSubmit = (data) => {
-    hadlerSearch(data)
-  }
-
-  const handlerInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    if (name === 'builder') {
-      setOpenBuild(true);
-      getBuilderVariants(value);
+  //записывает занчения прайса в state
+  useEffect(() => {
+    if (firstUpdate){
+      firstUpdate.current = false;
+      return
     }
-  }
+    handlerSelect('price', price)
+  }, [from, to])
 
-  const closeBuilderList = () => {
-    setOpenBuild(false);
-    clearBuilderList();
+  const handlerBuilder = (event) => {
+    getBuilderVariants(event.target.value);
+    setOpenBuild(true)
   }
 
   const checkSelectList = () => {
     if (event.target.dataset.search !== 'yes') {
-      closeBuilderList();
-      setOpenPrice(false);
+      openPrice || setOpenPrice(false);
+      openBuild || closeBuilderList();
     }
+  }
+  const closeBuilderList = () => {
+    setOpenBuild(false);
+    clearBuilderList();
   }
 
   const setPriceValue = (index, event) => {
@@ -86,61 +82,61 @@ export function Filter(props) {
     })
   }
 
-  
+  const handlerSelect = (name, value) => {
+    dispatch(filter({
+      name: name,
+      value: value
+    }))
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className='filter'
-    >
+    <div className='filter'>
       {
         sourceValue === 'mls' ?
-          <Controller
-            name='builder'
-            control={control}
-            render={({ field }) =>
-              <div style={{ position: 'relative' }}>
-                <TextField
-                  autoComplete='off'
-                  id="outlined-basic"
-                  label="Застройщик/ЖК"
-                  ariant="outlined"
-                  size='small'
-                  name='builder'
-                  value={field.value}
-                  onChange={(event) => { field.onChange(event), handlerInput(event) }}
-                  inputRef={field.ref}
-                />
-                <AnimatePresence>
-                  {
-                    openBuild && builderList.length > 0 &&
-                    <SearchField
-                      searchList={builderList}
-                      handlerSelect={field.onChange}
-                      closeBuilderList={closeBuilderList}
-                    />
-                  }
-                </AnimatePresence>
-              </div>
+          <div style={{ position: 'relative' }}>
+            <TextField
+              autoComplete='off'
+              label="Застройщик/ЖК"
+              size='small'
+              name='builder'
+              onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, event.target.value) }}
+              value={filterState?.builder || ''}
+            />
+            {
+              (builderList.length > 0 && openBuild) &&
+              <MenuList
+                sx={{ bgcolor: "background.paper", position: 'absolute', filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))', }}
+              >
+                {
+                  builderList.map((menu, idx) =>
+                    <MenuItem
+                      key={idx}
+                      value={menu.name}
+                      onClick={(event) => { handlerSelect('builder', event.target.textContent) }}
+                    >
+                      {menu.name}
+                    </MenuItem>
+                  )
+                }
+              </MenuList>
             }
-          /> :
-          <SelectForm
-            control={control}
+          </div> :
+          <SelectSimple
             name='reqTypeofRealty'
             label='Тип недвижимости'
-            multiple={false}
-            defaultValues='Квартиры'
+            value={filterState?.reqTypeofRealty || 'Квартиры'}
+            onChange={handlerSelect}
           />
       }
       <Dadata
-        control={control}
-        name='address'
+        onChange={handlerSelect}
       />
-      <SelectForm
-        control={control}
+      <SelectSimple
         name='reqRoomCount'
         label='Комнаты'
-        multiple={true}
-        defaultValues={[]}
+        multiple
+        value={filterState?.reqRoomCount || []}
+        onChange={handlerSelect}
       />
       <div style={{ position: 'relative' }}>
         <TextField
@@ -180,14 +176,13 @@ export function Filter(props) {
                 size='small'
                 name='priceFrom'
                 inputRef={priceRef}
+                value={from}
                 inputProps={
                   {
                     'data-search': 'yes'
                   }
                 }
-                {...fromPrice}
-                onChange={(event) => { setValue('priceFrom', event.target.value.replace(/[^\d]/g, '')),
-                  setPriceValue(0, event);
+                onChange={(event) => { setPriceValue(0, event);
                 }}
               />
               <TextField
@@ -198,25 +193,19 @@ export function Filter(props) {
                 size='small'
                 name='priceTo'
                 sx={{margin: '0.5rem 0 0 0'}}
+                value={to}
                 inputProps={
                   {
                     'data-search': 'yes',
                   }
                 }
-                {...toPrice}
-                onChange={(event) => { setValue('priceTo', event.target.value.replace(/[^\d]/g, '')),
-                  setPriceValue(1, event);
-                }}
+                onChange={(event) => { setPriceValue(1, event) }}
               />
             </motion.div>
           }
         </AnimatePresence>
       </div>
-      <Button
-        variant="contained"
-        size='small'
-        type='submit'
-      >submit</Button>
-    </form>
+        <ButtonSearch/>
+    </div>
   )
 }

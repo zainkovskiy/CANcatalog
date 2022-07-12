@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { source, metro, extra } from 'actions/filter';
@@ -19,6 +19,7 @@ const logoStyle = {
 export function Source({ sourceValue }) {
   const dispatch = useDispatch();
   const [alignment, setAlignment] = useState(sourceValue);
+  const firstUpdate = useRef(true);
 
   const handleChange = (event, newAlignment) => {
     if (newAlignment) {
@@ -27,6 +28,10 @@ export function Source({ sourceValue }) {
   };
 
   useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return
+    }
     dispatch(source(alignment))
     dispatch(metro({}))
     dispatch(extra({}))

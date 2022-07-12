@@ -9,6 +9,15 @@ import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
 
 import Location from 'images/location-pin.svg'
 
+const keyTypeofRealty = {
+  'Новостройки': 'new',
+  'Квартиры': 'appartment',
+  'Комнаты': 'rooms',
+  'Дома, котеджи, дачи': 'house',
+  'Земля': 'land',
+  'Гаражи, парковки': 'garage',
+}
+
 export function MapField(props) {
   const { cards, setSearchMap } = props;
   const [refGeoObject, setRefGeoObject] = useState(null);
@@ -18,6 +27,8 @@ export function MapField(props) {
 
   const source = useSelector((state) => state.filter.get('source'));
   const mapDisabledAPI = useSelector((state) => state.cards.get('mapDisabledAPI'));
+  const typeOfRealty = useSelector((state) => state.filter.get('filter').reqTypeofRealty);
+  const firstUpdate = useRef(true);
 
   const mapRef = useRef(null);
   const ymapRef = useRef(null);
@@ -29,7 +40,7 @@ export function MapField(props) {
       mapRef.current.geoObjects.remove(objectManagerRef.current)
       init()
     }
-  }, [source])
+  }, [source, typeOfRealty])
 
   //при отправке запроса на сервер через фильтр блокирует API yandex
   useEffect(() => {
@@ -48,6 +59,10 @@ export function MapField(props) {
 
   //Устанавливвает диапазон координат при их наличии
   useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return
+    }
     setSearchMap(geoObjectState);
   }, [geoObjectState])
 
@@ -82,7 +97,7 @@ export function MapField(props) {
       clusterHasBalloon: false,
       // Опции объектов задаются с префиксом geoObject.
       geoObjectOpenBalloonOnClick: false,
-      paddingTemplate: source === '1c' ? 'onec' : source
+      paddingTemplate: source === '1c' ? `onec_${keyTypeofRealty[typeOfRealty]}` : `${source}_${keyTypeofRealty[typeOfRealty]}`
     })
     objectManagerRef.current = loadingObjectManager;
     // function onObjectClick(e) {
@@ -102,14 +117,14 @@ export function MapField(props) {
       <YMaps
         query={{
           apikey: '9b339b12-4d97-4522-b2e5-da5a5da1c7f6',
-          load: 'package.full'
+          // load: 'package.full'
         }}
       >
         <Map
           width='100%'
           height={500}
-          defaultState={{ center: [55.030204, 82.920430], zoom: 11 }}
-          // modules={["geoObject.addon.editor", 'LoadingObjectManager']}
+          defaultState={{ center: [55.030204, 82.920430], zoom: 14 }}
+          modules={["geoObject.addon.editor", 'LoadingObjectManager']}
           onLoad={ymaps => {
             if (!mapDisabledAPI) {
               ymaps.ready(() => {

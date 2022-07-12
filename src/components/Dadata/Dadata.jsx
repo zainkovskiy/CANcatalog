@@ -1,5 +1,4 @@
 import React from "react";
-import { useController } from "react-hook-form";
 import { useSelector } from 'react-redux';
 
 import { AddressSuggestions } from 'react-dadata';
@@ -7,24 +6,17 @@ import 'react-dadata/dist/react-dadata.css';
 
 import './Dadata.scss';
 
-export function Dadata(props) {
-  const { control, name } = props;
+export function Dadata({ onChange }) {
   const isMap = useSelector((state) => state.filter.get('isMap'));
-  const {
-    field: { ref, ...inputProps },
-  } = useController({
-    name,
-    control,
-    defaultValue: '',
-  });
+  
   return (
       <AddressSuggestions
         token="408e6651c0b9bfc8e2f487383d45353973f3285c"
         type='metro'
+        name='address'
+        onChange={(e) => { onChange('address', e) }}
         // filterFromBound={'region'}
         filterToBound={'house'}
-        {...inputProps}
-        inputRef={ref}
         inputProps={
           {
             placeholder: 'Введите адрес',
