@@ -105,7 +105,12 @@ export function Filter(props) {
             {
               (builderList.length > 0 && openBuild) &&
               <MenuList
-                sx={{ bgcolor: "background.paper", position: 'absolute', filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))', }}
+                sx={{ 
+                  bgcolor: "background.paper", 
+                  position: 'absolute', 
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))', 
+                  zIndex: 99
+                }}
               >
                 {
                   builderList.map((menu, idx) =>
