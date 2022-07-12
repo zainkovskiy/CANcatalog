@@ -75,7 +75,7 @@ export function MapField(props) {
   }
 
   const init = () => {
-    const loadingObjectManager = new ymapRef.current.LoadingObjectManager('https://hs-01.centralnoe.ru/Project-Selket-Main/bBox.php?bbox=%b', {
+    const loadingObjectManager = new ymapRef.current.LoadingObjectManager('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/bBox.php?bbox=%b', {
       // Включаем кластеризацию.
       clusterize: true,
       // Опции кластеров задаются с префиксом cluster.
@@ -131,7 +131,6 @@ export function MapField(props) {
             }}>
               {
                 cards.map((mark, idx) =>
-                  idx < 100 &&
                   <Placemark
                     key={mark.reqNumber ? mark.reqNumber : idx}
                     geometry={[mark.lat, mark.lng]}

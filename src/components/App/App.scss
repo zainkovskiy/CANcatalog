@@ -10,6 +10,10 @@ body{
   gap: 1rem;
   max-width: 1170px;
   margin: 0 auto;
+  padding: 1rem 0;
+}
+.MuiTypography-root, .MuiMenuItem-root{
+  font-family: 'Montserrat' !important;
 }
 .text{
   font-family: "Montserrat",sans-serif;

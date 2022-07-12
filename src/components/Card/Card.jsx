@@ -9,13 +9,10 @@ const placeholderImg = 'https://crm.centralnoe.ru/dealincom/assets/empty_photo.j
 
 import './Card.scss';
 
-export function Card({ card, idx }) {
+export function Card({ card }) {
   const cardVarints = {
     visible: {
       opacity: 1,
-      transition: {
-        delay: idx * 0.1,
-      }
     }, 
     hidden: {
       opacity: 0
