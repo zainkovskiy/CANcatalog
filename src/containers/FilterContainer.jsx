@@ -5,12 +5,12 @@ import axios from 'axios';
 import { metro, extra, setIsMap } from 'actions/filter';
 
 import Button from '@mui/material/Button';
+import { Badge } from '@mui/material';
 
 import { Source } from 'components/Source';
 import { BasketBasket } from 'components/BasketBasket';
 import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
-
 import { Filter } from 'components/Filter';
 import { BackdropComponent } from 'components/BackdropComponent';
 
@@ -51,10 +51,12 @@ class FilterContainer extends PureComponent {
       <>
         <div className='source-basket'>
           <Source sourceValue={source} />
-          <BasketBasket
-            showBasket={this.showBasket}
-            basket={basket}
-          />
+          <Badge badgeContent={basket?.length} color="primary">
+            <BasketBasket
+              showBasket={this.showBasket}
+              basket={basket}
+            />
+          </Badge>
         </div>
         <Filter
           sourceValue={source}

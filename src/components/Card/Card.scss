@@ -1,16 +1,12 @@
 .card {
+  position: relative;
   cursor: pointer;
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  border-top: 1px solid rgb(224 227 230 / 60%);
-
-  &:first-child {
-    border-top: 1px solid transparent
-  }
+  border-radius: 5px;
 
   &:hover {
-    border-top: 1px solid transparent;
     -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
@@ -67,5 +63,19 @@
       display: flex;
       justify-content: space-between;
     }
+  }
+  &__select{
+    position: absolute;
+    display: block;
+    width: 32px;
+    height: 32px;
+    top: 1rem;
+    left: 1rem;
+    border-radius: 50px;
+    background-color: #BBED21;
+    background-image: url("https://crm.centralnoe.ru/dealincom/assets/img/approved.svg");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 }

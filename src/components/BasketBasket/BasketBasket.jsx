@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
@@ -24,9 +24,8 @@ export function BasketBasket(props) {
           {
             basket.lenght > 0 ?
               basket.map(item => 'item') :
-              <span className="text">Basket empty</span>
+              <span className="text">Корзина пуста</span>
           }
-          items
         </div>
       }
     </div>
