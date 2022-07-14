@@ -11,7 +11,6 @@ import './BasketItem.scss';
 const placeholderImg = 'https://crm.centralnoe.ru/dealincom/assets/empty_photo.jpg';
 
 export function BasketItem({ card }) {
-  console.log(card)
   const dispatch = useDispatch();
 
   const handlerRemove = () => {

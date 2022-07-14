@@ -51,7 +51,14 @@ class FilterContainer extends PureComponent {
       <>
         <div className='source-basket'>
           <Source sourceValue={source} />
-          <Badge badgeContent={basket?.length} color="primary">
+          <Badge
+            badgeContent={basket?.length}
+            color="primary"
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+          >
             <ButtonBasket
               showBasket={this.showBasket}
               basket={basket}

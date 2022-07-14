@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Badge from '@mui/material/Badge';
 
 import { BasketItem } from 'components/BasketItem';
 
@@ -20,7 +19,7 @@ export function ButtonBasket(props) {
   }, [isShow])
 
   const handlerClick = () => {
-    if (!event.target.dataset.basket){
+    if (!event.target.dataset.basket) {
       setIsShow(false);
     }
   }
@@ -32,9 +31,7 @@ export function ButtonBasket(props) {
         onClick={() => setIsShow(!isShow)}
         data-basket='yes'
       >
-        <Badge badgeContent={basket.lenght} color="primary" data-basket='yes'>
-          <ShoppingCartIcon data-basket='yes' sx={{ pointerEvents: 'none' }}/>
-        </Badge>
+        <ShoppingCartIcon data-basket='yes' sx={{ pointerEvents: 'none' }} />
       </IconButton>
       {
         isShow &&

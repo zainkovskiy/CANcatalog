@@ -1,0 +1,26 @@
+.bar{
+  position: absolute;
+  top: 0;
+  left: 0px;
+  bottom: 0;
+  background-color: #fff;
+  width: 301px;
+  border: 1px solid #e1e1e1;
+  border-right: none;
+  &-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+  &-bottom{
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100% - 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+  }
+}
