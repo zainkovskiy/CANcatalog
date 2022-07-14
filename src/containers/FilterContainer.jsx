@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
 
 import { Source } from 'components/Source';
-import { BasketBasket } from 'components/BasketBasket';
+import { ButtonBasket } from 'components/ButtonBasket';
 import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
 import { Filter } from 'components/Filter';
@@ -52,7 +52,7 @@ class FilterContainer extends PureComponent {
         <div className='source-basket'>
           <Source sourceValue={source} />
           <Badge badgeContent={basket?.length} color="primary">
-            <BasketBasket
+            <ButtonBasket
               showBasket={this.showBasket}
               basket={basket}
             />

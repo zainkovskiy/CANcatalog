@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@mui/material/Button';
 
 import MetroIcon from 'images/Metro.svg';
 const placeholderImg = 'https://crm.centralnoe.ru/dealincom/assets/empty_photo.jpg';
 
-import { addToBasket, removeToBasket } from 'actions/basket';
+import { addToBasket, removeFromBasket } from 'actions/basket';
 
 import './Card.scss';
 
@@ -23,18 +23,22 @@ const cardVarints = {
 
 export function Card({ card }) {
   const dispatch = useDispatch();
+  const basketList = useSelector((state) => state.basket.get('basket').toJS())
 
-  const [hasBasket, setHasBasket] = useState(false);
+  const hasFromBasket = () => {
+    if (basketList.find(item => item.reqNumber === card.reqNumber)) {
+      return true
+    }
+    return false
+  }
 
   const openCard = () => {
     BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=1c&reqNumber=${card.reqNumber}/`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
   }
 
   const handlerBasket = () => {
-    hasBasket ? dispatch(removeToBasket(card)) : dispatch(addToBasket(card));
-    setHasBasket(!hasBasket);
+    hasFromBasket() ? dispatch(removeFromBasket(card)) : dispatch(addToBasket(card));
   }
-
   return (
     <motion.div
       className='card'
@@ -92,10 +96,10 @@ export function Card({ card }) {
                 <Button
                   onClick={handlerBasket}
                   variant="outlined"
-                  color={ hasBasket ? 'error' : "success" }
+                  color={hasFromBasket() ? 'error' : "success"}
                 >
                   {
-                    hasBasket ? 'убрать' : 'добавить'
+                    hasFromBasket() ? 'убрать' : 'добавить'
                   }
                 </Button>
               </div>
@@ -112,7 +116,7 @@ export function Card({ card }) {
       </div>
       <AnimatePresence initial={false}>
         {
-          hasBasket &&
+          hasFromBasket() &&
           <motion.span
             className='card__select'
             initial={{ scale: 0 }}

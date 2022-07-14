@@ -43,6 +43,10 @@ export function Cards({ cards }) {
 
   const handlePagination = (event, value) => {
     setCurrentPagination(value)
+    window.scrollTo({
+      top: 0, 
+      behavior: "smooth"
+    })
   }
 
   return (

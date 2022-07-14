@@ -26,6 +26,30 @@
     height: 152px;
     object-fit: cover;
     border-radius: 5px;
+    position: relative;
+    &::before{
+      content: '';
+      background-color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    &::after {
+      position: absolute;
+      background-color: #ccc;
+      content:'Photo';
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      font-family: 'Montserrat';
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+    }
   }
 
   &__info {
@@ -64,7 +88,8 @@
       justify-content: space-between;
     }
   }
-  &__select{
+
+  &__select {
     position: absolute;
     display: block;
     width: 32px;
