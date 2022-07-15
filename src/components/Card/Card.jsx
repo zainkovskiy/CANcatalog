@@ -34,7 +34,7 @@ export function Card({ card }) {
   }
 
   const openCard = () => {
-    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${card.reqNumber}/`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
+    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${card.reqNumber}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
   }
 
   const handlerBasket = () => {
@@ -55,12 +55,21 @@ export function Card({ card }) {
       />
       <div className='card__info'>
         <div className='card__info-top'>
-          <div>
-            <div className='card__text_wrap'>
-              {card?.reqRoomCount && <span className='text'>{card.reqRoomCount}к</span>}
-              {card?.reqStreet && <span className='text'>{card.reqStreet}</span>}
-              {card?.reqHouseNumber && <span className='text'>д {card.reqHouseNumber}</span>}
-            </div>
+          <div className='card__info-top__address'>
+            {
+              (card?.reqRoomCount || card?.reqTypeofRealty) &&
+              <span className='text'>
+                {card?.reqRoomCount ? `${card?.reqRoomCount}к. ` : ''}
+                {card?.reqTypeofRealty ? `${card?.reqTypeofRealty}` : ''}
+              </span>
+            }
+            {
+              (card?.reqStreet || card?.reqHouseNumber) &&
+              <span className='text'>
+                {card?.reqStreet ? `ул.${card?.reqStreet} ` : ''}
+                {card?.reqHouseNumber ? `д.${card?.reqHouseNumber}` : ''}
+              </span>
+            }
             <div className='card__text_wrap'>
               {card?.reqCity && <span className='text card__text'>{card.reqCity}</span>}
               {card?.reqRayon && <span className='text card__text'>{card.reqRayon}</span>}
@@ -68,8 +77,8 @@ export function Card({ card }) {
             <div className='card__text_wrap'>
               {card?.nearMetro && <MetroIcon height={15} width={15} style={{ alignSelf: 'flex-end' }} />}
               {card?.nearMetro && <span className='text card__text'>{card.nearMetro}</span>}
-              {card?.metroDistance && <span className='text card__text'>&#183; {card.metroDistance} мин. пешком</span>}
             </div>
+            {card?.metroDistance && <span className='text card__text'>&#183; {card.metroDistance} мин. пешком</span>}
           </div>
           <div>
             <div>
@@ -109,8 +118,8 @@ export function Card({ card }) {
           </div>
           <div className='card__bottom_wrap'>
             {card?.reqDocType && <span className='text card__text'>{card.reqDocType}</span>}
-            {card?.reqUpdateTime && <span className='text card__text'>
-              Актуализировано {moment(card.reqUpdateTime).locale('ru').format('DD MMMM YYYY')}
+            {card?.createtime && <span className='text card__text'>
+              Актуализировано {moment(card.createtime).locale('ru').format('DD MMMM YYYY')}
             </span>}
           </div>
         </div>

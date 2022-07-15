@@ -6,7 +6,6 @@ import Fab from '@mui/material/Fab';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import { Card } from 'components/Card';
-import { Sorting } from 'components/Sorting';
 
 export function Cards({ cards }) {
   const [paginationCount, setPaginationCount] = useState(0);
@@ -54,7 +53,6 @@ export function Cards({ cards }) {
       {
         cards.length > 0 &&
         <>
-          <Sorting />
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
             {
               cards.map((card, idx) =>

@@ -18,7 +18,7 @@ export function MapSideBarItem({ item }) {
   }
 
   const openObject = () => {
-    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${item.source}&reqNumber=${item.reqNumber}/`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
+    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${item.source}&reqNumber=${item.reqNumber}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
   }
 
   return (

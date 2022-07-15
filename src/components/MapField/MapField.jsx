@@ -96,7 +96,7 @@ export function MapField(props) {
   }
 
   const openObject = (id) => {
-    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${id}/`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
+    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${id}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
   }
 
   const openSideBar = (list, source) => {
@@ -178,7 +178,7 @@ export function MapField(props) {
             cards.length > 0 &&
             <Clusterer
               options={{
-                preset: 'islands#invertedVioletClusterIcons',
+                // preset: 'islands#invertedVioletClusterIcons',
                 clusterDisableClickZoom: true,
                 clusterHideIconOnBalloonOpen: false,
                 geoObjectHideIconOnBalloonOpen: false

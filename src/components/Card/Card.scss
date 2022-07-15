@@ -21,9 +21,9 @@
   }
 
   &__img {
-    min-width: 192px;
-    max-width: 192px;
-    height: 152px;
+    min-width: 240px;
+    max-width: 240px;
+    height: 173px;
     object-fit: cover;
     border-radius: 5px;
     position: relative;
@@ -62,6 +62,11 @@
       display: grid;
       grid-template-columns: 300px 1fr 1fr;
       grid-gap: 1rem;
+      &__address{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
     }
   }
 
@@ -75,7 +80,7 @@
   }
 
   &__logo {
-    height: 40px;
+    height: 36.5px;
   }
 
   &__bottom {

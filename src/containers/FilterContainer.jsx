@@ -7,6 +7,7 @@ import { metro, extra, setIsMap } from 'actions/filter';
 import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
 
+import { Sorting } from 'components/Sorting';
 import { Source } from 'components/Source';
 import { ButtonBasket } from 'components/ButtonBasket';
 import { ButtonExtra } from 'components/ButtonExtra';
@@ -46,7 +47,7 @@ class FilterContainer extends PureComponent {
   }
 
   render() {
-    const { source, basket, setMetro, setExtra, metro, extra, setIsMap, isMap } = this.props;
+    const { cards, source, basket, setMetro, setExtra, metro, extra, setIsMap, isMap } = this.props;
     return (
       <>
         <div className='source-basket'>
@@ -72,21 +73,29 @@ class FilterContainer extends PureComponent {
           clearBuilderList={this.clearBuilderList}
         />
         <div className='setting'>
-          <ButtonMetro
-            metro={metro}
-            setMetro={setMetro}
-          />
-          <ButtonExtra
-            extra={extra}
-            setExtra={setExtra}
-            sourceValue={source}
-          />
-          <Button
-            variant="outlined"
-            onClick={() => { setIsMap() }}
-          >
-            {isMap ? 'списком' : 'на карте'}
-          </Button>
+          <div>
+            {
+              (cards > 0 && !isMap) &&
+              <Sorting />
+            }
+          </div>
+          <div>
+            <ButtonMetro
+              metro={metro}
+              setMetro={setMetro}
+            />
+            <ButtonExtra
+              extra={extra}
+              setExtra={setExtra}
+              sourceValue={source}
+            />
+            <Button
+              variant="outlined"
+              onClick={() => { setIsMap() }}
+            >
+              {isMap ? 'списком' : 'на карте'}
+            </Button>
+          </div>
         </div>
         <BackdropComponent />
       </>

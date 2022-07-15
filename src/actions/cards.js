@@ -7,6 +7,12 @@ import { loader, loaderMap } from 'actions/filter';
 export const setCards = createAction('[Cards] setCard');
 export const setMapDisabledAPI = createAction('[Cards] setMapDisabledAPI');
 export const setSideBarCards = createAction('[Cards] setSideBarCards');
+export const setDefaultCards = createAction('[Cards] setDefaultCards');
+export const sortMinMax = createAction('[Cards] sortMinMax');
+export const sortMaxMin = createAction('[Cards] sortMaxMin');
+export const sortDefault = createAction('[Cards] sortDefault');
+export const sortDate = createAction('[Cards] sortDate');
+export const setSortIndex = createAction('[Cards] setSortIndex');
 
 export function getCards(req, isMap) {
   return async function (dispatch) {
@@ -17,14 +23,17 @@ export function getCards(req, isMap) {
       if(Array.isArray(res?.data)){
         if (req?.map?.source === 'polygon'){
           dispatch(setCards(res.data.filter(item => isPointInPolygon([item.lat, item.lng], req.map.geometry[0]))))
+          dispatch(setDefaultCards(res.data.filter(item => isPointInPolygon([item.lat, item.lng], req.map.geometry[0]))))
         } else {
           dispatch(setCards(res.data));
+          dispatch(setDefaultCards(res.data));
         }
       }
     } catch (error) {
       console.log(error.message);
     } finally{
       isMap ? dispatch(loaderMap()) : dispatch(loader());
+      dispatch(setSortIndex(0));
     }
   }
 }
