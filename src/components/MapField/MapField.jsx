@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence } from 'framer-motion';
 import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
 
@@ -7,6 +7,8 @@ import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
+
+import { setSideBarCards } from 'actions/cards';
 
 import { MapSideBar } from 'components/MapSideBar';
 
@@ -22,12 +24,12 @@ const keyTypeofRealty = {
 }
 
 export function MapField(props) {
+  const dispatch = useDispatch();
   const { cards, setSearchMap } = props;
   const [refGeoObject, setRefGeoObject] = useState(null);
   const [isShowCircle, setIsShowCircle] = useState(false)
   const [isShowPolygon, setIsShowPolygon] = useState(false)
   const [geoObjectState, setGeoObjectState] = useState(null)
-  const [sideBarList, setSideBarList] = useState([])
 
   const source = useSelector((state) => state.filter.get('source'));
   const mapDisabledAPI = useSelector((state) => state.cards.get('mapDisabledAPI'));
@@ -38,7 +40,7 @@ export function MapField(props) {
   const ymapRef = useRef(null);
   const objectManagerRef = useRef(null);
 
-  //смотрит на source и менят ключ в API карты 
+  //смотрит на source и менят ключ в API карты
   useEffect(() => {
     if (objectManagerRef.current && !mapDisabledAPI) {
       mapRef.current.geoObjects.remove(objectManagerRef.current)
@@ -98,21 +100,20 @@ export function MapField(props) {
   }
 
   const openSideBar = (list, source) => {
-    setSideBarList([]);
+    let sideBarList = [];
+
     if (source === 'API') {
       for (let item of list.features) {
-        setSideBarList((prevState) => {
-          return [...prevState, item.extra]
-        })
+        sideBarList.push(item.extra)
       }
     }
     if (source === 'local') {
       for (let item of list) {
-        setSideBarList((prevState) => {
-          return [...prevState, item.properties._data.data]
-        })
+        sideBarList.push(item.properties._data.data)
       }
     }
+
+    dispatch(setSideBarCards(sideBarList));
   }
 
   const init = () => {
@@ -270,15 +271,7 @@ export function MapField(props) {
           </Fab>
         </Tooltip>
       }
-      <AnimatePresence initial={false}>
-        {
-          sideBarList.length > 0 && 
-          <MapSideBar 
-            list={sideBarList}
-            onClose={setSideBarList}
-          />
-        }
-      </AnimatePresence>
+      <MapSideBar />
     </div>
   )
 }

@@ -1,0 +1,14 @@
+.side-bar-item{
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  padding: 0.5rem;
+  transition: box-shadow .3s;
+  &:hover{
+    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  }
+}

@@ -3,7 +3,7 @@ import { useDispatch, useStore } from 'react-redux';
 import Button from '@mui/material/Button';
 
 import { loader, loaderMap } from 'actions/filter';
-import { getCards } from 'actions/cards';
+import { getCards, setSideBarCards } from 'actions/cards';
 
 export function ButtonSearch() {
   const state = useStore().getState().filter.toJS()
@@ -11,11 +11,13 @@ export function ButtonSearch() {
 
   const sendRequest = () => {
     state.isMap ? dispatch(loaderMap()) : dispatch(loader());
+    dispatch(setSideBarCards([]));
     dispatch(getCards({
       filter: state.filter,
       metro: state.metro,
       extra: state.extra,
-      map: state.map
+      map: state.map,
+      source: state.source
     }, state.isMap))
   }
 

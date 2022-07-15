@@ -6,6 +6,7 @@ import { loader, loaderMap } from 'actions/filter';
 
 export const setCards = createAction('[Cards] setCard');
 export const setMapDisabledAPI = createAction('[Cards] setMapDisabledAPI');
+export const setSideBarCards = createAction('[Cards] setSideBarCards');
 
 export function getCards(req, isMap) {
   return async function (dispatch) {
