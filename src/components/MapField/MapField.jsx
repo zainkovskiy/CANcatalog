@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AnimatePresence } from 'framer-motion';
 import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
 
 import Fab from '@mui/material/Fab';
@@ -34,8 +33,9 @@ export function MapField(props) {
   const source = useSelector((state) => state.filter.get('source'));
   const mapDisabledAPI = useSelector((state) => state.cards.get('mapDisabledAPI'));
   const typeOfRealty = useSelector((state) => state.filter.get('filter').reqTypeofRealty);
-  const firstUpdate = useRef(true);
+  const basketList = useSelector((state) => state.basket.get('basket'));
 
+  const firstUpdate = useRef(true);
   const mapRef = useRef(null);
   const ymapRef = useRef(null);
   const objectManagerRef = useRef(null);
@@ -95,11 +95,11 @@ export function MapField(props) {
     });
   }
 
-  const openObject = (id) => {
-    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${id}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
+  const openObject = (obj) => {
+    dispatch(setSideBarCards([obj]));
   }
 
-  const openSideBar = (list, source) => {
+  const openCluster = (list, source) => {
     let sideBarList = [];
 
     if (source === 'API') {
@@ -133,20 +133,19 @@ export function MapField(props) {
     function onObjectClick(e) {
       const objectId = e.get('objectId');
       const object = loadingObjectManager.objects.getById(objectId);
-      openObject(object.id)
+      openObject(object.extra)
     }
 
     function onClickCluster(e) {
       const clustertId = e.get('objectId');
       const cluster = loadingObjectManager.clusters.getById(clustertId);
-      openSideBar(cluster, 'API')
+      openCluster(cluster, 'API')
     }
 
     loadingObjectManager.objects.events.add(['click'], onObjectClick);
     loadingObjectManager.clusters.events.add(['click'], onClickCluster);
     mapRef.current.geoObjects.add(objectManagerRef.current);
   }
-
   return (
     <div style={{ position: 'relative' }}>
       <YMaps
@@ -183,18 +182,22 @@ export function MapField(props) {
                 clusterHideIconOnBalloonOpen: false,
                 geoObjectHideIconOnBalloonOpen: false
               }}
-              onClick={(event) => { openSideBar(event.get('target').getGeoObjects(), 'local') }}
+              onClick={(event) => { 
+                event.get('target').options._name === 'cluster' && openCluster(event.get('target').getGeoObjects(), 'local') 
+              }}
             >
               {
                 cards.map((mark, idx) =>
                   <Placemark
                     key={mark.reqNumber ? mark.reqNumber : idx}
                     geometry={[mark.lat, mark.lng]}
-                    options={{ iconColor: `#0c54a0` }}
+                    options={{ 
+                      iconColor: basketList.toJS().find(item => item.reqNumber === mark.reqNumber) ? 'green' : `#0c54a0` 
+                    }}
                     properties={{
                       data: mark
                     }}
-                    onClick={() => { openObject(mark.reqNumber) }}
+                    onClick={() => { openObject(mark) }}
                   />
                 )
               }

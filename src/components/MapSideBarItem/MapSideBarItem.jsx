@@ -1,6 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import IconButton from '@mui/material/IconButton';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
+
 import './MapSideBarItem.scss';
 
 export function MapSideBarItem({ item }) {
@@ -38,14 +42,22 @@ export function MapSideBarItem({ item }) {
         {item?.reqStreet ? `ул.${item.reqStreet}` : ''}
         {item?.reqHouseNumber ? `, ${item.reqHouseNumber}` : ''}
       </span>
-      {
-        item?.reqPrice &&
-        <span 
-        className='text'
-        >
-          {item?.reqPrice}&#8381;
-        </span>
-      }
+      <div className='side-bar-item__bottoms'>
+        <div>
+          {
+            item?.reqPrice &&
+            <span
+              className='text'
+              style={{ fontSize: 22 }}
+            >
+              {item?.reqPrice}&#8381;
+            </span>
+          }
+        </div>
+        <IconButton>
+          <AddCircleOutlineIcon />
+        </IconButton>
+      </div>
     </motion.div>
   )
 }
