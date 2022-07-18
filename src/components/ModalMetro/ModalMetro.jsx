@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -13,9 +14,13 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { SelectForm } from 'components/SelectForm';
 
+import { setMetro } from 'actions/filter';
+
 import './ModalMetro.scss';
 
-export function ModalMetro({ onClose, metro, setMetro }) {
+export function ModalMetro({ onClose, metro }) {
+  const dispatch = useDispatch();
+
   const [metroAll, setMetroAll] = useState(false,);
 
   useEffect(()=>{
@@ -38,7 +43,7 @@ export function ModalMetro({ onClose, metro, setMetro }) {
   })
 
   const onSubmit = (data) => {
-    setMetro(data)
+    dispatch(setMetro(data))
     onClose()
     console.log(data);
   }
@@ -137,7 +142,7 @@ export function ModalMetro({ onClose, metro, setMetro }) {
           </div>
           <DialogActions >
             <Button 
-              onClick={() => {setMetro({}), onClose()} }
+              onClick={() => {dispatch(setMetro({})), onClose()} }
             >Очистить</Button>
             <Button type='submit'>Сохранить</Button>
           </DialogActions>

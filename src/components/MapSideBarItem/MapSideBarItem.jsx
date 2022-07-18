@@ -1,13 +1,29 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
 
+import { addToBasket, removeFromBasket } from 'actions/basket';
+
 import './MapSideBarItem.scss';
 
 export function MapSideBarItem({ item }) {
+  const dispatch = useDispatch();
+  const basketList = useSelector((state) => state.basket.get('basket'));
+
+  const hasFromBasket = () => {
+    if (basketList.find(card => card.reqNumber === item.reqNumber)) {
+      return true
+    }
+    return false
+  }
+
+  const handlerButton = () => {
+    hasFromBasket() ? dispatch(removeFromBasket(item)) : dispatch(addToBasket(item));
+  }
 
   const variants = {
     hidden: {
@@ -31,7 +47,7 @@ export function MapSideBarItem({ item }) {
       initial='hidden'
       animate='visible'
       className='side-bar-item'
-      onClick={openObject}
+      onClick={(event) => { event.target.tagName !== 'BUTTON' && openObject() }}
     >
       {
         item?.reqTypeofRealty &&
@@ -42,7 +58,7 @@ export function MapSideBarItem({ item }) {
         {item?.reqStreet ? `ул.${item.reqStreet}` : ''}
         {item?.reqHouseNumber ? `, ${item.reqHouseNumber}` : ''}
       </span>
-      <div className='side-bar-item__bottoms'>
+      <div className='side-bar-item__bottom'>
         <div>
           {
             item?.reqPrice &&
@@ -54,8 +70,19 @@ export function MapSideBarItem({ item }) {
             </span>
           }
         </div>
-        <IconButton>
-          <AddCircleOutlineIcon />
+        <IconButton
+          onClick={ handlerButton }
+          color={ basketList.find(obj => obj.reqNumber === item.reqNumber) ? "error" : "primary" }
+        >
+          {
+            basketList.find(card => card.reqNumber === item.reqNumber) ?
+              <CloseIcon
+                sx={{ pointerEvents: 'none' }}
+              /> :
+              <AddCircleOutlineIcon
+                sx={{ pointerEvents: 'none' }}
+              />
+          }
         </IconButton>
       </div>
     </motion.div>

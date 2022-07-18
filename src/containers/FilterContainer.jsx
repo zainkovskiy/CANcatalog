@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { metro, extra, setIsMap } from 'actions/filter';
+import { extra, setIsMap } from 'actions/filter';
 
 import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
@@ -10,10 +10,9 @@ import { Badge } from '@mui/material';
 import { Sorting } from 'components/Sorting';
 import { Source } from 'components/Source';
 import { ButtonBasket } from 'components/ButtonBasket';
-import { ButtonExtra } from 'components/ButtonExtra';
-import { ButtonMetro } from 'components/ButtonMetro';
 import { Filter } from 'components/Filter';
 import { BackdropComponent } from 'components/BackdropComponent';
+import { ButtonSearch } from 'components/ButtonSearch';
 
 import './FilterContainer.scss';
 
@@ -47,7 +46,7 @@ class FilterContainer extends PureComponent {
   }
 
   render() {
-    const { cards, source, basket, setMetro, setExtra, metro, extra, setIsMap, isMap } = this.props;
+    const { cards, source, basket, setIsMap, isMap } = this.props;
     return (
       <>
         <div className='source-basket'>
@@ -55,10 +54,6 @@ class FilterContainer extends PureComponent {
           <Badge
             badgeContent={basket?.length}
             color="primary"
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
           >
             <ButtonBasket
               showBasket={this.showBasket}
@@ -79,22 +74,15 @@ class FilterContainer extends PureComponent {
               <Sorting />
             }
           </div>
-          <div>
-            <ButtonMetro
-              metro={metro}
-              setMetro={setMetro}
-            />
-            <ButtonExtra
-              extra={extra}
-              setExtra={setExtra}
-              sourceValue={source}
-            />
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
               variant="outlined"
               onClick={() => { setIsMap() }}
+              size="small"
             >
               {isMap ? 'списком' : 'на карте'}
             </Button>
+            <ButtonSearch />
           </div>
         </div>
         <BackdropComponent />
@@ -107,8 +95,6 @@ function mapStateToProps(state, ownProps) {
   return {
     source: state.filter.get('source'),
     basket: state.basket.get('basket').toJS(),
-    metro: state.filter.get('metro'),
-    extra: state.filter.get('extra'),
     isMap: state.filter.get('isMap'),
     cards: state.cards.get('cards').toJS().length,
   }
@@ -116,8 +102,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setMetro: (filter) => dispatch(metro(filter)),
-    setExtra: (filter) => dispatch(extra(filter)),
     setIsMap: () => dispatch(setIsMap()),
   }
 }

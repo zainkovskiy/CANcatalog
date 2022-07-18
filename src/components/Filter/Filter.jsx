@@ -12,6 +12,9 @@ import { SelectSimple } from 'components/SelectSimple';
 import { ButtonSearch } from 'components/ButtonSearch';
 import { Dadata } from 'components/Dadata';
 
+import { ButtonExtra } from 'components/ButtonExtra';
+import { ButtonMetro } from 'components/ButtonMetro';
+
 import './Filter.scss';
 
 export function Filter(props) {
@@ -44,7 +47,7 @@ export function Filter(props) {
 
   //записывает занчения прайса в state
   useEffect(() => {
-    if (firstUpdate){
+    if (firstUpdate) {
       firstUpdate.current = false;
       return
     }
@@ -105,10 +108,10 @@ export function Filter(props) {
             {
               (builderList.length > 0 && openBuild) &&
               <MenuList
-                sx={{ 
-                  bgcolor: "background.paper", 
-                  position: 'absolute', 
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))', 
+                sx={{
+                  bgcolor: "background.paper",
+                  position: 'absolute',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                   zIndex: 99
                 }}
               >
@@ -156,7 +159,7 @@ export function Filter(props) {
             {
               readOnly: true,
               'data-search': 'yes',
-              style: {cursor: 'pointer'}
+              style: { cursor: 'pointer' }
             }
           }
           onClick={() => { setOpenPrice(!openPrice) }}
@@ -187,7 +190,8 @@ export function Filter(props) {
                     'data-search': 'yes'
                   }
                 }
-                onChange={(event) => { setPriceValue(0, event);
+                onChange={(event) => {
+                  setPriceValue(0, event);
                 }}
               />
               <TextField
@@ -197,7 +201,7 @@ export function Filter(props) {
                 ariant="outlined"
                 size='small'
                 name='priceTo'
-                sx={{margin: '0.5rem 0 0 0'}}
+                sx={{ margin: '0.5rem 0 0 0' }}
                 value={to}
                 inputProps={
                   {
@@ -210,7 +214,14 @@ export function Filter(props) {
           }
         </AnimatePresence>
       </div>
-        <ButtonSearch/>
+      <div style={{ display: 'flex' }}> 
+        <ButtonMetro/>
+        <ButtonExtra
+          sourceValue={'source'}
+        />
+      </div>
+
+      {/* <ButtonSearch /> */}
     </div>
   )
 }

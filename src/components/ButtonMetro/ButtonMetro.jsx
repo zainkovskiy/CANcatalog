@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
+import { useSelector } from 'react-redux';
 
 import { ModalWindow } from 'components/ModalWindow';
 import { ModalMetro } from 'components/ModalMetro';
 
 import MetroSvg from 'images/Metro.svg';
 
-export function ButtonMetro({ setMetro, metro }) {
+export function ButtonMetro() {
+  const metro = useSelector((state) => state.filter.get('metro'));
+  
   const [open, setOpen] = useState(false)
 
   const onClose = () => {
@@ -35,7 +38,6 @@ export function ButtonMetro({ setMetro, metro }) {
             <ModalMetro
               onClose={onClose}
               metro={metro}
-              setMetro={setMetro}
             />}
         />
       }

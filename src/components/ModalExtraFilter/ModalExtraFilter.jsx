@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Controller, useForm } from 'react-hook-form';
 import moment from 'moment';
 
@@ -11,12 +12,13 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Checkbox from '@mui/material/Checkbox';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { FormCheckbox } from 'components/FormCheckbox';
+
+import { setExtra } from 'actions/filter';
 
 import './ModalExtraFilter.scss';
 
@@ -27,7 +29,8 @@ const defaultPropsField = {
   size: 'small',
 }
 
-export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
+export function ModalExtraFilter({ sourceValue, onClose, extra }) {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
@@ -62,7 +65,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
 
   const onSubmit = (data) => {
     console.log(data);
-    setExtra(data);
+    dispatch(setExtra(data));
     onClose();
   }
 
@@ -403,7 +406,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, setExtra }) {
           </div>
           <DialogActions >
             <Button
-              onClick={() => { setExtra({}), onClose() }}
+              onClick={() => { dispatch(setExtra({})), onClose() }}
             >Очистить</Button>
             <Button type='submit'>Сохранить</Button>
           </DialogActions>
