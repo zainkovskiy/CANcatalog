@@ -12,6 +12,7 @@ import { ButtonBasket } from 'components/ButtonBasket';
 import { Filter } from 'components/Filter';
 import { BackdropComponent } from 'components/BackdropComponent';
 import { ButtonSearch } from 'components/ButtonSearch';
+import { ButtonTemplate } from 'components/ButtonTemplate';
 
 import './FilterContainer.scss';
 
@@ -22,6 +23,7 @@ class FilterContainer extends PureComponent {
   }
 
   getBuilderVariants = async (value) => {
+
     /** заглушка */
     try {
       const res = await axios.get('https://jsonplaceholder.typicode.com/users');
@@ -41,6 +43,7 @@ class FilterContainer extends PureComponent {
       console.log(error.message);
     }
   }
+
   clearBuilderList = () => {
     this.setState({ builderList: [] })
   }
@@ -65,7 +68,7 @@ class FilterContainer extends PureComponent {
             <Button
               variant="text"
               size='small'
-              onClick={ this.handlerClearFilter }
+              onClick={this.handlerClearFilter}
             >
               очистить фильтр
             </Button>
@@ -90,12 +93,15 @@ class FilterContainer extends PureComponent {
           />
         }
         <div className='setting'>
-          <Button
-            variant="outlined"
-            size="small"
-          >
-            доп настройки
-          </Button>
+          <div>
+            {
+              source !== 'mls' &&
+              <ButtonTemplate
+                sourceValue={source}
+                isMap={isMap}
+              />
+            }
+          </div>
           <div className='setting__buttons'>
             <Button
               variant="outlined"
