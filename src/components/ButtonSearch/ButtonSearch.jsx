@@ -27,7 +27,7 @@ export function ButtonSearch() {
       size='small'
       onClick={sendRequest}
     >
-      submit
+      найти
     </Button>
   )
 }

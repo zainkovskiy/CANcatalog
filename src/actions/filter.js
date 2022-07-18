@@ -8,4 +8,5 @@ export const setExtra = createAction('[Filter] extra');
 export const map = createAction('[Filter] map');
 export const setIsMap = createAction('[Filter] setIsMap');
 export const filter = createAction('[Filter] filter');
+export const clearFilter = createAction('[Filter] clearFilter');
 

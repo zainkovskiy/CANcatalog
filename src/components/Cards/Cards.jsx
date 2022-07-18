@@ -6,6 +6,7 @@ import Fab from '@mui/material/Fab';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import { Card } from 'components/Card';
+import { Sorting } from 'components/Sorting';
 
 export function Cards({ cards }) {
   const [paginationCount, setPaginationCount] = useState(0);
@@ -43,7 +44,7 @@ export function Cards({ cards }) {
   const handlePagination = (event, value) => {
     setCurrentPagination(value)
     window.scrollTo({
-      top: 0, 
+      top: 0,
       behavior: "smooth"
     })
   }
@@ -53,6 +54,7 @@ export function Cards({ cards }) {
       {
         cards.length > 0 &&
         <>
+          <Sorting />
           <div style={{ maxWidth: 900, margin: '0 auto' }}>
             {
               cards.map((card, idx) =>
@@ -87,7 +89,7 @@ export function Cards({ cards }) {
                 animate={{
                   opacity: 1
                 }}
-                exit={{ 
+                exit={{
                   opacity: 0
                 }}
               >
@@ -96,7 +98,7 @@ export function Cards({ cards }) {
                   color="primary"
                   size="small"
                   onClick={() => window.scrollTo({
-                    top: 0, 
+                    top: 0,
                     behavior: "smooth"
                   })}
                 >

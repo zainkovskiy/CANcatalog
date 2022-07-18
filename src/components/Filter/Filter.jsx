@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -9,9 +9,8 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 
 import { SelectSimple } from 'components/SelectSimple';
-import { ButtonSearch } from 'components/ButtonSearch';
 import { Dadata } from 'components/Dadata';
-
+import { SelectTypeofRealty } from 'components/SelectTypeofRealty';
 import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
 
@@ -24,6 +23,7 @@ export function Filter(props) {
 
   const [openBuild, setOpenBuild] = useState(false);
   const [openPrice, setOpenPrice] = useState(false);
+  const [selectType, openSelectType] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState(['', '']);
@@ -63,6 +63,7 @@ export function Filter(props) {
     if (event.target.dataset.search !== 'yes') {
       openPrice || setOpenPrice(false);
       openBuild || closeBuilderList();
+      selectType || openSelectType();
     }
   }
   const closeBuilderList = () => {
@@ -91,7 +92,6 @@ export function Filter(props) {
       value: value
     }))
   }
-
   return (
     <div className='filter'>
       {
@@ -129,11 +129,10 @@ export function Filter(props) {
               </MenuList>
             }
           </div> :
-          <SelectSimple
-            name='reqTypeofRealty'
-            label='Тип недвижимости'
-            value={filterState?.reqTypeofRealty || 'Квартиры'}
-            onChange={handlerSelect}
+          <SelectTypeofRealty 
+            typeOfRealty={ filterState?.reqTypeofRealty }
+            selectType={ selectType }
+            openSelectType={ openSelectType }
           />
       }
       <Dadata
@@ -214,14 +213,12 @@ export function Filter(props) {
           }
         </AnimatePresence>
       </div>
-      <div style={{ display: 'flex' }}> 
-        <ButtonMetro/>
+      <div style={{ display: 'flex' }}>
+        <ButtonMetro />
         <ButtonExtra
           sourceValue={'source'}
         />
       </div>
-
-      {/* <ButtonSearch /> */}
     </div>
   )
 }

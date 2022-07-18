@@ -1,7 +1,5 @@
 export const selectList = {
   reqTypeofRealty: [
-    'Новостройки',
-    'Квартиры',
     'Комнаты',
     'Дома, котеджи, дачи',
     'Земля',

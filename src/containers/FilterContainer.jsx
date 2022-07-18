@@ -2,12 +2,11 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { extra, setIsMap } from 'actions/filter';
+import { setIsMap, clearFilter } from 'actions/filter';
 
 import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
 
-import { Sorting } from 'components/Sorting';
 import { Source } from 'components/Source';
 import { ButtonBasket } from 'components/ButtonBasket';
 import { Filter } from 'components/Filter';
@@ -19,6 +18,7 @@ import './FilterContainer.scss';
 class FilterContainer extends PureComponent {
   state = {
     builderList: [],
+    filterReload: true,
   }
 
   getBuilderVariants = async (value) => {
@@ -45,36 +45,58 @@ class FilterContainer extends PureComponent {
     this.setState({ builderList: [] })
   }
 
+  handlerClearFilter = () => {
+    const { clearFilter } = this.props;
+    this.setState({ filterReload: false },
+      () => this.setState({ filterReload: true })
+    )
+    clearFilter({
+      reqTypeofRealty: 'Вторичка',
+    });
+  }
+
   render() {
-    const { cards, source, basket, setIsMap, isMap } = this.props;
+    const { source, basket, setIsMap, isMap } = this.props;
     return (
       <>
-        <div className='source-basket'>
+        <div className='filter-top'>
           <Source sourceValue={source} />
-          <Badge
-            badgeContent={basket?.length}
-            color="primary"
-          >
-            <ButtonBasket
-              showBasket={this.showBasket}
-              basket={basket}
-            />
-          </Badge>
-        </div>
-        <Filter
-          sourceValue={source}
-          builderList={this.state.builderList}
-          getBuilderVariants={this.getBuilderVariants}
-          clearBuilderList={this.clearBuilderList}
-        />
-        <div className='setting'>
           <div>
-            {
-              (cards > 0 && !isMap) &&
-              <Sorting />
-            }
+            <Button
+              variant="text"
+              size='small'
+              onClick={ this.handlerClearFilter }
+            >
+              очистить фильтр
+            </Button>
+            <Badge
+              badgeContent={basket?.length}
+              color="primary"
+            >
+              <ButtonBasket
+                showBasket={this.showBasket}
+                basket={basket}
+              />
+            </Badge>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+        </div>
+        {
+          this.state.filterReload &&
+          <Filter
+            sourceValue={source}
+            builderList={this.state.builderList}
+            getBuilderVariants={this.getBuilderVariants}
+            clearBuilderList={this.clearBuilderList}
+          />
+        }
+        <div className='setting'>
+          <Button
+            variant="outlined"
+            size="small"
+          >
+            доп настройки
+          </Button>
+          <div className='setting__buttons'>
             <Button
               variant="outlined"
               onClick={() => { setIsMap() }}
@@ -96,13 +118,13 @@ function mapStateToProps(state, ownProps) {
     source: state.filter.get('source'),
     basket: state.basket.get('basket').toJS(),
     isMap: state.filter.get('isMap'),
-    cards: state.cards.get('cards').toJS().length,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     setIsMap: () => dispatch(setIsMap()),
+    clearFilter: (clearfilter) => dispatch(clearFilter(clearfilter)),
   }
 }
 
