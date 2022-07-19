@@ -216,7 +216,7 @@ export function Filter(props) {
       <div style={{ display: 'flex' }}>
         <ButtonMetro />
         <ButtonExtra
-          sourceValue={'source'}
+          sourceValue={sourceValue}
         />
       </div>
     </div>
