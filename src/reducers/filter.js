@@ -12,7 +12,7 @@ const initialState = new Map({
   extra: {},
   map: [],
   filter: {
-    reqTypeofRealty: 'Вторичка',
+    reqTypeofRealty: 'Квартиры',
   },
 })
 

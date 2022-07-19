@@ -14,7 +14,8 @@ import { MapSideBar } from 'components/MapSideBar';
 import Location from 'images/location-pin.svg'
 
 const keyTypeofRealty = {
-  'Новостройки': 'new',
+  'Квартиры в новостройке': 'new',
+  'Квартиры во втрочике': 'appartment',
   'Квартиры': 'appartment',
   'Комнаты': 'rooms',
   'Дома, котеджи, дачи': 'house',

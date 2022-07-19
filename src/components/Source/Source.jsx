@@ -61,14 +61,6 @@ export function Source({ sourceValue }) {
             }}>
           </span>
         </ToggleButton>
-        <ToggleButton value="mls" sx={{padding: '0.4rem'}}>
-          mls
-          <span
-            style={{
-              backgroundImage: 'url(https://crm.centralnoe.ru/dealincom/assets/building.png)', ...logoStyle,
-            }}>
-          </span>
-        </ToggleButton>
       </ToggleButtonGroup>
     </>
   )

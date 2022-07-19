@@ -10,9 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { SelectSimple } from 'components/SelectSimple';
 import { Dadata } from 'components/Dadata';
-import { SelectTypeofRealty } from 'components/SelectTypeofRealty';
-import { ButtonExtra } from 'components/ButtonExtra';
-import { ButtonMetro } from 'components/ButtonMetro';
 
 import './Filter.scss';
 
@@ -23,7 +20,6 @@ export function Filter(props) {
 
   const [openBuild, setOpenBuild] = useState(false);
   const [openPrice, setOpenPrice] = useState(false);
-  const [selectType, openSelectType] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [price, setPrice] = useState(['', '']);
@@ -63,7 +59,6 @@ export function Filter(props) {
     if (event.target.dataset.search !== 'yes') {
       openPrice || setOpenPrice(false);
       openBuild || closeBuilderList();
-      selectType || openSelectType();
     }
   }
   const closeBuilderList = () => {
@@ -94,47 +89,46 @@ export function Filter(props) {
   }
   return (
     <div className='filter'>
-      {
-        sourceValue === 'mls' ?
-          <div style={{ position: 'relative' }}>
-            <TextField
-              autoComplete='off'
-              label="Застройщик/ЖК"
-              size='small'
-              name='builder'
-              onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, event.target.value) }}
-              value={filterState?.builder || ''}
-            />
+      <SelectSimple
+        name='reqTypeofRealty'
+        label='Тип недвижимости'
+        value={filterState?.reqTypeofRealty || 'Квартиры'}
+        onChange={handlerSelect}
+      />
+      <div style={{ position: 'relative' }}>
+        <TextField
+          autoComplete='off'
+          label="Застройщик/ЖК"
+          size='small'
+          name='builder'
+          disabled={filterState.reqTypeofRealty !== 'Квартиры' && filterState.reqTypeofRealty !== 'Квартиры в новостройке'}
+          onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, event.target.value) }}
+          value={filterState?.builder || ''}
+        />
+        {
+          (builderList.length > 0 && openBuild) &&
+          <MenuList
+            sx={{
+              bgcolor: "background.paper",
+              position: 'absolute',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              zIndex: 99
+            }}
+          >
             {
-              (builderList.length > 0 && openBuild) &&
-              <MenuList
-                sx={{
-                  bgcolor: "background.paper",
-                  position: 'absolute',
-                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                  zIndex: 99
-                }}
-              >
-                {
-                  builderList.map((menu, idx) =>
-                    <MenuItem
-                      key={idx}
-                      value={menu.name}
-                      onClick={(event) => { handlerSelect('builder', event.target.textContent) }}
-                    >
-                      {menu.name}
-                    </MenuItem>
-                  )
-                }
-              </MenuList>
+              builderList.map((menu, idx) =>
+                <MenuItem
+                  key={idx}
+                  value={menu.name}
+                  onClick={(event) => { handlerSelect('builder', event.target.textContent) }}
+                >
+                  {menu.name}
+                </MenuItem>
+              )
             }
-          </div> :
-          <SelectTypeofRealty 
-            typeOfRealty={ filterState?.reqTypeofRealty }
-            selectType={ selectType }
-            openSelectType={ openSelectType }
-          />
-      }
+          </MenuList>
+        }
+      </div>
       <Dadata
         onChange={handlerSelect}
       />
@@ -144,6 +138,7 @@ export function Filter(props) {
         multiple
         value={filterState?.reqRoomCount || []}
         onChange={handlerSelect}
+        disabled={filterState.reqTypeofRealty === 'Гаражи, парковки' || filterState.reqTypeofRealty === 'Земля'}
       />
       <div style={{ position: 'relative' }}>
         <TextField
@@ -153,6 +148,7 @@ export function Filter(props) {
           ariant="outlined"
           size='small'
           name='price'
+          disabled={sourceValue === 'pars' && filterState.reqTypeofRealty === 'Гаражи, парковки'}
           value={` ${price[0] ? `от ${price[0]}` : ''} ${price[1] ? `до ${price[1]}` : ''} `}
           inputProps={
             {
@@ -161,7 +157,7 @@ export function Filter(props) {
               style: { cursor: 'pointer' }
             }
           }
-          onClick={() => { setOpenPrice(!openPrice) }}
+          onClick={(event) => { !event.target.disabled && setOpenPrice(!openPrice) }}
           fullWidth
         />
         <AnimatePresence>
@@ -212,12 +208,6 @@ export function Filter(props) {
             </motion.div>
           }
         </AnimatePresence>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <ButtonMetro />
-        <ButtonExtra
-          sourceValue={sourceValue}
-        />
       </div>
     </div>
   )

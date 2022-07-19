@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Controller, useForm } from 'react-hook-form';
 import moment from 'moment';
 
@@ -30,6 +30,7 @@ const defaultPropsField = {
 }
 
 export function ModalExtraFilter({ sourceValue, onClose, extra }) {
+  const typeOfRealty = useSelector((state) => state.filter.get('filter').reqTypeofRealty);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -88,63 +89,66 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
           className='extra'
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className='extra__row'>
-            <span className="text extra__title">Площадь м2</span>
-            <div className='extra__value'>
-              <div>
-                <span className='extra__description'>Общая</span>
-                <div className='extra__inputs'>
-                  <TextField
-                    {...defaultPropsField}
-                    label="От"
-                    {...register('reqFlatTotalArea[0]')}
-                  />
-                  <TextField
-                    {...defaultPropsField}
-                    label="До"
-                    {...register('reqFlatTotalArea[1]')}
-                  />
-                </div>
-              </div>
-              {
-                sourceValue !== 'pars' &&
-                <>
-                  <div>
-                    <span className='extra__description'>Кухня</span>
-                    <div className='extra__inputs'>
-                      <TextField
-                        {...defaultPropsField}
-                        label="От"
-                        {...register('reqKitchenArea[0]')}
-                      />
-                      <TextField
-                        {...defaultPropsField}
-                        label="До"
-                        {...register('reqKitchenArea[1]')}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <span className='extra__description'>Жилая</span>
-                    <div className='extra__inputs'>
-                      <TextField
-                        {...defaultPropsField}
-                        label="От"
-                        {...register('reqFlatLivingArea[0]')}
-                      />
-                      <TextField
-                        {...defaultPropsField}
-                        label="До"
-                        {...register('reqFlatLivingArea[1]')}
-                      />
-                    </div>
-                  </div>
-                </>
-              }
-            </div>
-          </div>
           {
-            sourceValue === '1c' &&
+            typeOfRealty !== 'Земля' &&
+            <div className='extra__row'>
+              <span className="text extra__title">Площадь м2</span>
+              <div className='extra__value'>
+                <div>
+                  <span className='extra__description'>Общая</span>
+                  <div className='extra__inputs'>
+                    <TextField
+                      {...defaultPropsField}
+                      label="От"
+                      {...register('reqFlatTotalArea[0]')}
+                    />
+                    <TextField
+                      {...defaultPropsField}
+                      label="До"
+                      {...register('reqFlatTotalArea[1]')}
+                    />
+                  </div>
+                </div>
+                {
+                  (sourceValue !== 'pars' && typeOfRealty !== 'Гаражи, парковки') &&
+                  <>
+                    <div>
+                      <span className='extra__description'>Кухня</span>
+                      <div className='extra__inputs'>
+                        <TextField
+                          {...defaultPropsField}
+                          label="От"
+                          {...register('reqKitchenArea[0]')}
+                        />
+                        <TextField
+                          {...defaultPropsField}
+                          label="До"
+                          {...register('reqKitchenArea[1]')}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <span className='extra__description'>Жилая</span>
+                      <div className='extra__inputs'>
+                        <TextField
+                          {...defaultPropsField}
+                          label="От"
+                          {...register('reqFlatLivingArea[0]')}
+                        />
+                        <TextField
+                          {...defaultPropsField}
+                          label="До"
+                          {...register('reqFlatLivingArea[1]')}
+                        />
+                      </div>
+                    </div>
+                  </>
+                }
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома, котеджи, дачи' || typeOfRealty === 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Площадь участка в сотках</span>
               <div className='extra__value'>
@@ -164,7 +168,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            sourceValue === '1c' &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Планировка</span>
               <Controller
@@ -187,7 +191,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            sourceValue !== 'pars' &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Санузел</span>
               <Controller
@@ -209,7 +213,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            sourceValue !== 'pars' &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Балкон/Лоджия</span>
               <Controller
@@ -231,7 +235,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            sourceValue === '1c' &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Ремонт</span>
               <Controller
@@ -254,35 +258,38 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
               />
             </div>
           }
-          <div className='extra__row'>
-            <span className="text extra__title">Этаж</span>
-            <div className='extra__value'>
-              <div className='extra__inputs'>
-                <TextField
-                  {...defaultPropsField}
-                  label="От"
-                  {...register('reqFloor[0]')}
+          {
+            (typeOfRealty === 'Дома, котеджи, дачи' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Этаж</span>
+              <div className='extra__value'>
+                <div className='extra__inputs'>
+                  <TextField
+                    {...defaultPropsField}
+                    label="От"
+                    {...register('reqFloor[0]')}
+                  />
+                  <TextField
+                    {...defaultPropsField}
+                    label="До"
+                    {...register('reqFloor[1]')}
+                  />
+                </div>
+                <FormCheckbox
+                  control={control}
+                  name='notFloorFirst'
+                  label='Не первый'
                 />
-                <TextField
-                  {...defaultPropsField}
-                  label="До"
-                  {...register('reqFloor[1]')}
+                <FormCheckbox
+                  control={control}
+                  name='notFloorLast'
+                  label='Не последний'
                 />
               </div>
-              <FormCheckbox
-                control={control}
-                name='notFloorFirst'
-                label='Не первый'
-              />
-              <FormCheckbox
-                control={control}
-                name='notFloorLast'
-                label='Не последний'
-              />
             </div>
-          </div>
+          }
           {
-            sourceValue !== 'pars' &&
+            (typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Этажей в доме</span>
               <div className='extra__value'>
@@ -302,7 +309,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            sourceValue === 'mls' &&
+            (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры в новостройке') &&
             <div className='extra__row'>
               <span className="text extra__title">Срок сдачи</span>
               <div className='extra__value'>
@@ -383,7 +390,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 </div>
               }
               {
-                sourceValue === 'mls' &&
+                (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры в новостройке') &&
                 <>
                   <FormCheckbox
                     control={control}

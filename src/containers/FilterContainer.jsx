@@ -13,6 +13,8 @@ import { Filter } from 'components/Filter';
 import { BackdropComponent } from 'components/BackdropComponent';
 import { ButtonSearch } from 'components/ButtonSearch';
 import { ButtonTemplate } from 'components/ButtonTemplate';
+import { ButtonExtra } from 'components/ButtonExtra';
+import { ButtonMetro } from 'components/ButtonMetro';
 
 import './FilterContainer.scss';
 
@@ -54,7 +56,7 @@ class FilterContainer extends PureComponent {
       () => this.setState({ filterReload: true })
     )
     clearFilter({
-      reqTypeofRealty: 'Вторичка',
+      reqTypeofRealty: 'Кваартиры',
     });
   }
 
@@ -103,6 +105,10 @@ class FilterContainer extends PureComponent {
             }
           </div>
           <div className='setting__buttons'>
+            <ButtonMetro />
+            <ButtonExtra
+              sourceValue={source}
+            />
             <Button
               variant="outlined"
               onClick={() => { setIsMap() }}
