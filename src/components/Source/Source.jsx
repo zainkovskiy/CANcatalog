@@ -47,7 +47,8 @@ export function Source({ sourceValue, handlerClearFilter }) {
         onChange={handleChange}
         sx={{ justifyContent: 'center' }}
       >
-        <ToggleButton value="1c" sx={{padding: '0.4rem'}}>1c
+        <ToggleButton value="1c" sx={{padding: '0.4rem'}}>
+          Проверено
           <span
             style={{
               backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/centr-small.png)', ...logoStyle,
@@ -55,7 +56,7 @@ export function Source({ sourceValue, handlerClearFilter }) {
           </span>
         </ToggleButton>
         <ToggleButton value="pars" sx={{padding: '0.4rem'}}>
-          pars
+          Не Проверено
           <span
             style={{
               backgroundImage: 'url(https://crm.centralnoe.ru/CDB/catalog/filter/desktop/img/all.png)', ...logoStyle, backgroundSize: '200%',
