@@ -14,13 +14,14 @@ import { MapSideBar } from 'components/MapSideBar';
 import Location from 'images/location-pin.svg'
 
 const keyTypeofRealty = {
-  'Квартиры в новостройке': 'new',
-  'Квартиры во втрочике': 'appartment',
   'Квартиры': 'appartment',
+  'Квартиры - Новостройки': 'new',
   'Комнаты': 'rooms',
-  'Дома, котеджи, дачи': 'house',
+  'Комнаты/Доли': 'rooms',
+  'Дома/Часть дома': 'house',
+  'Дома': 'house',
   'Земля': 'land',
-  'Гаражи, парковки': 'garage',
+  'Гаражи': 'garage',
 }
 
 export function MapField(props) {

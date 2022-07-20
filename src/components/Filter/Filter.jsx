@@ -94,6 +94,7 @@ export function Filter(props) {
         label='Тип недвижимости'
         value={filterState?.reqTypeofRealty || 'Квартиры'}
         onChange={handlerSelect}
+        source={sourceValue}
       />
       <div style={{ position: 'relative' }}>
         <TextField
@@ -101,7 +102,7 @@ export function Filter(props) {
           label="Застройщик/ЖК"
           size='small'
           name='builder'
-          disabled={filterState.reqTypeofRealty !== 'Квартиры' && filterState.reqTypeofRealty !== 'Квартиры в новостройке'}
+          disabled={filterState.reqTypeofRealty !== 'Квартиры - Новостройки'}
           onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, event.target.value) }}
           value={filterState?.builder || ''}
         />
@@ -138,7 +139,7 @@ export function Filter(props) {
         multiple
         value={filterState?.reqRoomCount || []}
         onChange={handlerSelect}
-        disabled={filterState.reqTypeofRealty === 'Гаражи, парковки' || filterState.reqTypeofRealty === 'Земля'}
+        disabled={filterState.reqTypeofRealty === 'Гаражи' || filterState.reqTypeofRealty === 'Земля'}
       />
       <div style={{ position: 'relative' }}>
         <TextField
@@ -148,7 +149,7 @@ export function Filter(props) {
           ariant="outlined"
           size='small'
           name='price'
-          disabled={sourceValue === 'pars' && filterState.reqTypeofRealty === 'Гаражи, парковки'}
+          disabled={sourceValue === 'pars' && filterState.reqTypeofRealty === 'Гаражи'}
           value={` ${price[0] ? `от ${price[0]}` : ''} ${price[1] ? `до ${price[1]}` : ''} `}
           inputProps={
             {

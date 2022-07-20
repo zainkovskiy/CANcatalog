@@ -56,7 +56,7 @@ class FilterContainer extends PureComponent {
       () => this.setState({ filterReload: true })
     )
     clearFilter({
-      reqTypeofRealty: 'Кваартиры',
+      reqTypeofRealty: 'Квартиры',
     });
   }
 
@@ -65,7 +65,10 @@ class FilterContainer extends PureComponent {
     return (
       <>
         <div className='filter-top'>
-          <Source sourceValue={source} />
+          <Source
+            sourceValue={source}
+            handlerClearFilter={this.handlerClearFilter}
+          />
           <div>
             <Button
               variant="text"

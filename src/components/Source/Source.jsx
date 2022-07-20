@@ -16,7 +16,7 @@ const logoStyle = {
   backgroundRepeat: 'no-repeat'
 }
 
-export function Source({ sourceValue }) {
+export function Source({ sourceValue, handlerClearFilter }) {
   const dispatch = useDispatch();
   const [alignment, setAlignment] = useState(sourceValue);
   const firstUpdate = useRef(true);
@@ -34,6 +34,7 @@ export function Source({ sourceValue }) {
     }
     dispatch(source(alignment))
     dispatch(setExtra({}))
+    handlerClearFilter()
   }, [alignment])
 
 

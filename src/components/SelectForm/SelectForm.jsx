@@ -35,7 +35,9 @@ export function SelectForm(props) {
         error={error}
       >
         {
-          selectList[name].map((item, idx) => <MenuItem key={idx} value={item}>{item}</MenuItem>)
+          selectList[name].map((item, idx) =>
+            <MenuItem key={idx} value={!Boolean(item) ? "nothing" : item}>{!Boolean(item) ? 'Не важно' : item}</MenuItem>
+          )
         }
       </Select>
     </FormControl>

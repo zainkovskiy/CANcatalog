@@ -17,15 +17,22 @@ export function SelectSimple(props) {
         onChange={(event) => props.onChange(props.name, event.target.value)}
       >
         {
-          selectList[props.name].map((menu, idx) =>
-            <MenuItem
-              key={idx}
-              value={menu}
-            >
-              {menu}
-            </MenuItem>
-
-          )
+          props?.source ?
+            selectList[props.name][props?.source].map((menu, idx) =>
+              <MenuItem
+                key={idx}
+                value={menu}
+              >
+                {menu}
+              </MenuItem>) :
+            selectList[props.name].map((menu, idx) =>
+              <MenuItem
+                key={idx}
+                value={menu}
+              >
+                {menu}
+              </MenuItem>
+            )
         }
       </Select>
     </FormControl>

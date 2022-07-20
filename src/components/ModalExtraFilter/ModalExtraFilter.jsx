@@ -17,6 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { FormCheckbox } from 'components/FormCheckbox';
+import { SelectForm } from 'components/SelectForm';
 
 import { setExtra } from 'actions/filter';
 
@@ -55,14 +56,34 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
       isShowAgent: extra?.isShowAgent || false,
       isReserve: extra?.isReserve || false,
       onlyCancel: extra?.onlyCancel || false,
+      apartments: extra?.apartments || false,
       buildingMortgage: extra?.buildingMortgage || false,
       buildingVoenMortgage: extra?.buildingVoenMortgage || false,
       buildingInstallment: extra?.buildingInstallment || false,
+      elevator: extra?.elevator || false,
+      parking: extra?.parking || false,
+      stove: extra?.stove || false,
+      bathroomInside: extra?.bathroomInside || false,
+      bath: extra?.bath || false,
+      garage: extra?.garage || false,
+      pool: extra?.pool || false,
       quarter: extra?.quarter || moment().quarter().toString(),
-      deadline: moment(),
+      deadline: extra?.deadline || '',
+      buildingYear: extra?.buildingYear || '',
+      dataPublication: extra?.dataPublication || '',
+      heatingType: extra?.heatingType || 'nothing',
       ready: extra?.ready || false,
+      material: extra?.material || "nothing",
+      typeSale: extra?.typeSale || "nothing",
+      photo: extra?.photo || "nothing",
+      ceilingHeight: extra?.ceilingHeight || '',
+      roomsInside: extra?.roomsInside || '',
+      roomsForSale: extra?.roomsForSale || '',
+      communications: extra?.communications || ['nothing'],
+      typeGround: extra?.typeGround || ['nothing'],
     }
   });
+
 
   const onSubmit = (data) => {
     console.log(data);
@@ -72,10 +93,32 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
 
   const isReady = watch('ready');
 
+  const handlerToggle = (prevState, value, change) => {
+    console.log('here');
+    if (value === 'nothing') {
+      change(['nothing']);
+      return
+    }
+    if (prevState.includes('nothing')) {
+      change([value]);
+      return
+    }
+
+    const find = prevState.find(el => el === value);
+    if (find) {
+      const index = prevState.indexOf(find);
+      const newState = prevState;
+      newState.splice(index, 1)
+      newState.length === 0 ? change(['nothing']) : change(newState)
+    } else {
+      change([...prevState, value])
+    }
+  }
+
   return (
     <>
       <DialogTitle
-        sx={{ fontFamily: 'Montserrat', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+        sx={{ fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
         Дополнительные фильтры
         <IconButton
@@ -110,7 +153,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   </div>
                 </div>
                 {
-                  (sourceValue !== 'pars' && typeOfRealty !== 'Гаражи, парковки') &&
+                  (sourceValue !== 'pars' && typeOfRealty !== 'Гаражи') &&
                   <>
                     <div>
                       <span className='extra__description'>Кухня</span>
@@ -148,7 +191,27 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty === 'Дома, котеджи, дачи' || typeOfRealty === 'Земля') &&
+            (typeOfRealty === 'Комната' && typeOfRealty === 'Комнаты/Доли') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Комнаты</span>
+              <div className='extra__value'>
+                <div className='extra__inputs'>
+                  <TextField
+                    {...defaultPropsField}
+                    label="В квартире"
+                    {...register('roomsInside')}
+                  />
+                  <TextField
+                    {...defaultPropsField}
+                    label="На продажу"
+                    {...register('roomsForSale')}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома' || typeOfRealty === 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Площадь участка в сотках</span>
               <div className='extra__value'>
@@ -168,7 +231,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Планировка</span>
               <Controller
@@ -191,7 +254,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Санузел</span>
               <Controller
@@ -213,7 +276,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Балкон/Лоджия</span>
               <Controller
@@ -235,7 +298,23 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Материал стен</span>
+              <div className='extra__value'>
+                <div className='extra__inputs' style={{ width: '50%' }}>
+                  <SelectForm
+                    control={control}
+                    name='material'
+                    label='Материал стен'
+                    multiple={false}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Ремонт</span>
               <Controller
@@ -259,7 +338,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty === 'Дома, котеджи, дачи' && typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (typeOfRealty !== 'Дома' && typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Этаж</span>
               <div className='extra__value'>
@@ -289,7 +368,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty !== 'Гаражи, парковки' && typeOfRealty !== 'Земля') &&
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Этажей в доме</span>
               <div className='extra__value'>
@@ -309,7 +388,111 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры в новостройке') &&
+            (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Земля' && typeOfRealty !== 'Гаражи') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Высота потолка</span>
+              <div className='extra__value'>
+                <div className='extra__inputs'>
+                  <TextField
+                    {...defaultPropsField}
+                    label="Высота потолка"
+                    {...register('ceilingHeight')}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Коммуникации</span>
+              <Controller
+                name='communications'
+                control={control}
+                render={({ field }) =>
+                  <ToggleButtonGroup
+                    color="primary"
+                    {...field}
+                    size='small'
+                    onChange={(event) => { handlerToggle(field.value, event.target.value, field.onChange) }}
+                  >
+                    <ToggleButton value="nothing">Неважно</ToggleButton>
+                    <ToggleButton value="electricity">Электричество</ToggleButton>
+                    <ToggleButton value="gas">Газ</ToggleButton>
+                    <ToggleButton value="waterSupply">Водоснабжение</ToggleButton>
+                    <ToggleButton value="sewerage">Канализация</ToggleButton>
+                  </ToggleButtonGroup>
+                }
+              />
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Отопление</span>
+              <div className='extra__value'>
+                <div className='extra__inputs' style={{ width: '50%' }}>
+                  <SelectForm
+                    control={control}
+                    name='heatingType'
+                    label='Отопление'
+                    multiple={false}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Использование земель</span>
+              <Controller
+                name='typeGround'
+                control={control}
+                render={({ field }) =>
+                  <ToggleButtonGroup
+                    color="primary"
+                    {...field}
+                    size='small'
+                    onChange={(event) => { handlerToggle(field.value, event.target.value, field.onChange) }}
+                  >
+                    <ToggleButton value="nothing">Неважно</ToggleButton>
+                    <ToggleButton value="IZHS">ИЖС</ToggleButton>
+                    <ToggleButton value="garden">Садоводство</ToggleButton>
+                    <ToggleButton value="DNP">ДНП</ToggleButton>
+                    <ToggleButton value="private">Личное подсобное хозяйтсво</ToggleButton>
+                    <ToggleButton value="farmer">Фермерское хозяйтсво</ToggleButton>
+                    <ToggleButton value="industry">Земля промназначения</ToggleButton>
+                  </ToggleButtonGroup>
+                }
+              />
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Постройки</span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='bath'
+                  label='Баня'
+                />
+                <FormCheckbox
+                  control={control}
+                  name='garage'
+                  label='Гараж'
+                />
+                <FormCheckbox
+                  control={control}
+                  name='pool'
+                  label='Бассейн'
+                />
+              </div>
+            </div>
+          }
+          {
+            typeOfRealty === 'Квартиры - Новостройки' &&
             <div className='extra__row'>
               <span className="text extra__title">Срок сдачи</span>
               <div className='extra__value'>
@@ -363,17 +546,158 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
               </div>
             </div>
           }
+          {
+            (typeOfRealty !== 'Квартиры - Новостройки' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Год постройки</span>
+              <div className='extra__value'>
+                <Controller
+                  control={control}
+                  name="buildingYear"
+                  render={({ field }) => (
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DatePicker
+                        views={['year']}
+                        label="Год постройки"
+                        {...field}
+                        renderInput={(params) =>
+                          <TextField {...params}
+                            size="small"
+                            autoComplete='off'
+                            error={false}
+                          />}
+                      />
+                    </LocalizationProvider>
+                  )}
+                />
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Дата публикации</span>
+              <div className='extra__value'>
+                <Controller
+                  control={control}
+                  name="dataPublication"
+                  render={({ field }) => (
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DatePicker
+                        label="Дата публикации"
+                        {...field}
+                        renderInput={(params) =>
+                          <TextField {...params}
+                            size="small"
+                            autoComplete='off'
+                            error={false}
+                          />}
+                      />
+                    </LocalizationProvider>
+                  )}
+                />
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Тип продажи</span>
+              <Controller
+                name='typeSale'
+                control={control}
+                render={({ field }) =>
+                  <ToggleButtonGroup
+                    color="primary"
+                    exclusive
+                    {...field}
+                    size='small'
+                  >
+                    <ToggleButton value="nothing">Неважно</ToggleButton>
+                    <ToggleButton value="swap">обмен</ToggleButton>
+                    <ToggleButton value="free">свободная</ToggleButton>
+                  </ToggleButtonGroup>
+                }
+              />
+            </div>
+          }
+          {
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Фотографии</span>
+              <Controller
+                name='photo'
+                control={control}
+                render={({ field }) =>
+                  <ToggleButtonGroup
+                    color="primary"
+                    exclusive
+                    {...field}
+                    size='small'
+                  >
+                    <ToggleButton value="nothing">Неважно</ToggleButton>
+                    <ToggleButton value="noRenovation">Без фото</ToggleButton>
+                    <ToggleButton value="cosmetic">Есть фото</ToggleButton>
+                    <ToggleButton value="renovation">Проффесианальные</ToggleButton>
+                    <ToggleButton value="designer">Видео</ToggleButton>
+                    <ToggleButton value="designer">Планировка</ToggleButton>
+                  </ToggleButtonGroup>
+                }
+              />
+            </div>
+          }
+          {
+            (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='apartments'
+                  label='Апартаменты'
+                />
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='elevator'
+                  label='Лифт'
+                />
+                <FormCheckbox
+                  control={control}
+                  name='parking'
+                  label='Парковка'
+                />
+                <FormCheckbox
+                  control={control}
+                  name='stove'
+                  label='Плита'
+                />
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='bathroomInside'
+                  label='Санузел в доме'
+                />
+              </div>
+            </div>
+          }
           <div className='extra__row'>
             <span className="text extra__title"></span>
             <div>
-              {
-                sourceValue === 'pars' &&
-                <FormCheckbox
-                  control={control}
-                  name='isShowAgent'
-                  label='Не выводить агентства'
-                />
-              }
               {
                 sourceValue === '1c' &&
                 <div className='extra__value'>
@@ -390,7 +714,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 </div>
               }
               {
-                (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры в новостройке') &&
+                typeOfRealty === 'Квартиры - Новостройки' &&
                 <>
                   <FormCheckbox
                     control={control}
@@ -411,6 +735,20 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
               }
             </div>
           </div>
+          {
+            sourceValue === 'pars' &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+
+                <FormCheckbox
+                  control={control}
+                  name='isShowAgent'
+                  label='Не выводить агентства'
+                />
+              </div>
+            </div>
+          }
           <DialogActions >
             <Button
               onClick={() => { dispatch(setExtra({})), onClose() }}
