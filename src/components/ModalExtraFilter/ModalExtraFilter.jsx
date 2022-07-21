@@ -81,6 +81,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
       roomsForSale: extra?.roomsForSale || '',
       communications: extra?.communications || ['nothing'],
       typeGround: extra?.typeGround || ['nothing'],
+      status: extra?.status || 'actual',
+      statusDate: extra?.statusDate || '',
     }
   });
 
@@ -92,6 +94,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
   }
 
   const isReady = watch('ready');
+
+  const isStatusDate = watch('status');
 
   const handlerToggle = (prevState, value, change) => {
     console.log('here');
@@ -647,6 +651,51 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
+            (sourceValue === '1c' && typeOfRealty !== 'Квартиры - Новостройки') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Статус</span>
+              <div className="extra__value">
+                <Controller
+                  name='status'
+                  control={control}
+                  render={({ field }) =>
+                    <ToggleButtonGroup
+                      color="primary"
+                      exclusive
+                      {...field}
+                      size='small'
+                    >
+                      <ToggleButton value="actual">Актуально</ToggleButton>
+                      <ToggleButton value="sold">Продано</ToggleButton>
+                      <ToggleButton value="cancel">Отменено</ToggleButton>
+                      <ToggleButton value="postponed">Отложено до</ToggleButton>
+                    </ToggleButtonGroup>
+                  }
+                />
+                <Controller
+                  control={control}
+                  name="statusDate"
+                  render={({ field }) => (
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DatePicker
+                        label="Отложенно до"
+                        {...field}
+                        disabled={isStatusDate !== 'postponed'}
+                        renderInput={(params) =>
+                          <TextField {...params}
+                            size="small"
+                            autoComplete='off'
+                            error={false}
+                            disabled={isStatusDate !== 'postponed'}
+                          />}
+                      />
+                    </LocalizationProvider>
+                  )}
+                />
+              </div>
+            </div>
+          }
+          {
             (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title"></span>
@@ -698,7 +747,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
           <div className='extra__row'>
             <span className="text extra__title"></span>
             <div>
-              {
+              {/* {
                 sourceValue === '1c' &&
                 <div className='extra__value'>
                   <FormCheckbox
@@ -712,7 +761,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     label='Выводить только отмененные'
                   />
                 </div>
-              }
+              } */}
               {
                 typeOfRealty === 'Квартиры - Новостройки' &&
                 <>
