@@ -642,7 +642,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     <ToggleButton value="nothing">Неважно</ToggleButton>
                     <ToggleButton value="noRenovation">Без фото</ToggleButton>
                     <ToggleButton value="cosmetic">Есть фото</ToggleButton>
-                    <ToggleButton value="renovation">Проффесианальные</ToggleButton>
+                    <ToggleButton value="renovation">Профессиональные</ToggleButton>
                     <ToggleButton value="designer">Видео</ToggleButton>
                     <ToggleButton value="designer">Планировка</ToggleButton>
                   </ToggleButtonGroup>

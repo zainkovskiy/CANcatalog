@@ -2,10 +2,11 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src', 'index.js'),
+  entry: {
+    path: path.resolve(__dirname, 'src', 'index.js'),
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -29,7 +30,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\s?css$/,
+        test: /\.s?css$/,
         use: [
           miniCssExtractPlugin.loader,
           {
@@ -58,7 +59,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
+    new htmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html'),
       fiename: 'index.html'
     }),
