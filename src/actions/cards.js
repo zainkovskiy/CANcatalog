@@ -19,7 +19,7 @@ export function getCards(req, isMap) {
     dispatch(setCards([]));
     dispatch(setMapDisabledAPI());
     try {
-      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/testMap.php', req);
+      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/Controller.php', req);
       if(Array.isArray(res?.data)){
         if (req?.map?.source === 'polygon'){
           dispatch(setCards(res.data.filter(item => isPointInPolygon([item.lat, item.lng], req.map.geometry[0]))))
