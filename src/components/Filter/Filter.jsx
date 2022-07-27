@@ -43,7 +43,7 @@ export function Filter(props) {
 
   //записывает занчения прайса в state
   useEffect(() => {
-    if (firstUpdate) {
+    if (firstUpdate.current) {
       firstUpdate.current = false;
       return
     }
@@ -103,8 +103,8 @@ export function Filter(props) {
           size='small'
           name='builder'
           disabled={filterState.reqTypeofRealty !== 'Квартиры - Новостройки'}
-          onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, event.target.value) }}
-          value={filterState?.builder || ''}
+          onChange={(event) => { handlerBuilder(event), handlerSelect(event.target.name, { name: event.target.value, type: 'none' }) }}
+          value={filterState?.builder?.name || ''}
         />
         {
           (builderList.length > 0 && openBuild) &&
@@ -122,7 +122,7 @@ export function Filter(props) {
                 <MenuItem
                   key={idx}
                   value={menu.name}
-                  onClick={(event) => { handlerSelect('builder', event.target.textContent) }}
+                  onClick={(event) => { handlerSelect('builder', menu) }}
                 >
                   {menu.name}
                 </MenuItem>
