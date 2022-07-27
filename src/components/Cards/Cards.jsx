@@ -94,7 +94,7 @@ export function Cards({ cards }) {
                 }}
               >
                 <Fab
-                  style={{ position: 'fixed', bottom: '2rem', right: '2rem' }}
+                  style={{ position: 'fixed', bottom: '2rem', right: '6rem' }}
                   color="primary"
                   size="small"
                   onClick={() => window.scrollTo({
