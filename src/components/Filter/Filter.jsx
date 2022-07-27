@@ -113,7 +113,8 @@ export function Filter(props) {
               bgcolor: "background.paper",
               position: 'absolute',
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              zIndex: 99
+              zIndex: 99,
+              borderRadius: '5px'
             }}
           >
             {

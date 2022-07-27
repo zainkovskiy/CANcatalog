@@ -45,7 +45,7 @@ export function ButtonExtra({ sourceValue }) {
     if (!value) {
       return false
     }
-    if (value === 'nothing') {
+    if (value === 'nothing' || value === 'actual') {
       return false
     }
     if (Array.isArray(value) && !value[0] && !value[0]) {
@@ -55,6 +55,9 @@ export function ButtonExtra({ sourceValue }) {
       if (key === 'quarter' || key === 'deadline') {
         return false;
       }
+    }
+    if (Array.isArray(value) && value[0] === 'nothing') {
+      return false
     }
     return true
   }

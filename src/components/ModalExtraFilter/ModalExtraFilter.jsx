@@ -98,7 +98,6 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
   const isStatusDate = watch('status');
 
   const handlerToggle = (prevState, value, change) => {
-    console.log('here');
     if (value === 'nothing') {
       change(['nothing']);
       return

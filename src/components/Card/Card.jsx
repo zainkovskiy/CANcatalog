@@ -24,7 +24,6 @@ const cardVarints = {
 export function Card({ card }) {
   const dispatch = useDispatch();
   const basketList = useSelector((state) => state.basket.get('basket').toJS());
-  const source = useSelector((state) => state.filter.get('source'));
 
   const hasFromBasket = () => {
     if (basketList.find(item => item.reqNumber === card.reqNumber)) {
@@ -34,7 +33,7 @@ export function Card({ card }) {
   }
 
   const openCard = () => {
-    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${source}&reqNumber=${card.reqNumber}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
+    BX.SidePanel.Instance.open(`https://crm.centralnoe.ru/cardObject/?login=yes&source=${card.source}&reqNumber=${card.reqNumber}`, { animationDuration: 300, width: document.getElementById('root').clientWidth })
   }
 
   const handlerBasket = () => {

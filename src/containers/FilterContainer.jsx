@@ -25,21 +25,13 @@ class FilterContainer extends PureComponent {
   }
 
   getBuilderVariants = async (value) => {
-
-    /** заглушка */
     try {
-      const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Object/FilterGetter.php', {
+        action: "blockBuilderName",
+        req: value
+      });
       this.setState({
-        builderList: [
-          { name: "СЗ Кварталы Немировича", type: "blockBuilderName" },
-          { name: "Химметалл", type: "blockBuilderName" },
-          { name: "АМГ-ТРАСТ", type: "blockBuilderName" },
-          { name: "Акация", type: "blockBuilderName" },
-          { name: "Авиатор", type: "blockName" },
-          { name: "Азимут", type: "blockName" },
-          { name: "Акварельный 3.0", type: "blockName" },
-          { name: "Астон.Геометрия", type: "blockName" },
-        ]
+        builderList: res.data
       })
     } catch (error) {
       console.log(error.message);
