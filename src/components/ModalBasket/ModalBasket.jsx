@@ -51,7 +51,7 @@ export function ModalBasket({ onClose, selectDeal }) {
               deals.map(deal =>
                 <Chip
                   key={deal.UID}
-                  label={deal.UID}
+                  label={`${deal.UID} ${deal.DealName}`} 
                   variant="outlined"
                   onClick={() => handleClick(deal.UID)}
                 />
