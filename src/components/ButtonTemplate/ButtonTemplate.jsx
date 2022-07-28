@@ -9,6 +9,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ModalWindow } from 'components/ModalWindow';
 
 import { getCards } from 'actions/cards';
+import { loader, loaderMap } from 'actions/filter';
 
 export function ButtonTemplate({ sourceValue, isMap }) {
   const dispatch = useDispatch();
@@ -24,10 +25,12 @@ export function ButtonTemplate({ sourceValue, isMap }) {
     setAnchorEl(null);
   };
   const handlerSelect = (req) => {
+    isMap ? dispatch(loaderMap()) : dispatch(loader());
     dispatch(getCards(req, isMap))
   }
   const handlerReq = (action, value) => {
-    console.log(action);
+    isMap ? dispatch(loaderMap()) : dispatch(loader());
+    setOpenInputURL(false);
     dispatch(getCards({
       action: 'get',
       [action]: [value]

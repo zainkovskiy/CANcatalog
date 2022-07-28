@@ -118,6 +118,13 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
     }
   }
 
+  const validateDeadline = (value) => {
+    if (value){
+      return value.isSameOrAfter(moment(), 'year')
+    }
+    return true
+  }
+
   return (
     <>
       <DialogTitle
@@ -521,7 +528,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   control={control}
                   name="deadline"
                   rules={{
-                    validate: event => event.isSameOrAfter(moment(), 'year') || 'Не меньше чем текущий'
+                    validate: event => validateDeadline(event) || 'Не меньше чем текущий'
                   }}
                   render={({ field }) => (
                     <LocalizationProvider dateAdapter={AdapterMoment}>
