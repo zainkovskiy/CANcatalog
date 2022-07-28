@@ -1,7 +1,7 @@
 import { handleActions } from "redux-actions";
 import { fromJS, Map, List } from 'immutable';
 
-import { addToBasket, removeFromBasket } from 'actions/basket';
+import { addToBasket, removeFromBasket, clearBasket } from 'actions/basket';
 
 
 const initialState = new Map({
@@ -16,5 +16,8 @@ export const basketReducer = handleActions({
   [removeFromBasket]: (state, action) => {
     const cardObj = action.payload;
     return state.update('basket', arr => arr.filterNot(item => item.reqNumber == cardObj.reqNumber))
+  },
+  [clearBasket]: (state, action) => {
+    return state.set('basket', new List())
   },
 }, initialState)

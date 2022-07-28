@@ -48,7 +48,7 @@ export function ButtonExtra({ sourceValue }) {
     if (value === 'nothing' || value === 'actual') {
       return false
     }
-    if (Array.isArray(value) && !value[0] && !value[0]) {
+    if (Array.isArray(value) && !Boolean(value[0]) && !Boolean(value[1])) {
       return false
     }
     if (sourceValue !== 'mls') {
