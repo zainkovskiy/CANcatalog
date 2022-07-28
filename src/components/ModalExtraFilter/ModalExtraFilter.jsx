@@ -234,7 +234,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля' && typeOfRealty !== 'Квартиры - Новостройки') &&
             <div className='extra__row'>
               <span className="text extra__title">Планировка</span>
               <Controller
@@ -257,7 +257,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля' && typeOfRealty !== 'Квартиры - Новостройки') &&
             <div className='extra__row'>
               <span className="text extra__title">Санузел</span>
               <Controller
@@ -391,7 +391,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Земля' && typeOfRealty !== 'Гаражи') &&
+            (sourceValue === '1c' && (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры - Новостройки')) &&
             <div className='extra__row'>
               <span className="text extra__title">Высота потолка</span>
               <div className='extra__value'>
@@ -405,7 +405,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
               </div>
             </div>
           }
-          {
+          {/* {
             (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
             <div className='extra__row'>
               <span className="text extra__title">Коммуникации</span>
@@ -428,8 +428,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 }
               />
             </div>
-          }
-          {
+          } */}
+          {/* {
             (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
             <div className='extra__row'>
               <span className="text extra__title">Отопление</span>
@@ -444,8 +444,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 </div>
               </div>
             </div>
-          }
-          {
+          } */}
+          {/* {
             (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
             <div className='extra__row'>
               <span className="text extra__title">Использование земель</span>
@@ -470,8 +470,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 }
               />
             </div>
-          }
-          {
+          } */}
+          {/* {
             (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
             <div className='extra__row'>
               <span className="text extra__title">Постройки</span>
@@ -493,9 +493,9 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 />
               </div>
             </div>
-          }
+          } */}
           {
-            typeOfRealty === 'Квартиры - Новостройки' &&
+            (sourceValue === '1c' && typeOfRealty === 'Квартиры - Новостройки') &&
             <div className='extra__row'>
               <span className="text extra__title">Срок сдачи</span>
               <div className='extra__value'>
@@ -550,7 +550,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty !== 'Квартиры - Новостройки' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            (sourceValue === '1c' && typeOfRealty !== 'Квартиры - Новостройки' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Год постройки</span>
               <div className='extra__value'>
@@ -577,32 +577,37 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
-            <div className='extra__row'>
-              <span className="text extra__title">Дата публикации</span>
-              <div className='extra__value'>
-                <Controller
-                  control={control}
-                  name="dataPublication"
-                  render={({ field }) => (
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
-                        label="Дата публикации"
-                        {...field}
-                        renderInput={(params) =>
-                          <TextField {...params}
-                            size="small"
-                            autoComplete='off'
-                            error={false}
-                          />}
+            (typeOfRealty === 'Квартиры - Новостройки' && sourceValue === '1c') ? "" :
+              <>
+                {
+                  (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+                  <div className='extra__row'>
+                    <span className="text extra__title">Дата публикации</span>
+                    <div className='extra__value'>
+                      <Controller
+                        control={control}
+                        name="dataPublication"
+                        render={({ field }) => (
+                          <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <DatePicker
+                              label="Дата публикации"
+                              {...field}
+                              renderInput={(params) =>
+                                <TextField {...params}
+                                  size="small"
+                                  autoComplete='off'
+                                  error={false}
+                                />}
+                            />
+                          </LocalizationProvider>
+                        )}
                       />
-                    </LocalizationProvider>
-                  )}
-                />
-              </div>
-            </div>
+                    </div>
+                  </div>
+                }
+              </>
           }
-          {
+          {/* {
             (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Тип продажи</span>
@@ -623,9 +628,9 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 }
               />
             </div>
-          }
+          } */}
           {
-            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
+            (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля' && sourceValue !== 'pars') &&
             <div className='extra__row'>
               <span className="text extra__title">Фотографии</span>
               <Controller
@@ -641,9 +646,9 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     <ToggleButton value="nothing">Неважно</ToggleButton>
                     <ToggleButton value="noRenovation">Без фото</ToggleButton>
                     <ToggleButton value="cosmetic">Есть фото</ToggleButton>
-                    <ToggleButton value="renovation">Профессиональные</ToggleButton>
+                    {/* <ToggleButton value="renovation">Профессиональные</ToggleButton>
                     <ToggleButton value="designer">Видео</ToggleButton>
-                    <ToggleButton value="designer">Планировка</ToggleButton>
+                    <ToggleButton value="designer">Планировка</ToggleButton> */}
                   </ToggleButtonGroup>
                 }
               />
@@ -667,34 +672,40 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                       <ToggleButton value="actual">Актуально</ToggleButton>
                       <ToggleButton value="sold">Продано</ToggleButton>
                       <ToggleButton value="cancel">Отменено</ToggleButton>
-                      <ToggleButton value="postponed">Отложено до</ToggleButton>
+                      {
+                        typeOfRealty === 'Квартиры' &&
+                        <ToggleButton value="postponed">Отложено до</ToggleButton>
+                      }
                     </ToggleButtonGroup>
                   }
                 />
-                <Controller
-                  control={control}
-                  name="statusDate"
-                  render={({ field }) => (
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DatePicker
-                        label="Отложенно до"
-                        {...field}
-                        disabled={isStatusDate !== 'postponed'}
-                        renderInput={(params) =>
-                          <TextField {...params}
-                            size="small"
-                            autoComplete='off'
-                            error={false}
-                            disabled={isStatusDate !== 'postponed'}
-                          />}
-                      />
-                    </LocalizationProvider>
-                  )}
-                />
+                {
+                  typeOfRealty === 'Квартиры' &&
+                  <Controller
+                    control={control}
+                    name="statusDate"
+                    render={({ field }) => (
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DatePicker
+                          label="Отложенно до"
+                          {...field}
+                          disabled={isStatusDate !== 'postponed'}
+                          renderInput={(params) =>
+                            <TextField {...params}
+                              size="small"
+                              autoComplete='off'
+                              error={false}
+                              disabled={isStatusDate !== 'postponed'}
+                            />}
+                        />
+                      </LocalizationProvider>
+                    )}
+                  />
+                }
               </div>
             </div>
           }
-          {
+          {/* {
             (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title"></span>
@@ -706,8 +717,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 />
               </div>
             </div>
-          }
-          {
+          } */}
+          {/* {
             (typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title"></span>
@@ -729,8 +740,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 />
               </div>
             </div>
-          }
-          {
+          } */}
+          {/* {
             (typeOfRealty === 'Дома/Часть дома' || typeOfRealty === 'Дома') &&
             <div className='extra__row'>
               <span className="text extra__title"></span>
@@ -742,7 +753,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 />
               </div>
             </div>
-          }
+          } */}
           <div className='extra__row'>
             <span className="text extra__title"></span>
             <div>
@@ -762,7 +773,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 </div>
               } */}
               {
-                typeOfRealty === 'Квартиры - Новостройки' &&
+                (sourceValue === '1c' && typeOfRealty === 'Квартиры - Новостройки') &&
                 <>
                   <FormCheckbox
                     control={control}
