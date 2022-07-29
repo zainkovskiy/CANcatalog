@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
+import Tooltip from '@mui/material/Tooltip';
 
 import Button from '@mui/material/Button';
 
@@ -81,9 +82,37 @@ export function Card({ card }) {
           </div>
           <div>
             <div>
-              {card?.reqFlatTotalArea && <span className='text'>{card.reqFlatTotalArea}/</span>}
-              {card?.reqFlatLivingArea && <span className='text'>{card.reqFlatLivingArea}/</span>}
-              {card?.reqKitchenArea && <span className='text'>{card.reqKitchenArea}</span>}
+              {card?.reqFlatTotalArea &&
+                <Tooltip
+                  title="Общая площадь"
+                  placement="top"
+                  arrow
+                >
+                  <span className='text card__text'>{card.reqFlatTotalArea}</span>
+                </Tooltip>
+              }
+              {(card?.reqFlatTotalArea && card.reqFlatLivingArea) && '/'}
+
+              {card?.reqFlatLivingArea &&
+                <Tooltip
+                  title="Жилая площадь"
+                  placement="top"
+                  arrow
+                >
+                  <span className='text card__text'>{card.reqFlatLivingArea}</span>
+                </Tooltip>
+              }
+
+              {(card?.reqFlatLivingArea && card.reqKitchenArea) && '/'}
+              {card?.reqKitchenArea &&
+                <Tooltip
+                  title="Площадь кухни"
+                  placement="top"
+                  arrow
+                >
+                  <span className='text card__text'>{card.reqKitchenArea}</span>
+                </Tooltip>
+              }
             </div>
             <div className='card__text_wrap card__text'>
               {card?.reqFloor && card?.reqFloors && <span className='text'>{card.reqFloor}/{card.reqFloors}эт.</span>}

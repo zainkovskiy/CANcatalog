@@ -681,12 +681,12 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                       <ToggleButton value="cancel">Отменено</ToggleButton>
                       {
                         typeOfRealty === 'Квартиры' &&
-                        <ToggleButton value="postponed">Отложено до</ToggleButton>
+                        <ToggleButton value="postponed">Отложено</ToggleButton>
                       }
                     </ToggleButtonGroup>
                   }
                 />
-                {
+                {/* {
                   typeOfRealty === 'Квартиры' &&
                   <Controller
                     control={control}
@@ -708,7 +708,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                       </LocalizationProvider>
                     )}
                   />
-                }
+                } */}
               </div>
             </div>
           }

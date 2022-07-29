@@ -54,9 +54,9 @@ export function MapSideBarItem({ item }) {
         <span className='text'>{item?.reqRoomCount ? `${item.reqRoomCount}к., ` : ''}{item.reqTypeofRealty}</span>
       }
       <span className='text'>
-        {item?.reqCity ? `${item.reqCity}, ` : ''}
-        {item?.reqStreet ? `ул.${item.reqStreet}` : ''}
-        {item?.reqHouseNumber ? `, ${item.reqHouseNumber}` : ''}
+        {item?.reqCity ? `${item.reqCity} ` : ''}
+        {item?.reqStreet ? ` ул.${item.reqStreet}` : ''}
+        {item?.reqHouseNumber ? ` ${item.reqHouseNumber}` : ''}
       </span>
       <div className='side-bar-item__bottom'>
         <div>
