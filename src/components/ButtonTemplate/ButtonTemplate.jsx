@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -12,6 +12,7 @@ import { getCards } from 'actions/cards';
 import { loader, loaderMap } from 'actions/filter';
 
 export function ButtonTemplate({ sourceValue, isMap }) {
+  const filterMain = useSelector((state => state.filter.get('filter')));
   const dispatch = useDispatch();
   const [openClientID, setOpenClientID] = useState(false);
   const [openInputURL, setOpenInputURL] = useState(false);
@@ -31,6 +32,7 @@ export function ButtonTemplate({ sourceValue, isMap }) {
   const handlerReq = (action, value) => {
     isMap ? dispatch(loaderMap()) : dispatch(loader());
     setOpenInputURL(false);
+    setOpenClientID(false);
     dispatch(getCards({
       action: 'get',
       [action]: [value]
@@ -56,13 +58,13 @@ export function ButtonTemplate({ sourceValue, isMap }) {
           {
             sourceValue === '1c' &&
             <MenuItem
-              onClick={() => { handlerSelect({ action: 'get', onlyMy: userLogin }), handleClose() }}
+              onClick={() => { handlerSelect({ action: 'get', onlyMy: userLogin, type: filterMain.reqTypeofRealty }), handleClose() }}
             >Только мои</MenuItem>
           }
           {
             sourceValue === '1c' &&
             <MenuItem
-              onClick={() => { handlerSelect({ action: 'get', onlyOffice: myOffice }), handleClose() }}
+              onClick={() => { handlerSelect({ action: 'get', onlyOffice: userLogin, type: filterMain.reqTypeofRealty }), handleClose() }}
             >Мой офис</MenuItem>
           }
           {
