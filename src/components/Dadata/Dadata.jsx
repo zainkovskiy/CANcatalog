@@ -14,7 +14,7 @@ export function Dadata({ onChange }) {
         token="408e6651c0b9bfc8e2f487383d45353973f3285c"
         type='metro'
         name='address'
-        onChange={(e) => { onChange('address', e) }}
+        onChange={(e) => { onChange('address', e), console.log(e) }}
         // filterFromBound={'region'}
         filterToBound={'house'}
         inputProps={
