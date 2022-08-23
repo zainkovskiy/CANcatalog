@@ -9,7 +9,7 @@ export function ModalWindow(props) {
       onClose={onClose}
       fullWidth={true}
       maxWidth={maxSize || 'lg'}
-      sx={{zIndex: 99}}
+      sx={{ zIndex: 9999 }}
     >
       {children}
     </Dialog>
