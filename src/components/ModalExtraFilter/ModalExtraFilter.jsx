@@ -119,7 +119,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
   }
 
   const validateDeadline = (value) => {
-    if (value){
+    if (value) {
       return value.isSameOrAfter(moment(), 'year')
     }
     return true
@@ -589,7 +589,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 {
                   (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
                   <div className='extra__row'>
-                    <span className="text extra__title">Дата публикации</span>
+                    <span className="text extra__title">Дата актуализации</span>
                     <div className='extra__value'>
                       <Controller
                         control={control}
@@ -597,7 +597,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                         render={({ field }) => (
                           <LocalizationProvider dateAdapter={AdapterMoment}>
                             <DatePicker
-                              label="Дата публикации"
+                              label="Дата актуализации"
                               {...field}
                               renderInput={(params) =>
                                 <TextField {...params}
