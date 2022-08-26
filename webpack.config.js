@@ -8,8 +8,8 @@ module.exports = {
     path: path.resolve(__dirname, 'src', 'index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist', 'v1.0.6'),
-    filename: 'bundle-v1.0.6.js'
+    path: path.resolve(__dirname, 'dist', 'v1.0.7'),
+    filename: 'bundle-v1.0.7.js'
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -64,7 +64,7 @@ module.exports = {
       fiename: 'index.html'
     }),
     new miniCssExtractPlugin({
-      filename: 'main-v1.0.6.css'
+      filename: 'main-v1.0.7.css'
     }),
   ]
 }

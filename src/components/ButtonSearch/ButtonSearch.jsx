@@ -17,7 +17,7 @@ export function ButtonSearch() {
       metro: state.metro,
       extra: state.extra,
       map: state.map,
-      source: state.source, 
+      source: state.source,
       userId: userId,
     }, state.isMap))
   }

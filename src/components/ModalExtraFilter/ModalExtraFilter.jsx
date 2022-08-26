@@ -83,6 +83,8 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
       typeGround: extra?.typeGround || ['nothing'],
       status: extra?.status || 'actual',
       statusDate: extra?.statusDate || '',
+      withoutDocs: extra?.withoutDocs || false,
+      hasExclusive: extra?.hasExclusive || false,
     }
   });
 
@@ -94,7 +96,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
   }
 
   const isReady = watch('ready');
-
+  const isWithoutDocs = watch('withoutDocs');
   const isStatusDate = watch('status');
 
   const handlerToggle = (prevState, value, change) => {
@@ -351,7 +353,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             (typeOfRealty !== 'Дома' && typeOfRealty !== 'Дома/Часть дома' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
             <div className='extra__row'>
               <span className="text extra__title">Этаж</span>
-              <div className='extra__value'>
+              <div className='extra__value' style={{ flexDirection: 'column' }}>
                 <div className='extra__inputs'>
                   <TextField
                     {...defaultPropsField}
@@ -364,16 +366,18 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     {...register('reqFloor[1]')}
                   />
                 </div>
-                <FormCheckbox
-                  control={control}
-                  name='notFloorFirst'
-                  label='Не первый'
-                />
-                <FormCheckbox
-                  control={control}
-                  name='notFloorLast'
-                  label='Не последний'
-                />
+                <div>
+                  <FormCheckbox
+                    control={control}
+                    name='notFloorFirst'
+                    label='Не первый'
+                  />
+                  <FormCheckbox
+                    control={control}
+                    name='notFloorLast'
+                    label='Не последний'
+                  />
+                </div>
               </div>
             </div>
           }
@@ -595,18 +599,25 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                         control={control}
                         name="dataPublication"
                         render={({ field }) => (
-                          <LocalizationProvider dateAdapter={AdapterMoment}>
-                            <DatePicker
-                              label="Дата актуализации"
-                              {...field}
-                              renderInput={(params) =>
-                                <TextField {...params}
-                                  size="small"
-                                  autoComplete='off'
-                                  error={false}
-                                />}
-                            />
-                          </LocalizationProvider>
+                          // <LocalizationProvider dateAdapter={AdapterMoment}>
+                          //   <DatePicker
+                          //     label="Дата актуализации"
+                          //     {...field}
+                          //     // onChange={(event) => console.log(event.format('YYYY-MM-DD'))}
+                          //     renderInput={(params) =>
+                          //       <TextField {...params}
+                          //         size="small"
+                          //         autoComplete='off'
+                          //         error={false}
+                          //       />}
+                          //   />
+                          // </LocalizationProvider>
+                          <TextField
+                            variant="outlined"
+                            size='small'
+                            type='date'
+                            {...field}
+                          />
                         )}
                       />
                     </div>
@@ -812,6 +823,27 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   name='isShowAgent'
                   label='Не выводить агентства'
                 />
+              </div>
+            </div>
+          }
+          {
+            sourceValue === '1c' &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='withoutDocs'
+                  label='Без договора'
+                />
+                {
+                  isWithoutDocs &&
+                  <FormCheckbox
+                    control={control}
+                    name='hasExclusive'
+                    label='ранее был СК'
+                  />
+                }
               </div>
             </div>
           }
