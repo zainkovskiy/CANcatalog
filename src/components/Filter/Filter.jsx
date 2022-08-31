@@ -146,7 +146,7 @@ export function Filter(props) {
         <TextField
           autoComplete='off'
           id="outlined-basic"
-          label="Цена"
+          label="Цена (тыс.)"
           ariant="outlined"
           size='small'
           name='price'

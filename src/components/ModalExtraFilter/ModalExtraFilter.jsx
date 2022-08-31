@@ -593,7 +593,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                 {
                   (typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля') &&
                   <div className='extra__row'>
-                    <span className="text extra__title">Дата актуализации</span>
+                    <span className="text extra__title">Дата актуализации от</span>
                     <div className='extra__value'>
                       <Controller
                         control={control}
