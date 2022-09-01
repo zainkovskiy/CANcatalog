@@ -689,6 +689,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     >
                       <ToggleButton value="actual">Актуально</ToggleButton>
                       <ToggleButton value="sold">Продано</ToggleButton>
+                      <ToggleButton value="beforeCancel">Пред.отменено</ToggleButton>
                       <ToggleButton value="cancel">Отменено</ToggleButton>
                       {
                         typeOfRealty === 'Квартиры' &&
