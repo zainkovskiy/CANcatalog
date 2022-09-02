@@ -23,7 +23,7 @@ export function ModalMetro({ onClose, metro }) {
 
   const [metroAll, setMetroAll] = useState(false,);
 
-  useEffect(()=>{
+  useEffect(() => {
     metro?.isMetroAll && setMetroAll(metro.isMetroAll)
   }, [])
 
@@ -60,10 +60,10 @@ export function ModalMetro({ onClose, metro }) {
         sx={{ fontFamily: 'Montserrat', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
         Поиск по станции метро
-        <IconButton 
-        onClick={onClose}
+        <IconButton
+          onClick={onClose}
         >
-          <CloseIcon/>
+          <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -141,10 +141,11 @@ export function ModalMetro({ onClose, metro }) {
             >{errors?.metro && 'Выберете станцию метро'}</span>
           </div>
           <DialogActions >
-            <Button 
-              onClick={() => {dispatch(setMetro({})), onClose()} }
+            <Button
+              color='error'
+              onClick={() => { dispatch(setMetro({})), onClose() }}
             >Очистить</Button>
-            <Button type='submit'>Сохранить</Button>
+            <Button type='submit' variant='outlined'>Сохранить</Button>
           </DialogActions>
         </form>
       </DialogContent>

@@ -913,11 +913,12 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
               </div>
             </div>
           }
-          <DialogActions >
+          <DialogActions>
             <Button
+              color="error"
               onClick={() => { dispatch(setExtra({})), onClose() }}
             >Очистить</Button>
-            <Button type='submit'>Сохранить</Button>
+            <Button variant='outlined' type='submit'>Сохранить</Button>
           </DialogActions>
         </form>
       </DialogContent>

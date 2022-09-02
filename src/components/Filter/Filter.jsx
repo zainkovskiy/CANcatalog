@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { filter } from 'actions/filter';
+import { filter, setExtra } from 'actions/filter';
 
 import TextField from '@mui/material/TextField';
 import MenuList from '@mui/material/MenuList';
@@ -86,6 +86,7 @@ export function Filter(props) {
       name: name,
       value: value
     }))
+    dispatch(setExtra({}));
   }
   return (
     <div className='filter'>
@@ -150,7 +151,6 @@ export function Filter(props) {
           ariant="outlined"
           size='small'
           name='price'
-          disabled={sourceValue === 'pars' && filterState.reqTypeofRealty === 'Гаражи'}
           value={` ${price[0] ? `от ${price[0]}` : ''} ${price[1] ? `до ${price[1]}` : ''} `}
           inputProps={
             {
