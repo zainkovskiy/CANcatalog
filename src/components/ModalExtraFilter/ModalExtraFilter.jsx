@@ -85,6 +85,10 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
       statusDate: extra?.statusDate || '',
       withoutDocs: extra?.withoutDocs || false,
       hasExclusive: extra?.hasExclusive || false,
+      reqPolice: extra?.reqPolice || false,
+      reqLandType: extra?.reqLandType || 'nothing',
+      typeOfHouse: extra?.typeOfHouse || 'nothing',
+      garageType: extra?.garageType || 'nothing',
     }
   });
 
@@ -165,7 +169,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   </div>
                 </div>
                 {
-                  (sourceValue !== 'pars' && typeOfRealty !== 'Гаражи') &&
+                  (typeOfRealty !== 'Дома' && typeOfRealty !== 'Комнаты' && typeOfRealty !== 'Гаражи') &&
                   <>
                     <div>
                       <span className='extra__description'>Кухня</span>
@@ -243,6 +247,38 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
+            (typeOfRealty === 'Гаражи' && sourceValue === 'pars') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Тип гаража</span>
+              <div className='extra__value'>
+                <div className='extra__inputs' style={{ width: '50%' }}>
+                  <SelectForm
+                    control={control}
+                    name='garageType'
+                    label='Тип гаража'
+                    multiple={false}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
+            (typeOfRealty === 'Земля' && sourceValue === 'pars') &&
+            <div className='extra__row'>
+              <span className="text extra__title">Тип земли</span>
+              <div className='extra__value'>
+                <div className='extra__inputs' style={{ width: '50%' }}>
+                  <SelectForm
+                    control={control}
+                    name='reqLandType'
+                    label='Тип земли'
+                    multiple={false}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+          {
             (sourceValue === '1c' && typeOfRealty !== 'Гаражи' && typeOfRealty !== 'Земля' && typeOfRealty !== 'Квартиры - Новостройки') &&
             <div className='extra__row'>
               <span className="text extra__title">Планировка</span>
@@ -307,6 +343,22 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   </ToggleButtonGroup>
                 }
               />
+            </div>
+          }
+          {
+            typeOfRealty === 'Дома' &&
+            <div className='extra__row'>
+              <span className="text extra__title">Тип дома</span>
+              <div className='extra__value'>
+                <div className='extra__inputs' style={{ width: '50%' }}>
+                  <SelectForm
+                    control={control}
+                    name='typeOfHouse'
+                    label='Тип дома'
+                    multiple={false}
+                  />
+                </div>
+              </div>
             </div>
           }
           {
@@ -823,6 +875,19 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   control={control}
                   name='isShowAgent'
                   label='Не выводить агентства'
+                />
+              </div>
+            </div>
+          }
+          {
+            (sourceValue === 'pars' && typeOfRealty === 'Гаражи') &&
+            <div className='extra__row'>
+              <span className="text extra__title"></span>
+              <div>
+                <FormCheckbox
+                  control={control}
+                  name='reqPolice'
+                  label='Наличие охраны'
                 />
               </div>
             </div>
