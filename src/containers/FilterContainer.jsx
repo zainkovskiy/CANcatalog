@@ -22,38 +22,47 @@ class FilterContainer extends PureComponent {
   state = {
     builderList: [],
     filterReload: true,
-  }
+  };
 
   getBuilderVariants = async (value) => {
     try {
-      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Object/FilterGetter.php', {
-        action: "blockBuilderName",
-        req: value
-      });
+      const res = await axios.post(
+        'https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Object/FilterGetter.php',
+        {
+          action: 'blockBuilderName',
+          req: value,
+        }
+      );
       this.setState({
-        builderList: res.data
-      })
+        builderList: res.data,
+      });
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
   clearBuilderList = () => {
-    this.setState({ builderList: [] })
-  }
+    this.setState({ builderList: [] });
+  };
+
+  openWiki = () => {
+    window.open(
+      'https://docs.google.com/spreadsheets/d/1tLQNmqKHokiHJtwsWZ6zH1WAGa0YqKTXlae14kOLxJQ/edit#gid=1834609678'
+    );
+  };
 
   handlerClearFilter = () => {
     const { clearFilter } = this.props;
-    this.setState({ filterReload: false },
-      () => this.setState({ filterReload: true })
-    )
+    this.setState({ filterReload: false }, () =>
+      this.setState({ filterReload: true })
+    );
     clearFilter({
       reqTypeofRealty: 'Квартиры',
     });
-  }
+  };
 
   render() {
-    const { source, basket, setIsMap, isMap } = this.props;
+    const { source, basket, setIsMap, isMap, reqTypeofRealty } = this.props;
     return (
       <>
         <div className='filter-top'>
@@ -62,8 +71,17 @@ class FilterContainer extends PureComponent {
             handlerClearFilter={this.handlerClearFilter}
           />
           <div>
+            {reqTypeofRealty === 'Квартиры - Новостройки' && (
+              <Button
+                variant='text'
+                size='small'
+                onClick={this.openWiki}
+              >
+                Вики по Новостройкам
+              </Button>
+            )}
             <Button
-              variant="text"
+              variant='text'
               size='small'
               onClick={this.handlerClearFilter}
             >
@@ -71,7 +89,7 @@ class FilterContainer extends PureComponent {
             </Button>
             <Badge
               badgeContent={basket?.length}
-              color="primary"
+              color='primary'
             >
               <ButtonBasket
                 showBasket={this.showBasket}
@@ -80,34 +98,32 @@ class FilterContainer extends PureComponent {
             </Badge>
           </div>
         </div>
-        {
-          this.state.filterReload &&
+        {this.state.filterReload && (
           <Filter
             sourceValue={source}
             builderList={this.state.builderList}
             getBuilderVariants={this.getBuilderVariants}
             clearBuilderList={this.clearBuilderList}
           />
-        }
+        )}
         <div className='setting'>
           <div>
-            {
-              source !== 'mls' &&
+            {source !== 'mls' && (
               <ButtonTemplate
                 sourceValue={source}
                 isMap={isMap}
               />
-            }
+            )}
           </div>
           <div className='setting__buttons'>
             <ButtonMetro />
-            <ButtonExtra
-              sourceValue={source}
-            />
+            <ButtonExtra sourceValue={source} />
             <Button
-              variant="outlined"
-              onClick={() => { setIsMap() }}
-              size="small"
+              variant='outlined'
+              onClick={() => {
+                setIsMap();
+              }}
+              size='small'
             >
               {isMap ? 'списком' : 'на карте'}
             </Button>
@@ -116,7 +132,7 @@ class FilterContainer extends PureComponent {
         </div>
         <BackdropComponent />
       </>
-    )
+    );
   }
 }
 
@@ -125,14 +141,18 @@ function mapStateToProps(state, ownProps) {
     source: state.filter.get('source'),
     basket: state.basket.get('basket').toJS(),
     isMap: state.filter.get('isMap'),
-  }
+    reqTypeofRealty: state.filter.getIn(['filter', 'reqTypeofRealty']),
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     setIsMap: () => dispatch(setIsMap()),
     clearFilter: (clearfilter) => dispatch(clearFilter(clearfilter)),
-  }
+  };
 }
 
-export const FilterRedux = connect(mapStateToProps, mapDispatchToProps)(FilterContainer);
+export const FilterRedux = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FilterContainer);

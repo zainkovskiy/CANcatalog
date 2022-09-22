@@ -8,8 +8,8 @@ module.exports = {
     path: path.resolve(__dirname, 'src', 'index.js'),
   },
   output: {
-    path: path.resolve(__dirname, 'dist', 'v1.1.1'),
-    filename: 'bundle-v1.1.1.js'
+    path: path.resolve(__dirname, 'dist', 'v1.1.2'),
+    filename: 'bundle-v1.1.2.js',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -19,7 +19,7 @@ module.exports = {
       actions: path.resolve(__dirname, 'src', 'actions'),
       reducers: path.resolve(__dirname, 'src', 'reducers'),
       images: path.resolve(__dirname, 'src', 'images'),
-    }
+    },
   },
   devtool: 'eval-cheap-source-map',
   module: {
@@ -27,23 +27,23 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.s?css$/,
         use: [
           miniCssExtractPlugin.loader,
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
           },
           {
-            loader: 'sass-loader'
-          }
-        ]
+            loader: 'sass-loader',
+          },
+        ],
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack']
+        use: ['@svgr/webpack'],
       },
       // {
       //   test: /\.(svg|jpe?g|png)$/,
@@ -61,10 +61,10 @@ module.exports = {
   plugins: [
     new htmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'index.html'),
-      fiename: 'index.html'
+      fiename: 'index.html',
     }),
     new miniCssExtractPlugin({
-      filename: 'main-v1.1.1.css'
+      filename: 'main-v1.1.2.css',
     }),
-  ]
-}
+  ],
+};
