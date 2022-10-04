@@ -152,7 +152,7 @@ export function MapField(props) {
     <div style={{ position: 'relative' }}>
       <YMaps
         query={{
-          apikey: '9b339b12-4d97-4522-b2e5-da5a5da1c7f6',
+          apikey: '4ed55148-64dc-447c-a240-f3f034053bbf',
           // load: 'package.full' 
         }}
       >
