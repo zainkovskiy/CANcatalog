@@ -9,4 +9,5 @@ export const map = createAction('[Filter] map');
 export const setIsMap = createAction('[Filter] setIsMap');
 export const filter = createAction('[Filter] filter');
 export const clearFilter = createAction('[Filter] clearFilter');
+export const removeAddress = createAction('[Filter] removeAddress');
 

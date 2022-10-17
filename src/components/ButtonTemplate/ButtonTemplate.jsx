@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -16,14 +17,22 @@ export function ButtonTemplate({ sourceValue, isMap }) {
   const dispatch = useDispatch();
   const [openClientID, setOpenClientID] = useState(false);
   const [openInputURL, setOpenInputURL] = useState(false);
+  const [modalEl, setModalEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const openModal = Boolean(modalEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleClickModal = (source) => {
+    setModalEl(source);
+  };
+  const handleCloseModal = () => {
+    setModalEl(null);
   };
   const handlerSelect = (req) => {
     isMap ? dispatch(loaderMap()) : dispatch(loader());
@@ -79,6 +88,20 @@ export function ButtonTemplate({ sourceValue, isMap }) {
               onClick={() => { setOpenInputURL(!openInputURL), handleClose() }}
             >Поиск по ссылке</MenuItem>
           }
+          {
+            sourceValue === '1c' &&
+            <MenuItem
+              onClick={() => { handleClickModal('office'), handleClose(); }}
+            >Поиск по офису
+            </MenuItem>
+          }
+          {
+            sourceValue === '1c' &&
+            <MenuItem
+              onClick={() => { handleClickModal('realtor'), handleClose(); }}
+            >Поиск по риелтору
+            </MenuItem>
+          }
         </Menu>
       </div>
       {
@@ -111,6 +134,20 @@ export function ButtonTemplate({ sourceValue, isMap }) {
           />}
         />
       }
+      {
+        openModal &&
+        <ModalWindow
+          open={openModal}
+          maxSize='sm'
+          onClose={handleCloseModal}
+        >
+          <TemplateSearchModalWindow
+            source={modalEl}
+            onClose={handleCloseModal}
+            setReq={handlerReq}
+          />
+        </ModalWindow>
+      }
     </>
   )
 }
@@ -121,10 +158,12 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TextField from '@mui/material/TextField';
+import MenuList from '@mui/material/MenuList';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const TemplateModalWindow = (props) => {
   const { onClose, title, description, setReq, action } = props;
-  const [ value, setValue ] = useState('');
+  const [value, setValue] = useState('');
   return (
     <>
       <DialogTitle
@@ -146,8 +185,8 @@ const TemplateModalWindow = (props) => {
           size='small'
           fullWidth
           sx={{ mt: '0.5rem' }}
-          value={ value }
-          onChange={(event) => { setValue(event.target.value) } }
+          value={value}
+          onChange={(event) => { setValue(event.target.value) }}
         />
       </DialogContent>
       <DialogActions>
@@ -155,9 +194,120 @@ const TemplateModalWindow = (props) => {
           size='medium'
           variant="contained"
           onClick={() => setReq(action, value)}
-          disabled={ Boolean(!value) }
+          disabled={Boolean(!value)}
         >
           Сохранить
+        </Button>
+        <Button
+          size='medium'
+          variant="outlined"
+          color='error'
+          onClick={onClose}
+        >
+          Закрыть
+        </Button>
+      </DialogActions>
+    </>
+  )
+}
+
+const TemplateSearchModalWindow = ({ source, onClose, setReq }) => {
+  const [open, setOpen] = useState(false); ``
+  const [loading, setLoading] = useState(false); ``
+  const [options, setOptions] = useState([]);
+  const [selectValue, setSelectValue] = useState('');
+
+  const findOptions = async (value) => {
+    if (value === 0) {
+      return
+    }
+    if(!value || value?.length < 1){
+      setSelectValue('')
+    }
+    console.log(value);
+    setLoading(true);
+    setOpen(false);
+    await axios.post('https://crm.centralnoe.ru/dealincom/connector/findUsers.php', {
+      [source === 'office' ? 'department' : 'name']: value,
+      [source === 'office' ? 'onlyOffice' : 'employee']: source === 'office' ? 'onlyOffice' : 'employee',
+    }).then((data) => {
+      setOptions(data.data);
+    }).finally(() => {
+      setLoading(false);
+      setOpen(true);
+    })
+  }
+
+  const getLabel = (option) => {
+    if (source === 'office') {
+      return option.depName;
+    }
+    if (source === 'realtor') {
+      return `${option.LAST_NAME} ${option.NAME}`;
+    }
+  }
+
+  const handleChange = (value) => {
+    setSelectValue(value);
+  }
+
+  const handleSearch = () => {
+    setReq(
+      source === 'office' ? 'getByOffice' : 'getByRealtor',
+      selectValue
+    );
+    onClose();
+  }
+
+  return (
+    <>
+      <DialogTitle
+        sx={{ fontFamily: 'Montserrat', fontWeight: 700, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+      >
+        Поиск по {' '}
+        {
+          source === 'office' &&
+          'офису'
+        }
+        {
+          source === 'realtor' &&
+          'риелтору'
+        }
+        <IconButton
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <div style={{width: '100%', height: '50vh'}}>
+          <Autocomplete
+            size='small'
+            disablePortal
+            options={options}
+            open={open}
+            onOpen={() => { setOpen(true); }}
+            onClose={() => { setOpen(false); }}
+            onChange={(event, newValue) => handleChange(newValue)}
+            isOptionEqualToValue={(option, value) => source === 'realtor' ? option.ID === value.ID : option.depName === value.depName}
+            onInputChange={(event) => findOptions(event.target.value)}
+            getOptionLabel={(option) => getLabel(option)}
+            loading={loading}
+            loadingText={<span className='text'><em>Загрузка...</em></span>}
+            noOptionsText={<span className='text'>Не найдено</span>}
+            renderInput={(params) => <TextField {...params} />}
+            filterOptions={(x) => x}
+          />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          size='medium'
+          variant="contained"
+          onClick={handleSearch}
+          disabled={!selectValue}
+        >
+          Найти
         </Button>
         <Button
           size='medium'

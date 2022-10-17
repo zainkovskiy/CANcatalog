@@ -15,6 +15,7 @@ import { ButtonSearch } from 'components/ButtonSearch';
 import { ButtonTemplate } from 'components/ButtonTemplate';
 import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
+import { AddressItems } from 'components/AddressItems';
 
 import './FilterContainer.scss';
 
@@ -58,11 +59,12 @@ class FilterContainer extends PureComponent {
     );
     clearFilter({
       reqTypeofRealty: 'Квартиры',
+      address: [],
     });
   };
 
   render() {
-    const { source, basket, setIsMap, isMap, reqTypeofRealty } = this.props;
+    const { source, basket, setIsMap, isMap, reqTypeofRealty, address } = this.props;
     return (
       <>
         <div className='filter-top'>
@@ -106,6 +108,10 @@ class FilterContainer extends PureComponent {
             clearBuilderList={this.clearBuilderList}
           />
         )}
+        {
+          address.length> 0 &&
+          <AddressItems/>
+        }
         <div className='setting'>
           <div>
             {source !== 'mls' && (
@@ -140,6 +146,7 @@ function mapStateToProps(state, ownProps) {
   return {
     source: state.filter.get('source'),
     basket: state.basket.get('basket').toJS(),
+    address: state.filter.getIn(['filter', 'address']),
     isMap: state.filter.get('isMap'),
     reqTypeofRealty: state.filter.getIn(['filter', 'reqTypeofRealty']),
   };

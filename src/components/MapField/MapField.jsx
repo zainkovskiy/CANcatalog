@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { YMaps, Map, Placemark, Circle, Clusterer, Polygon } from "react-yandex-maps";
+import { YMaps, Map, Placemark, Circle, Clusterer, Polygon, FullscreenControl } from "react-yandex-maps";
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
@@ -226,21 +226,23 @@ export function MapField(props) {
               }}
             />
           }
+          <FullscreenControl />
         </Map>
       </YMaps>
       {
         !isShowPolygon &&
         <Tooltip
           title={isShowCircle ? 'Очистить область' : 'Указать на карте (круг)'}
+          placement='left'
         >
           <Fab
             aria-label="add"
             size='small'
             sx={{
               position: 'absolute',
-              top: 10,
+              bottom: 60,
               right: 10,
-              zIndex: 0
+              zIndex: 99999
             }}
             onClick={() => { setIsShowCircle(!isShowCircle) }}
           >
@@ -256,15 +258,16 @@ export function MapField(props) {
         !isShowCircle &&
         <Tooltip
           title={isShowPolygon ? 'Очистить область' : 'Указать на карте (полигон)'}
+          placement='left'
         >
           <Fab
             aria-label="add"
             size='small'
             sx={{
               position: 'absolute',
-              top: 60,
+              bottom: 10,
               right: 10,
-              zIndex: 0
+              zIndex: 99999
             }}
             onClick={() => setIsShowPolygon(!isShowPolygon)}
           >
