@@ -31,6 +31,7 @@ export function MapField(props) {
   const [isShowCircle, setIsShowCircle] = useState(false)
   const [isShowPolygon, setIsShowPolygon] = useState(false)
   const [geoObjectState, setGeoObjectState] = useState(null)
+  const [fullScreen, setFullscreen] = useState(false);
 
   const source = useSelector((state) => state.filter.get('source'));
   const mapDisabledAPI = useSelector((state) => state.cards.get('mapDisabledAPI'));
@@ -116,6 +117,10 @@ export function MapField(props) {
     }
 
     dispatch(setSideBarCards(sideBarList));
+  }
+
+  const toggleFullScreen = () => {
+    setFullscreen(!fullScreen);
   }
 
   const init = () => {
@@ -226,7 +231,7 @@ export function MapField(props) {
               }}
             />
           }
-          <FullscreenControl />
+          <FullscreenControl onClick={toggleFullScreen}/>
         </Map>
       </YMaps>
       {
@@ -239,7 +244,7 @@ export function MapField(props) {
             aria-label="add"
             size='small'
             sx={{
-              position: 'absolute',
+              position: fullScreen ? 'fixed' : 'absolute',
               bottom: 60,
               right: 10,
               zIndex: 99999
@@ -264,7 +269,7 @@ export function MapField(props) {
             aria-label="add"
             size='small'
             sx={{
-              position: 'absolute',
+              position: fullScreen ? 'fixed' : 'absolute',
               bottom: 10,
               right: 10,
               zIndex: 99999

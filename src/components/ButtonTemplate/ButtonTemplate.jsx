@@ -68,19 +68,19 @@ export function ButtonTemplate({ sourceValue, isMap }) {
             sourceValue === '1c' &&
             <MenuItem
               onClick={() => { handlerSelect({ action: 'get', onlyMy: userLogin, type: filterMain.reqTypeofRealty }), handleClose() }}
-            >Только мои</MenuItem>
+            >Показать мои</MenuItem>
           }
           {
             sourceValue === '1c' &&
             <MenuItem
               onClick={() => { handlerSelect({ action: 'get', onlyOffice: userLogin, type: filterMain.reqTypeofRealty }), handleClose() }}
-            >Мой офис</MenuItem>
+            >Показать мой офис</MenuItem>
           }
           {
             sourceValue === '1c' &&
             <MenuItem
               onClick={() => { setOpenClientID(!openClientID), handleClose() }}
-            >Поиск по клиенту</MenuItem>
+            >По номеру в объявлении</MenuItem>
           }
           {
             sourceValue === 'pars' &&
@@ -92,7 +92,7 @@ export function ButtonTemplate({ sourceValue, isMap }) {
             sourceValue === '1c' &&
             <MenuItem
               onClick={() => { handleClickModal('office'), handleClose(); }}
-            >Поиск по офису
+            >По другому офису
             </MenuItem>
           }
           {
