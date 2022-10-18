@@ -112,7 +112,7 @@ export function ButtonTemplate({ sourceValue, isMap }) {
           onClose={() => setOpenClientID(!openClientID)}
           children={<TemplateModalWindow
             onClose={() => setOpenClientID(!openClientID)}
-            title='Поиск по номеру для клиента'
+            title='Поиск номеру в объявлении'
             description='Введите номер для клиента (6 цифр)'
             setReq={handlerReq}
             action='clientIdInner'
