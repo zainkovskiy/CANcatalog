@@ -224,12 +224,11 @@ const TemplateSearchModalWindow = ({ source, onClose, setReq }) => {
     if(!value || value?.length < 1){
       setSelectValue('')
     }
-    console.log(value);
     setLoading(true);
     setOpen(false);
-    await axios.post('https://crm.centralnoe.ru/dealincom/connector/findUsers.php', {
-      [source === 'office' ? 'department' : 'name']: value,
-      [source === 'office' ? 'onlyOffice' : 'employee']: source === 'office' ? 'onlyOffice' : 'employee',
+    await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/FilterUsers.php', {
+      [source === 'office' ? 'department' : 'employee']: value,
+      // [source === 'office' ? 'onlyOffice' : 'employee']: source === 'office' ? 'onlyOffice' : 'employee',
     }).then((data) => {
       setOptions(data.data);
     }).finally(() => {
@@ -243,7 +242,7 @@ const TemplateSearchModalWindow = ({ source, onClose, setReq }) => {
       return option.depName;
     }
     if (source === 'realtor') {
-      return `${option.LAST_NAME} ${option.NAME}`;
+      return option.LAST_NAME;
     }
   }
 
