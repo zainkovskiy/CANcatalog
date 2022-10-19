@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { YMaps, Map, Placemark, Circle, Clusterer, Polygon, FullscreenControl } from "react-yandex-maps";
+import { YMaps, Map, Placemark, Circle, Clusterer, Polygon, FullscreenControl, Button } from "react-yandex-maps";
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
@@ -153,6 +153,7 @@ export function MapField(props) {
     loadingObjectManager.clusters.events.add(['click'], onClickCluster);
     mapRef.current.geoObjects.add(objectManagerRef.current);
   }
+
   return (
     <div style={{ position: 'relative' }}>
       <YMaps
@@ -189,8 +190,8 @@ export function MapField(props) {
                 clusterHideIconOnBalloonOpen: false,
                 geoObjectHideIconOnBalloonOpen: false
               }}
-              onClick={(event) => { 
-                event.get('target').options._name === 'cluster' && openCluster(event.get('target').getGeoObjects(), 'local') 
+              onClick={(event) => {
+                event.get('target').options._name === 'cluster' && openCluster(event.get('target').getGeoObjects(), 'local')
               }}
             >
               {
@@ -198,8 +199,8 @@ export function MapField(props) {
                   <Placemark
                     key={mark.reqNumber ? mark.reqNumber : idx}
                     geometry={[mark.lat, mark.lng]}
-                    options={{ 
-                      iconColor: basketList.toJS().find(item => item.reqNumber === mark.reqNumber) ? 'green' : `#0c54a0` 
+                    options={{
+                      iconColor: basketList.toJS().find(item => item.reqNumber === mark.reqNumber) ? 'green' : `#0c54a0`
                     }}
                     properties={{
                       data: mark
@@ -231,10 +232,48 @@ export function MapField(props) {
               }}
             />
           }
-          <FullscreenControl onClick={toggleFullScreen}/>
+          <FullscreenControl onClick={toggleFullScreen} />
+            <Button
+              data={{
+                image: `${
+                  isShowCircle ? 
+                  'https://crm.centralnoe.ru/dealincom/assets/img/remove_icon.png' :
+                  'https://crm.centralnoe.ru/dealincom/assets/svg/location-pin-svgrepo-com.svg'
+                }`,
+                title: `${isShowCircle ? 'Очистить область' : 'Указать на карте (круг)'}`,
+              }}
+              options={{
+                visible: !isShowPolygon,
+                float: 'left',
+                position: {
+                  left: 10,
+                  top: 10
+                }
+              }}
+              onClick={() => { setIsShowCircle(!isShowCircle) }}
+            />
+            <Button
+              data={{
+                image: `${
+                  isShowPolygon ? 
+                  'https://crm.centralnoe.ru/dealincom/assets/img/remove_icon.png' :
+                  'https://crm.centralnoe.ru/dealincom/assets/svg/pol.svg'
+                }`,
+                title: `${isShowCircle ? 'Очистить область' : 'Указать на карте (полигон)'}`,
+              }}
+              onClick={() => setIsShowPolygon(!isShowPolygon)}
+              options={{
+                visible: !isShowCircle,
+                float: 'left',
+                position: {
+                  left: 10,
+                  top: 50
+                }
+              }}
+              />
         </Map>
       </YMaps>
-      {
+      {/* {
         !isShowPolygon &&
         <Tooltip
           title={isShowCircle ? 'Очистить область' : 'Указать на карте (круг)'}
@@ -283,7 +322,7 @@ export function MapField(props) {
             }
           </Fab>
         </Tooltip>
-      }
+      } */}
       <MapSideBar />
     </div>
   )

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createAction } from "redux-actions";
 
 export const loader = createAction('[Filter] loader');
@@ -10,4 +11,4 @@ export const setIsMap = createAction('[Filter] setIsMap');
 export const filter = createAction('[Filter] filter');
 export const clearFilter = createAction('[Filter] clearFilter');
 export const removeAddress = createAction('[Filter] removeAddress');
-
+export const setLocation = createAction('[Filter] setLocation');

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { setIsMap, clearFilter } from 'actions/filter';
+import { setIsMap, clearFilter, setLocation } from 'actions/filter';
 
 import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
@@ -23,7 +23,27 @@ class FilterContainer extends PureComponent {
   state = {
     builderList: [],
     filterReload: true,
+    renderLayout: false
   };
+  componentDidMount() {
+    this.getCurrentLocation();
+  }
+  getCurrentLocation = async () => {
+    const { setLocation } = this.props;
+    try {
+      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/Controller.php', {
+        action: 'getArea',
+        userId: userId
+      });
+      if (res?.data && res?.data?.area) {
+        setLocation(res.data.area);
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      this.setState({ renderLayout: true })
+    }
+  }
 
   getBuilderVariants = async (value) => {
     try {
@@ -67,76 +87,81 @@ class FilterContainer extends PureComponent {
     const { source, basket, setIsMap, isMap, reqTypeofRealty, address } = this.props;
     return (
       <>
-        <div className='filter-top'>
-          <Source
-            sourceValue={source}
-            handlerClearFilter={this.handlerClearFilter}
-          />
-          <div>
-            {reqTypeofRealty === 'Квартиры - Новостройки' && (
-              <Button
-                variant='text'
-                size='small'
-                onClick={this.openWiki}
-              >
-                Вики по Новостройкам
-              </Button>
-            )}
-            <Button
-              variant='text'
-              size='small'
-              onClick={this.handlerClearFilter}
-            >
-              очистить фильтр
-            </Button>
-            <Badge
-              badgeContent={basket?.length}
-              color='primary'
-            >
-              <ButtonBasket
-                showBasket={this.showBasket}
-                basket={basket}
-              />
-            </Badge>
-          </div>
-        </div>
-        {this.state.filterReload && (
-          <Filter
-            sourceValue={source}
-            builderList={this.state.builderList}
-            getBuilderVariants={this.getBuilderVariants}
-            clearBuilderList={this.clearBuilderList}
-          />
-        )}
         {
-          address.length> 0 &&
-          <AddressItems/>
-        }
-        <div className='setting'>
-          <div>
-            {source !== 'mls' && (
-              <ButtonTemplate
+          this.state.renderLayout &&
+          <>
+            <div className='filter-top'>
+              <Source
                 sourceValue={source}
-                isMap={isMap}
+                handlerClearFilter={this.handlerClearFilter}
+              />
+              <div>
+                {reqTypeofRealty === 'Квартиры - Новостройки' && (
+                  <Button
+                    variant='text'
+                    size='small'
+                    onClick={this.openWiki}
+                  >
+                    Вики по Новостройкам
+                  </Button>
+                )}
+                <Button
+                  variant='text'
+                  size='small'
+                  onClick={this.handlerClearFilter}
+                >
+                  очистить фильтр
+                </Button>
+                <Badge
+                  badgeContent={basket?.length}
+                  color='primary'
+                >
+                  <ButtonBasket
+                    showBasket={this.showBasket}
+                    basket={basket}
+                  />
+                </Badge>
+              </div>
+            </div>
+            {this.state.filterReload && (
+              <Filter
+                sourceValue={source}
+                builderList={this.state.builderList}
+                getBuilderVariants={this.getBuilderVariants}
+                clearBuilderList={this.clearBuilderList}
               />
             )}
-          </div>
-          <div className='setting__buttons'>
-            <ButtonMetro />
-            <ButtonExtra sourceValue={source} />
-            <Button
-              variant='outlined'
-              onClick={() => {
-                setIsMap();
-              }}
-              size='small'
-            >
-              {isMap ? 'списком' : 'на карте'}
-            </Button>
-            <ButtonSearch />
-          </div>
-        </div>
-        <BackdropComponent />
+            {
+              address.length > 0 &&
+              <AddressItems />
+            }
+            <div className='setting'>
+              <div>
+                {source !== 'mls' && (
+                  <ButtonTemplate
+                    sourceValue={source}
+                    isMap={isMap}
+                  />
+                )}
+              </div>
+              <div className='setting__buttons'>
+                <ButtonMetro />
+                <ButtonExtra sourceValue={source} />
+                <Button
+                  variant='outlined'
+                  onClick={() => {
+                    setIsMap();
+                  }}
+                  size='small'
+                >
+                  {isMap ? 'списком' : 'на карте'}
+                </Button>
+                <ButtonSearch />
+              </div>
+            </div>
+            <BackdropComponent />
+          </>
+        }
       </>
     );
   }
@@ -156,6 +181,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setIsMap: () => dispatch(setIsMap()),
     clearFilter: (clearfilter) => dispatch(clearFilter(clearfilter)),
+    setLocation: (location) => dispatch(setLocation(location)),
   };
 }
 

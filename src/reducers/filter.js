@@ -11,7 +11,8 @@ import {
   setIsMap, 
   filter, 
   clearFilter,
-  removeAddress
+  removeAddress,
+  setLocation
 } from 'actions/filter';
 
 const initialState = new Map({
@@ -19,6 +20,7 @@ const initialState = new Map({
   isLoadingMap: false,
   isMap: false,
   source: '1c',
+  location: '',
   metro: {},
   extra: {},
   map: [],
@@ -61,5 +63,8 @@ export const filterReducer = handleActions({
   },
   [setIsMap]: (state, action) => {
     return state.set('isMap', !state.get('isMap'))
+  },
+  [setLocation]: (state, action) => {
+    return state.set('location', action.payload)
   },
 }, initialState)
