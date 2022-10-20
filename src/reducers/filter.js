@@ -59,7 +59,7 @@ export const filterReducer = handleActions({
     return state.setIn(['filter', 'address'], state.getIn(['filter', 'address']).filter(item => item.value !== action.payload.value))
   },
   [clearFilter]: (state, action) => {
-    return state.set('filter', action.payload)
+    return state.setIn(['filter', 'reqTypeofRealty'], 'Квартиры')
   },
   [setIsMap]: (state, action) => {
     return state.set('isMap', !state.get('isMap'))

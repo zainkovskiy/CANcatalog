@@ -22,7 +22,6 @@ import './FilterContainer.scss';
 class FilterContainer extends PureComponent {
   state = {
     builderList: [],
-    filterReload: true,
     renderLayout: false
   };
   componentDidMount() {
@@ -74,13 +73,7 @@ class FilterContainer extends PureComponent {
 
   handlerClearFilter = () => {
     const { clearFilter } = this.props;
-    this.setState({ filterReload: false }, () =>
-      this.setState({ filterReload: true })
-    );
-    clearFilter({
-      reqTypeofRealty: 'Квартиры',
-      address: [],
-    });
+    clearFilter();
   };
 
   render() {
@@ -123,14 +116,12 @@ class FilterContainer extends PureComponent {
                 </Badge>
               </div>
             </div>
-            {this.state.filterReload && (
-              <Filter
-                sourceValue={source}
-                builderList={this.state.builderList}
-                getBuilderVariants={this.getBuilderVariants}
-                clearBuilderList={this.clearBuilderList}
-              />
-            )}
+            <Filter
+              sourceValue={source}
+              builderList={this.state.builderList}
+              getBuilderVariants={this.getBuilderVariants}
+              clearBuilderList={this.clearBuilderList}
+            />
             {
               address.length > 0 &&
               <AddressItems />
@@ -180,7 +171,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     setIsMap: () => dispatch(setIsMap()),
-    clearFilter: (clearfilter) => dispatch(clearFilter(clearfilter)),
+    clearFilter: () => dispatch(clearFilter()),
     setLocation: (location) => dispatch(setLocation(location)),
   };
 }
