@@ -910,6 +910,14 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     label='ранее был СК'
                   />
                 }
+                {
+                  (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры - Новостройки') &&
+                  <FormCheckbox
+                    control={control}
+                    name='forFake'
+                    label='Для контрафакта'
+                  />
+                }
               </div>
             </div>
           }
