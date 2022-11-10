@@ -861,6 +861,11 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                     name='buildingInstallment'
                     label='Рассрочка'
                   />
+                  <FormCheckbox
+                    control={control}
+                    name='onlyDDU'
+                    label='Только ДДУ'
+                  />
                 </>
               }
             </div>

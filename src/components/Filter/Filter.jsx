@@ -82,6 +82,7 @@ export function Filter(props) {
   }
 
   const handlerSelect = (name, value) => {
+    console.log(value);
     dispatch(filter({
       name: name,
       value: value
