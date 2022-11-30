@@ -30,7 +30,7 @@ const defaultPropsField = {
   size: 'small',
 }
 
-export function ModalExtraFilter({ sourceValue, onClose, extra }) {
+export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects }) {
   const typeOfRealty = useSelector((state) => state.filter.get('filter').reqTypeofRealty);
   const dispatch = useDispatch();
   const {
@@ -81,7 +81,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
       roomsForSale: extra?.roomsForSale || '',
       communications: extra?.communications || ['nothing'],
       typeGround: extra?.typeGround || ['nothing'],
-      status: extra?.status || 'actual',
+      status: extra?.status || ['actual'],
       statusDate: extra?.statusDate || '',
       withoutDocs: extra?.withoutDocs || false,
       hasExclusive: extra?.hasExclusive || false,
@@ -92,10 +92,19 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
     }
   });
 
+  const setToggleMultipleValue = (event, onChange, currentArr) => {
+    const value = event.target.value;
+    if(currentArr.includes(value)){
+      onChange(currentArr.filter(item => item !== value));
+      return
+    }
+    const newArr = [...currentArr, value];
+    onChange(newArr);
+  } 
 
   const onSubmit = (data) => {
-    console.log(data);
     dispatch(setExtra(data));
+    getCountObjects();
     onClose();
   }
 
@@ -454,7 +463,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
             </div>
           }
           {
-            (sourceValue === '1c' && (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры - Новостройки')) &&
+            (sourceValue === '1c' && (typeOfRealty === 'Квартиры - Вторичка' || typeOfRealty === 'Квартиры - Новостройки')) &&
             <div className='extra__row'>
               <span className="text extra__title">Высота потолка</span>
               <div className='extra__value'>
@@ -735,8 +744,9 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   render={({ field }) =>
                     <ToggleButtonGroup
                       color="primary"
-                      exclusive
                       {...field}
+                      onChange={(event) => setToggleMultipleValue(event, field.onChange, field.value)}
+                      value={field.value}
                       size='small'
                     >
                       <ToggleButton value="actual">Актуально</ToggleButton>
@@ -744,14 +754,14 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                       <ToggleButton value="beforeCancel">Пред.отменено</ToggleButton>
                       <ToggleButton value="cancel">Отменено</ToggleButton>
                       {
-                        typeOfRealty === 'Квартиры' &&
+                        typeOfRealty === 'Квартиры - Вторичка' &&
                         <ToggleButton value="postponed">Отложено</ToggleButton>
                       }
                     </ToggleButtonGroup>
                   }
                 />
                 {/* {
-                  typeOfRealty === 'Квартиры' &&
+                  typeOfRealty === 'Квартиры - Вторичка' &&
                   <Controller
                     control={control}
                     name="statusDate"
@@ -916,7 +926,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
                   />
                 }
                 {
-                  (typeOfRealty === 'Квартиры' || typeOfRealty === 'Квартиры - Новостройки') &&
+                  (typeOfRealty === 'Квартиры - Вторичка' || typeOfRealty === 'Квартиры - Новостройки') &&
                   <FormCheckbox
                     control={control}
                     name='forFake'
@@ -929,9 +939,11 @@ export function ModalExtraFilter({ sourceValue, onClose, extra }) {
           <DialogActions>
             <Button
               color="error"
-              onClick={() => { dispatch(setExtra({})), onClose() }}
+              onClick={() => { dispatch(setExtra({})), getCountObjects(), onClose() }}
             >Очистить</Button>
+
             <Button variant='outlined' type='submit'>Сохранить</Button>
+
           </DialogActions>
         </form>
       </DialogContent>

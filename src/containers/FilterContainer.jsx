@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { setIsMap, clearFilter, setLocation } from 'actions/filter';
+import { setIsMap, clearFilter, setLocation, setExtra, setMetro } from 'actions/filter';
+import { getCountCart } from 'actions/cards';
 
 import Button from '@mui/material/Button';
 import { Badge } from '@mui/material';
@@ -22,10 +23,12 @@ import './FilterContainer.scss';
 class FilterContainer extends PureComponent {
   state = {
     builderList: [],
-    renderLayout: false
+    renderLayout: false,
+    counterClearFilter: 0,
   };
   componentDidMount() {
     this.getCurrentLocation();
+    this.getCountObjects();
   }
   getCurrentLocation = async () => {
     const { setLocation } = this.props;
@@ -71,9 +74,30 @@ class FilterContainer extends PureComponent {
     );
   };
 
+  getCountObjects = () => {
+    const { getCountCart, stateFilter } = this.props;
+    getCountCart(
+      {
+        filter: stateFilter.filter,
+        metro: stateFilter.metro,
+        extra: stateFilter.extra,
+        map: stateFilter.map,
+        source: stateFilter.source,
+        userId: userId,
+        // userId: 2921,
+      }
+    )
+  }
+
   handlerClearFilter = () => {
-    const { clearFilter } = this.props;
+    const { clearFilter, setExtra, setMetro } = this.props;
     clearFilter();
+    setExtra({});
+    setMetro({});
+    this.setState((prevState) => ({
+      ...prevState,
+      counterClearFilter: prevState.counterClearFilter + 1
+    }))
   };
 
   render() {
@@ -121,23 +145,28 @@ class FilterContainer extends PureComponent {
               builderList={this.state.builderList}
               getBuilderVariants={this.getBuilderVariants}
               clearBuilderList={this.clearBuilderList}
+              counterClearFilter={this.state.counterClearFilter}
+              getCountObjects={this.getCountObjects}
             />
             {
               address.length > 0 &&
               <AddressItems />
             }
             <div className='setting'>
-              <div>
+              <div className='setting__buttons'>
                 {source !== 'mls' && (
                   <ButtonTemplate
                     sourceValue={source}
                     isMap={isMap}
                   />
                 )}
-              </div>
-              <div className='setting__buttons'>
-                <ButtonMetro />
-                <ButtonExtra sourceValue={source} />
+                <ButtonMetro
+                  getCountObjects={this.getCountObjects}
+                />
+                <ButtonExtra
+                  sourceValue={source}
+                  getCountObjects={this.getCountObjects}
+                />
                 <Button
                   variant='outlined'
                   onClick={() => {
@@ -147,8 +176,8 @@ class FilterContainer extends PureComponent {
                 >
                   {isMap ? 'списком' : 'на карте'}
                 </Button>
-                <ButtonSearch />
               </div>
+              <ButtonSearch />
             </div>
             <BackdropComponent />
           </>
@@ -165,6 +194,7 @@ function mapStateToProps(state, ownProps) {
     address: state.filter.getIn(['filter', 'address']),
     isMap: state.filter.get('isMap'),
     reqTypeofRealty: state.filter.getIn(['filter', 'reqTypeofRealty']),
+    stateFilter: state.filter.toJS(),
   };
 }
 
@@ -173,6 +203,9 @@ function mapDispatchToProps(dispatch) {
     setIsMap: () => dispatch(setIsMap()),
     clearFilter: () => dispatch(clearFilter()),
     setLocation: (location) => dispatch(setLocation(location)),
+    setExtra: (filter) => dispatch(setExtra(filter)),
+    setMetro: (filter) => dispatch(setMetro(filter)),
+    getCountCart: (filter) => dispatch(getCountCart(filter)),
   };
 }
 

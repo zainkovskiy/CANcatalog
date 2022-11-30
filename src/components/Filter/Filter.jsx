@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { filter, setExtra } from 'actions/filter';
+import { getCountCart } from 'actions/cards';
 
 import TextField from '@mui/material/TextField';
 import MenuList from '@mui/material/MenuList';
@@ -14,7 +15,7 @@ import { Dadata } from 'components/Dadata';
 import './Filter.scss';
 
 export function Filter(props) {
-  const { getBuilderVariants, sourceValue, builderList, clearBuilderList } = props;
+  const { getBuilderVariants, sourceValue, builderList, clearBuilderList, counterClearFilter, getCountObjects } = props;
   const filterState = useSelector((state) => state.filter.get('filter'));
   const dispatch = useDispatch();
 
@@ -33,6 +34,12 @@ export function Filter(props) {
       document.removeEventListener('click', checkSelectList)
     }
   }, [])
+
+  useEffect(() => {
+    setFrom('');
+    setTo('');
+    setPrice(['', '']);
+  }, [counterClearFilter])
 
   //ставит фокус на инупт прайс от
   useEffect(() => {
@@ -82,19 +89,19 @@ export function Filter(props) {
   }
 
   const handlerSelect = (name, value) => {
-    console.log(value);
     dispatch(filter({
       name: name,
       value: value
     }))
-    dispatch(setExtra({}));
+    getCountObjects();
+    // dispatch(setExtra({}));
   }
   return (
     <div className='filter'>
       <SelectSimple
         name='reqTypeofRealty'
         label='Тип недвижимости'
-        value={filterState?.reqTypeofRealty || 'Квартиры'}
+        value={filterState?.reqTypeofRealty || 'Квартиры - Вторичка'}
         onChange={handlerSelect}
         source={sourceValue}
       />
@@ -135,6 +142,7 @@ export function Filter(props) {
       </div>
       <Dadata
         onChange={handlerSelect}
+        counterClearFilter={counterClearFilter}
       />
       <SelectSimple
         name='reqRoomCount'

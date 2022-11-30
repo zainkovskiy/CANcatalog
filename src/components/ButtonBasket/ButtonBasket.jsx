@@ -12,12 +12,14 @@ import { ModalBasket } from 'components/ModalBasket';
 
 import './ButtonBasket.scss';
 
+//dealId закоментить
+// const dealId = null;
+
 export function ButtonBasket(props) {
   const { basket } = props;
   const [isShow, setIsShow] = useState(false);
   const [open, setOpen] = useState(false);
   const [deal, setDeal] = useState(dealId || null);
-  // const [deal, setDeal] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {

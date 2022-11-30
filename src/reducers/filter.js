@@ -1,15 +1,15 @@
 import { handleActions } from "redux-actions";
 import { fromJS, Map, List } from 'immutable';
 
-import { 
-  loader, 
-  loaderMap, 
-  source, 
-  setMetro, 
-  setExtra, 
-  map, 
-  setIsMap, 
-  filter, 
+import {
+  loader,
+  loaderMap,
+  source,
+  setMetro,
+  setExtra,
+  map,
+  setIsMap,
+  filter,
   clearFilter,
   removeAddress,
   setLocation
@@ -25,7 +25,7 @@ const initialState = new Map({
   extra: {},
   map: [],
   filter: {
-    reqTypeofRealty: 'Квартиры',
+    reqTypeofRealty: 'Квартиры - Вторичка',
     address: [],
   },
 })
@@ -50,7 +50,7 @@ export const filterReducer = handleActions({
     return state.set('map', action.payload)
   },
   [filter]: (state, action) => {
-    if (action.payload.name === 'address'){
+    if (action.payload.name === 'address') {
       return state.setIn(['filter', `${action.payload.name}`], [...state.getIn(['filter', `${action.payload.name}`]), action.payload.value]);
     }
     return state.setIn(['filter', `${action.payload.name}`], action.payload.value)
@@ -59,7 +59,10 @@ export const filterReducer = handleActions({
     return state.setIn(['filter', 'address'], state.getIn(['filter', 'address']).filter(item => item.value !== action.payload.value))
   },
   [clearFilter]: (state, action) => {
-    return state.setIn(['filter', 'reqTypeofRealty'], 'Квартиры')
+    return state.setIn(['filter'], {
+      reqTypeofRealty: 'Квартиры - Вторичка',
+      address: [],
+    })
   },
   [setIsMap]: (state, action) => {
     return state.set('isMap', !state.get('isMap'))

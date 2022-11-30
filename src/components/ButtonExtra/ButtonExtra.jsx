@@ -8,7 +8,7 @@ import Setting from 'images/setting.svg';
 import { ModalWindow } from 'components/ModalWindow';
 import { ModalExtraFilter } from 'components/ModalExtraFilter';
 
-export function ButtonExtra({ sourceValue }) {
+export function ButtonExtra({ sourceValue, getCountObjects }) {
   const extra = useSelector((state) => state.filter.get('extra'));
   const [open, setOpen] = useState(false)
   const [countExtra, setCountExtra] = useState(0)
@@ -82,6 +82,7 @@ export function ButtonExtra({ sourceValue }) {
               extra={extra}
               sourceValue={sourceValue}
               onClose={onClose}
+              getCountObjects={getCountObjects}
             />}
         />
       }

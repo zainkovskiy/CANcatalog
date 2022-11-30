@@ -61,7 +61,7 @@ export function SelectTypeofRealty({ typeOfRealty, selectType, openSelectType })
               data-search='yes'
 
             >
-              <ListItemText primary="Квартиры" data-search='yes'
+              <ListItemText primary="Квартиры - Вторичка" data-search='yes'
                 primaryTypographyProps={{ 'data-search': 'yes' }}
               />
               {open ? <ExpandLess data-search='yes' /> : <ExpandMore data-search='yes' />}

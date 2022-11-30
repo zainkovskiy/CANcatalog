@@ -18,7 +18,7 @@ import { setMetro } from 'actions/filter';
 
 import './ModalMetro.scss';
 
-export function ModalMetro({ onClose, metro }) {
+export function ModalMetro({ onClose, metro, getCountObjects }) {
   const dispatch = useDispatch();
 
   const [metroAll, setMetroAll] = useState(false,);
@@ -44,8 +44,8 @@ export function ModalMetro({ onClose, metro }) {
 
   const onSubmit = (data) => {
     dispatch(setMetro(data))
+    getCountObjects();
     onClose()
-    console.log(data);
   }
 
   const handleAll = (event) => {
@@ -143,7 +143,7 @@ export function ModalMetro({ onClose, metro }) {
           <DialogActions >
             <Button
               color='error'
-              onClick={() => { dispatch(setMetro({})), onClose() }}
+              onClick={() => { dispatch(setMetro({})), getCountObjects(), onClose() }}
             >Очистить</Button>
             <Button type='submit' variant='outlined'>Сохранить</Button>
           </DialogActions>

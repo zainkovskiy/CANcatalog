@@ -13,6 +13,7 @@ export const sortMaxMin = createAction('[Cards] sortMaxMin');
 export const sortDefault = createAction('[Cards] sortDefault');
 export const sortDate = createAction('[Cards] sortDate');
 export const setSortIndex = createAction('[Cards] setSortIndex');
+export const setCountCart = createAction('[Cards] setCountCart');
 
 export function getCards(req, isMap) {
   return async function (dispatch) {
@@ -34,6 +35,24 @@ export function getCards(req, isMap) {
     } finally{
       isMap ? dispatch(loaderMap()) : dispatch(loader());
       dispatch(setSortIndex(0));
+    }
+  }
+}
+
+export function getCountCart(raw) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/Controller.php', {
+        action: 'getCount',
+        body: raw
+      });
+      if(res?.status === 200 && res?.data){
+        dispatch(setCountCart(res.data))
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally{
+      console.log('finally');
     }
   }
 }
