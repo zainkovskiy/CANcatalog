@@ -82,6 +82,11 @@
 
   &__logo {
     height: 36.5px;
+    &-name{
+      display: flex; 
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
   }
 
   &__bottom {

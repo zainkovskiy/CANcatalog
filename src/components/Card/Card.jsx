@@ -88,10 +88,10 @@ export function Card({ card }) {
                   placement="top"
                   arrow
                 >
-                  <span className='text card__text'>{card.reqFlatTotalArea}</span>
+                  <span className='text card__text'>{card?.reqFlatTotalArea}</span>
                 </Tooltip>
               }
-              {(card?.reqFlatTotalArea && card.reqFlatLivingArea) && '/'}
+              {(card?.reqFlatTotalArea && card?.reqFlatLivingArea) && '/'}
 
               {card?.reqFlatLivingArea &&
                 <Tooltip
@@ -99,18 +99,18 @@ export function Card({ card }) {
                   placement="top"
                   arrow
                 >
-                  <span className='text card__text'>{card.reqFlatLivingArea}</span>
+                  <span className='text card__text'>{card?.reqFlatLivingArea}</span>
                 </Tooltip>
               }
 
-              {(card?.reqFlatLivingArea && card.reqKitchenArea) && '/'}
+              {(card?.reqFlatLivingArea && card?.reqKitchenArea) && '/'}
               {card?.reqKitchenArea &&
                 <Tooltip
                   title="Площадь кухни"
                   placement="top"
                   arrow
                 >
-                  <span className='text card__text'>{card.reqKitchenArea}</span>
+                  <span className='text card__text'>{card?.reqKitchenArea}</span>
                 </Tooltip>
               }
             </div>
@@ -130,7 +130,7 @@ export function Card({ card }) {
         {
           (card?.source === 'mlsn' && card?.comission) &&
           <p className='text' style={{ textAlign: 'end', margin: 0 }}>
-            Ваша комиссия: { card?.comission }₽
+            Ваша комиссия: {card?.comission}₽
           </p>
         }
         <div className='card__bottom'>
@@ -148,7 +148,13 @@ export function Card({ card }) {
                 </Button>
               </div>
             </div>
-            <img className="card__logo" src={card.reqLogo} alt="logo" />
+            <div className='card__logo-name'>
+              {
+                (card?.source === 'mlsn' && card?.developer) &&
+                <span className="text card__text">{card?.developer}</span>
+              }
+              <img className="card__logo" src={card.reqLogo} alt="logo" />
+            </div>
           </div>
           <div className='card__bottom_wrap'>
             {card?.reqDocType && <span className='text card__text'>{card.reqDocType}</span>}
