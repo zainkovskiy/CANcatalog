@@ -111,6 +111,7 @@ class FilterContainer extends PureComponent {
               <Source
                 sourceValue={source}
                 handlerClearFilter={this.handlerClearFilter}
+                getCountObjects={this.getCountObjects}
               />
               <div>
                 {reqTypeofRealty === 'Квартиры - Новостройки' && (

@@ -21,8 +21,8 @@ export function getCards(req, isMap) {
     dispatch(setMapDisabledAPI());
     try {
       const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/Controller.php', req);
-      if(Array.isArray(res?.data)){
-        if (req?.map?.source === 'polygon'){
+      if (Array.isArray(res?.data)) {
+        if (req?.map?.source === 'polygon') {
           dispatch(setCards(res.data.filter(item => isPointInPolygon([item.lat, item.lng], req.map.geometry[0]))))
           dispatch(setDefaultCards(res.data.filter(item => isPointInPolygon([item.lat, item.lng], req.map.geometry[0]))))
         } else {
@@ -32,7 +32,7 @@ export function getCards(req, isMap) {
       }
     } catch (error) {
       console.log(error.message);
-    } finally{
+    } finally {
       isMap ? dispatch(loaderMap()) : dispatch(loader());
       dispatch(setSortIndex(0));
     }
@@ -46,12 +46,14 @@ export function getCountCart(raw) {
         action: 'getCount',
         body: raw
       });
-      if(res?.status === 200 && res?.data){
+      if (res?.status === 200 && res?.data) {
         dispatch(setCountCart(res.data))
+      } else {
+        dispatch(setCountCart(null))
       }
     } catch (error) {
-      console.log(error.message);
-    } finally{
+      dispatch(setCountCart(null))
+    } finally {
       console.log('finally');
     }
   }

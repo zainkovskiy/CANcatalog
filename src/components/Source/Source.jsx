@@ -16,7 +16,7 @@ const logoStyle = {
   backgroundRepeat: 'no-repeat'
 }
 
-export function Source({ sourceValue, handlerClearFilter }) {
+export function Source({ sourceValue, handlerClearFilter, getCountObjects }) {
   const dispatch = useDispatch();
   const [alignment, setAlignment] = useState(sourceValue);
   const firstUpdate = useRef(true);
@@ -32,9 +32,10 @@ export function Source({ sourceValue, handlerClearFilter }) {
       firstUpdate.current = false;
       return
     }
-    dispatch(source(alignment))
-    dispatch(setExtra({}))
-    handlerClearFilter()
+    dispatch(source(alignment));
+    dispatch(setExtra({}));
+    handlerClearFilter();
+    getCountObjects();
   }, [alignment])
 
 

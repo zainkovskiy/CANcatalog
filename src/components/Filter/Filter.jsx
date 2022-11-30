@@ -36,6 +36,10 @@ export function Filter(props) {
   }, [])
 
   useEffect(() => {
+    getCountObjects();
+  }, [filterState])
+
+  useEffect(() => {
     setFrom('');
     setTo('');
     setPrice(['', '']);
@@ -89,11 +93,11 @@ export function Filter(props) {
   }
 
   const handlerSelect = (name, value) => {
+    console.log(value);
     dispatch(filter({
       name: name,
       value: value
     }))
-    getCountObjects();
     // dispatch(setExtra({}));
   }
   return (

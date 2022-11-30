@@ -127,6 +127,12 @@ export function Card({ card }) {
             </div>
           </div>
         </div>
+        {
+          (card?.source === 'mlsn' && card?.comission) &&
+          <p className='text' style={{ textAlign: 'end', margin: 0 }}>
+            Ваша комиссия: { card?.comission }₽
+          </p>
+        }
         <div className='card__bottom'>
           <div className='card__bottom_wrap'>
             <div>
