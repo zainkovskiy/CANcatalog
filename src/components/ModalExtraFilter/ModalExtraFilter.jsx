@@ -874,7 +874,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                   <FormCheckbox
                     control={control}
                     name='onlyDDU'
-                    label='Только ДДУ'
+                    label='Только переуступка'
                   />
                 </>
               }
@@ -926,7 +926,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                   />
                 }
                 {
-                  (typeOfRealty === 'Квартиры - Вторичка' || typeOfRealty === 'Квартиры - Новостройки') &&
+                  typeOfRealty === 'Квартиры - Вторичка' &&
                   <FormCheckbox
                     control={control}
                     name='forFake'
