@@ -613,11 +613,11 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                     </LocalizationProvider>
                   )}
                 />
-                <FormCheckbox
+                {/* <FormCheckbox
                   control={control}
                   name='ready'
                   label='Дом сдан'
-                />
+                /> */}
               </div>
             </div>
           }
@@ -925,14 +925,14 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                     label='ранее был СК'
                   />
                 }
-                {
+                {/* {
                   typeOfRealty === 'Квартиры - Вторичка' &&
                   <FormCheckbox
                     control={control}
                     name='forFake'
                     label='Для контрафакта'
                   />
-                }
+                } */}
               </div>
             </div>
           }
