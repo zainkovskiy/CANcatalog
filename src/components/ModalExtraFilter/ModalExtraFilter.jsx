@@ -89,18 +89,19 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
       reqLandType: extra?.reqLandType || 'nothing',
       typeOfHouse: extra?.typeOfHouse || 'nothing',
       garageType: extra?.garageType || 'nothing',
+      searchOnBlank: extra?.searchOnBlank || false,
     }
   });
 
   const setToggleMultipleValue = (event, onChange, currentArr) => {
     const value = event.target.value;
-    if(currentArr.includes(value)){
+    if (currentArr.includes(value)) {
       onChange(currentArr.filter(item => item !== value));
       return
     }
     const newArr = [...currentArr, value];
     onChange(newArr);
-  } 
+  }
 
   const onSubmit = (data) => {
     dispatch(setExtra(data));
@@ -853,6 +854,11 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                   />
                 </div>
               } */}
+              <FormCheckbox
+                control={control}
+                name='searchOnBlank'
+                label='Искать в черновиках'
+              />
               {
                 (sourceValue === '1c' && typeOfRealty === 'Квартиры - Новостройки') &&
                 <>
