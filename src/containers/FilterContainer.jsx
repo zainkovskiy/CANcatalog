@@ -18,6 +18,8 @@ import { ButtonExtra } from 'components/ButtonExtra';
 import { ButtonMetro } from 'components/ButtonMetro';
 import { AddressItems } from 'components/AddressItems';
 
+// const userId = 2921;
+
 import './FilterContainer.scss';
 
 class FilterContainer extends PureComponent {
@@ -84,7 +86,6 @@ class FilterContainer extends PureComponent {
         map: stateFilter.map,
         source: stateFilter.source,
         userId: userId,
-        // userId: 2921,
       }
     )
   }
@@ -101,7 +102,7 @@ class FilterContainer extends PureComponent {
   };
 
   render() {
-    const { source, basket, setIsMap, isMap, reqTypeofRealty, address } = this.props;
+    const { source, trash, basket, setIsMap, isMap, reqTypeofRealty, address } = this.props;
     return (
       <>
         {
@@ -110,6 +111,7 @@ class FilterContainer extends PureComponent {
             <div className='filter-top'>
               <Source
                 sourceValue={source}
+                trashValue={trash || false}
                 handlerClearFilter={this.handlerClearFilter}
                 getCountObjects={this.getCountObjects}
               />
@@ -191,6 +193,7 @@ class FilterContainer extends PureComponent {
 function mapStateToProps(state, ownProps) {
   return {
     source: state.filter.get('source'),
+    trash: state.filter.get('trash'),
     basket: state.basket.get('basket').toJS(),
     address: state.filter.getIn(['filter', 'address']),
     isMap: state.filter.get('isMap'),

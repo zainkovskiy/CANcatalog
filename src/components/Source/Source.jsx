@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { source, setExtra } from 'actions/filter';
+import { source, setExtra, trash } from 'actions/filter';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -16,15 +16,21 @@ const logoStyle = {
   backgroundRepeat: 'no-repeat'
 }
 
-export function Source({ sourceValue, handlerClearFilter, getCountObjects }) {
+export function Source({ sourceValue, trashValue, handlerClearFilter, getCountObjects }) {
   const dispatch = useDispatch();
   const [alignment, setAlignment] = useState(sourceValue);
   const firstUpdate = useRef(true);
 
-  const handleChange = (event, newAlignment) => {
-    if (newAlignment) {
-      setAlignment(newAlignment);
+  const handleChange = (event) => {
+    if (event.target.id) {
+      setAlignment(event.target.id);
+      dispatch(trash(false));
     }
+  };
+
+  const handleChangeTrash = (event, newAlignment) => {
+    setAlignment('1c');
+    dispatch(trash(true));
   };
 
   useEffect(() => {
@@ -43,12 +49,15 @@ export function Source({ sourceValue, handlerClearFilter, getCountObjects }) {
     <>
       <ToggleButtonGroup
         color="primary"
-        value={alignment}
-        exclusive
-        onChange={handleChange}
         sx={{ justifyContent: 'center' }}
       >
-        <ToggleButton value="1c" sx={{padding: '0.4rem'}}>
+        <ToggleButton
+          selected={alignment === '1c' && !trashValue}
+          sx={{ padding: '0.4rem' }}
+          id="1c"
+          onClick={handleChange}
+          value='1c'
+        >
           Проверено
           <span
             style={{
@@ -56,7 +65,22 @@ export function Source({ sourceValue, handlerClearFilter, getCountObjects }) {
             }}>
           </span>
         </ToggleButton>
-        <ToggleButton value="pars" sx={{padding: '0.4rem'}}>
+        <ToggleButton
+          onClick={handleChangeTrash}
+          selected={trashValue}
+          id="1c"
+          sx={{ padding: '0.4rem' }}
+          value='1c'
+        >
+          Корзина
+        </ToggleButton>
+        <ToggleButton
+          selected={alignment === 'pars'}
+          id="pars"
+          sx={{ padding: '0.4rem' }}
+          onClick={handleChange}
+          value='pars'
+        >
           Не Проверено
           <span
             style={{

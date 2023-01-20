@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { createAction } from "redux-actions";
 
 export const loader = createAction('[Filter] loader');
 export const loaderMap = createAction('[Filter] loaderMap');
 export const source = createAction('[Filter] source');
+export const trash = createAction('[Filter] trash');
 export const setMetro = createAction('[Filter] metro');
 export const setExtra = createAction('[Filter] extra');
 export const map = createAction('[Filter] map');

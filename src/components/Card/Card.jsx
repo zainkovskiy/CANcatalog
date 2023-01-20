@@ -91,7 +91,7 @@ export function Card({ card }) {
                   <span className='text card__text'>{card?.reqFlatTotalArea}</span>
                 </Tooltip>
               }
-              {(card?.reqFlatTotalArea && card?.reqFlatLivingArea) && '/'}
+              {(card?.reqFlatTotalArea && card?.reqFlatLivingArea) && <span className='text card__text'>/</span>}
 
               {card?.reqFlatLivingArea &&
                 <Tooltip
@@ -103,7 +103,7 @@ export function Card({ card }) {
                 </Tooltip>
               }
 
-              {(card?.reqFlatLivingArea && card?.reqKitchenArea) && '/'}
+              {(card?.reqFlatLivingArea && card?.reqKitchenArea) && <span className='text card__text'>/</span>}
               {card?.reqKitchenArea &&
                 <Tooltip
                   title="Площадь кухни"
@@ -156,10 +156,14 @@ export function Card({ card }) {
               <img className="card__logo" src={card.reqLogo} alt="logo" />
             </div>
           </div>
+          {
+            (card?.hasComission && card.hasComission !== '0') &&
+            <span className='text card__text'>Готов делиться комиссией</span>
+          }
           <div className='card__bottom_wrap'>
             {card?.reqDocType && <span className='text card__text'>{card.reqDocType}</span>}
-            {card?.createtime && <span className='text card__text'>
-              Актуализировано {moment(card.createtime).locale('ru').format('DD MMMM YYYY')}
+            {card?.reqUpdateTime && <span className='text card__text'>
+              Актуализировано {moment(card.reqUpdateTime).locale('ru').format('DD MMMM YYYY')}
             </span>}
           </div>
         </div>

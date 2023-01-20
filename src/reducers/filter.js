@@ -12,7 +12,8 @@ import {
   filter,
   clearFilter,
   removeAddress,
-  setLocation
+  setLocation,
+  trash
 } from 'actions/filter';
 
 const initialState = new Map({
@@ -39,6 +40,9 @@ export const filterReducer = handleActions({
   },
   [source]: (state, action) => {
     return state.set('source', action.payload)
+  },
+  [trash]: (state, action) => {
+    return state.set('trash', action.payload)
   },
   [setMetro]: (state, action) => {
     return state.set('metro', action.payload)
