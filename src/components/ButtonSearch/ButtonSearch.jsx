@@ -19,6 +19,7 @@ export function ButtonSearch() {
       extra: state.extra,
       map: state.map,
       source: state.source,
+      trash: state?.trash || false,
       userId: userId,
       // userId: 2921,
     }, state.isMap))
