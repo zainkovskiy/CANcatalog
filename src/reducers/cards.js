@@ -12,7 +12,8 @@ import {
   sortDefault,
   sortDate,
   setSortIndex,
-  setCountCart
+  setCountCart,
+  setCardCountLoading
 } from 'actions/cards';
 
 
@@ -23,6 +24,7 @@ const initialState = new Map({
   sideBarCards: new List(),
   mapDisabledAPI: false,
   cardsCount: null,
+  cardCountLoading: false,
 })
 
 export const cardsReducer = handleActions({
@@ -31,6 +33,9 @@ export const cardsReducer = handleActions({
   },
   [setDefaultCards]: (state, action) => {
     return state.set('defaultCards', fromJS(action.payload))
+  },
+  [setCardCountLoading]: (state, action) => {
+    return state.set('cardCountLoading', !state.get('cardCountLoading'))
   },
   [setMapDisabledAPI]: (state, action) => {
     return state.set('mapDisabledAPI', true)

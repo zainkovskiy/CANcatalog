@@ -76,16 +76,23 @@ class FilterContainer extends PureComponent {
     );
   };
 
-  getCountObjects = () => {
-    const { getCountCart, stateFilter } = this.props;
+  getCountObjects = (clear) => {
+    const { getCountCart, stateFilter, cardCountLoading, trash } = this.props;
+    if (cardCountLoading) {
+      return
+    }
     getCountCart(
       {
-        filter: stateFilter.filter,
-        metro: stateFilter.metro,
-        extra: stateFilter.extra,
+        filter: clear ? {
+          reqTypeofRealty: 'Квартиры - Вторичка',
+          address: [],
+        } : stateFilter.filter,
+        metro: clear ? {} : stateFilter.metro,
+        extra: clear ? {} : stateFilter.extra,
         map: stateFilter.map,
         source: stateFilter.source,
         userId: userId,
+        trash: trash || false,
       }
     )
   }
@@ -199,6 +206,7 @@ function mapStateToProps(state, ownProps) {
     isMap: state.filter.get('isMap'),
     reqTypeofRealty: state.filter.getIn(['filter', 'reqTypeofRealty']),
     stateFilter: state.filter.toJS(),
+    cardCountLoading: state.cards.get('cardCountLoading'),
   };
 }
 

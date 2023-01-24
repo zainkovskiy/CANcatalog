@@ -19,18 +19,23 @@ const logoStyle = {
 export function Source({ sourceValue, trashValue, handlerClearFilter, getCountObjects }) {
   const dispatch = useDispatch();
   const [alignment, setAlignment] = useState(sourceValue);
+  const [clickValue, setClickValue] = useState(false);
   const firstUpdate = useRef(true);
 
   const handleChange = (event) => {
     if (event.target.id) {
       setAlignment(event.target.id);
+      dispatch(source(event.target.id));
       dispatch(trash(false));
+      setClickValue(!clickValue);
     }
   };
 
   const handleChangeTrash = (event, newAlignment) => {
     setAlignment('1c');
+    dispatch(source('1c'));
     dispatch(trash(true));
+    setClickValue(!clickValue);
   };
 
   useEffect(() => {
@@ -38,11 +43,9 @@ export function Source({ sourceValue, trashValue, handlerClearFilter, getCountOb
       firstUpdate.current = false;
       return
     }
-    dispatch(source(alignment));
-    dispatch(setExtra({}));
     handlerClearFilter();
-    getCountObjects();
-  }, [alignment])
+    getCountObjects(true);
+  }, [clickValue])
 
 
   return (

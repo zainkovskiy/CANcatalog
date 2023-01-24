@@ -8,6 +8,7 @@ import { getCards, setSideBarCards } from 'actions/cards';
 export function ButtonSearch() {
   const state = useStore().getState().filter.toJS()
   const cardsCount = useSelector((state) => state.cards.get('cardsCount'))
+  const cardCountLoading = useSelector((state) => state.cards.get('cardCountLoading'))
   const dispatch = useDispatch();
 
   const sendRequest = () => {
@@ -27,11 +28,18 @@ export function ButtonSearch() {
 
   return (
     <div className='setting__buttons'>
-      <span className="text" style={{fontSize: 12}}>Найдено { cardsCount?.count || 0 } объектов</span>
+      <span className="text" style={{ fontSize: 12 }}>
+        {
+          cardCountLoading ?
+            'Идет поиск объектов...' :
+            `Найдено ${cardsCount?.count || 0} объектов`
+        }
+      </span>
       <Button
         variant="contained"
         size='small'
         onClick={sendRequest}
+        disabled={cardCountLoading}
       >
         показать
       </Button>

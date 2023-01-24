@@ -14,6 +14,7 @@ export const sortDefault = createAction('[Cards] sortDefault');
 export const sortDate = createAction('[Cards] sortDate');
 export const setSortIndex = createAction('[Cards] setSortIndex');
 export const setCountCart = createAction('[Cards] setCountCart');
+export const setCardCountLoading = createAction('[Cards] setCardCountLoading');
 
 export function getCards(req, isMap) {
   return async function (dispatch) {
@@ -41,6 +42,7 @@ export function getCards(req, isMap) {
 
 export function getCountCart(raw) {
   return async function (dispatch) {
+    dispatch(setCardCountLoading())
     try {
       const res = await axios.post('https://hs-01.centralnoe.ru/Project-Selket-Main/Servers/Filter/Controller.php', {
         action: 'getCount',
@@ -55,6 +57,7 @@ export function getCountCart(raw) {
       dispatch(setCountCart(null))
     } finally {
       console.log('finally');
+      dispatch(setCardCountLoading())
     }
   }
 }
