@@ -72,7 +72,7 @@ export function Source({ sourceValue, trashValue, handlerClearFilter, getCountOb
           sx={{ padding: '0.4rem' }}
           value='1c'
         >
-          Корзина
+          Свободные объекты
         </ToggleButton>
         <ToggleButton
           selected={alignment === 'pars'}

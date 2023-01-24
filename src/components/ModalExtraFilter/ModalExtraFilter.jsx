@@ -90,6 +90,7 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
       typeOfHouse: extra?.typeOfHouse || 'nothing',
       garageType: extra?.garageType || 'nothing',
       searchOnBlank: extra?.searchOnBlank || false,
+      hasNoRealtor: extra?.hasNoRealtor || false,
     }
   });
 
@@ -859,6 +860,13 @@ export function ModalExtraFilter({ sourceValue, onClose, extra, getCountObjects 
                 name='searchOnBlank'
                 label='Искать в черновиках'
               />
+              {
+                <FormCheckbox
+                  control={control}
+                  name='hasNoRealtor'
+                  label='Искать в свободных'
+                />
+              }
               {
                 (sourceValue === '1c' && typeOfRealty === 'Квартиры - Новостройки') &&
                 <>
