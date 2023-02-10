@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import { loader, loaderMap } from 'actions/filter';
 import { getCards, setSideBarCards } from 'actions/cards';
 
+// const userId = 2921;
+
 export function ButtonSearch() {
   const state = useStore().getState().filter.toJS()
   const cardsCount = useSelector((state) => state.cards.get('cardsCount'))
@@ -22,7 +24,6 @@ export function ButtonSearch() {
       source: state.source,
       trash: state?.trash || false,
       userId: userId,
-      // userId: 2921,
     }, state.isMap))
   }
 

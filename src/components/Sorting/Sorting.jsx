@@ -19,7 +19,7 @@ const optionsTest = [
 },
 {
   text: 'По дате обновления',
-  action: sortDate('createtime'),
+  action: sortDate('reqUpdateTime'),
   sortName: 'date'
 },
 {
