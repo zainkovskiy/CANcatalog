@@ -7,6 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Chip from '@mui/material/Chip';
 
+const userId = 2921;
+
 export function ModalBasket({ onClose, selectDeal }) {
   const [deals, setDeals] = useState(null);
   useEffect(() => {

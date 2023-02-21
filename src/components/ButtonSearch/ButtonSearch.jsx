@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { loader, loaderMap } from 'actions/filter';
 import { getCards, setSideBarCards } from 'actions/cards';
 
-// const userId = 2921;
+const userId = 2921;
 
 export function ButtonSearch() {
   const state = useStore().getState().filter.toJS()

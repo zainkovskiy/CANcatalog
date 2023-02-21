@@ -4,6 +4,7 @@ import axios from 'axios';
 export const addToBasket = createAction('[Basket] addToBasket');
 export const removeFromBasket = createAction('[Basket] removeFromBasket');
 export const clearBasket = createAction('[Basket] clearBasket');
+const userId = 2921;
 
 export function setSelect(basket, dealId) {
   return async function (dispatch) {
